@@ -1252,18 +1252,15 @@ const BgmBtn = () => {
       }
     },
     style: {
-      position: "fixed",
-      top: 12,
-      right: 12,
-      zIndex: 100,
-      padding: "6px 12px",
-      borderRadius: 20,
+      padding: "4px 10px",
+      borderRadius: 14,
       border: "1px solid rgba(255,255,255,.15)",
       background: on ? "rgba(102,255,102,.12)" : "rgba(255,255,255,.06)",
       color: on ? "#66ff66" : "rgba(255,255,255,.4)",
-      fontSize: 12,
+      fontSize: 11,
       fontWeight: 700,
-      cursor: "pointer"
+      cursor: "pointer",
+      whiteSpace: "nowrap"
     }
   }, on ? t("bgmOn") : t("bgmOff"));
 };
@@ -2470,7 +2467,7 @@ function Game({
   }, cel && /*#__PURE__*/React.createElement(Celeb, {
     comp: cel,
     onDone: () => setCel(null)
-  }), /*#__PURE__*/React.createElement(BgmBtn, null), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("div", {
     style: {
       paddingTop: "max(14px, env(safe-area-inset-top))",
       padding: "max(14px, env(safe-area-inset-top)) 16px 10px 16px",
@@ -2495,9 +2492,10 @@ function Game({
   }, t("tl"))), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
-      gap: 12
+      gap: 10,
+      alignItems: "center"
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(BgmBtn, null), /*#__PURE__*/React.createElement("div", {
     style: {
       textAlign: "center"
     }
