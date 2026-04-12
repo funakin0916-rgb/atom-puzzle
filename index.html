@@ -2593,46 +2593,56 @@ function Game({
       paddingLeft: 4,
       fontWeight: 700
     }
-  }, "\uD83C\uDCCF ", t("hand"), " (", hand.length, t("mai"), ") ", t("tapS")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      flexWrap: "wrap",
-      gap: 8,
-      justifyContent: "center"
-    }
-  }, hand.map((c, i) => /*#__PURE__*/React.createElement("div", {
-    key: c.id,
-    style: {
-      position: "relative"
-    }
-  }, /*#__PURE__*/React.createElement(Card, {
-    card: c,
-    sel: sel.has(c.id),
-    onTap: toggle,
-    dl: i * .03
-  }), overLimit && /*#__PURE__*/React.createElement("button", {
-    onClick: () => doDiscard(c.id),
-    style: {
-      position: "absolute",
-      top: -6,
-      right: -6,
-      width: 24,
-      height: 24,
-      borderRadius: 12,
-      border: "none",
-      background: "#ff4444",
-      color: "#fff",
-      fontSize: 14,
-      fontWeight: 900,
-      cursor: "pointer",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      boxShadow: "0 2px 8px rgba(255,68,68,.5)",
-      lineHeight: 1,
-      zIndex: 2
-    }
-  }, "\xD7")))), match && !cel && /*#__PURE__*/React.createElement("div", {
+  }, "\uD83C\uDCCF ", t("hand"), " (", hand.length, t("mai"), ") ", t("tapS")), (() => {
+    const order = "H O C N S Cl Na Cu Ag Fe".split(" ");
+    const sorted = [...hand].sort((a, b) => order.indexOf(a.s) - order.indexOf(b.s));
+    let lastS = "";
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        flexWrap: "wrap",
+        gap: 6,
+        justifyContent: "center"
+      }
+    }, sorted.map((c, i) => {
+      const gap = c.s !== lastS && i > 0;
+      lastS = c.s;
+      return /*#__PURE__*/React.createElement("div", {
+        key: c.id,
+        style: {
+          position: "relative",
+          marginLeft: gap ? 8 : 0
+        }
+      }, /*#__PURE__*/React.createElement(Card, {
+        card: c,
+        sel: sel.has(c.id),
+        onTap: toggle,
+        dl: i * .03
+      }), overLimit && /*#__PURE__*/React.createElement("button", {
+        onClick: () => doDiscard(c.id),
+        style: {
+          position: "absolute",
+          top: -6,
+          right: -6,
+          width: 24,
+          height: 24,
+          borderRadius: 12,
+          border: "none",
+          background: "#ff4444",
+          color: "#fff",
+          fontSize: 14,
+          fontWeight: 900,
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxShadow: "0 2px 8px rgba(255,68,68,.5)",
+          lineHeight: 1,
+          zIndex: 2
+        }
+      }, "\xD7"));
+    }));
+  })(), match && !cel && /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 16,
       padding: 16,
