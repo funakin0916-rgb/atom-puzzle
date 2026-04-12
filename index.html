@@ -17,6 +17,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script>
+try {
 const {
   useState,
   useEffect,
@@ -3246,11 +3247,11 @@ onFinish: finishGame,
 premium: premium
 }));
 };
-const root = ReactDOM.createRoot(document.getElementById(“root”));
+var root = ReactDOM.createRoot(document.getElementById(“root”));
 root.render(React.createElement(window.__App));
-
-const root = ReactDOM.createRoot(document.getElementById(“root”));
-root.render(React.createElement(window.__App));
+} catch(e) {
+document.getElementById(“root”).innerHTML = “<div style='color:#ff4444;padding:24px;font-size:16px'><h2>Error</h2><pre>” + e.message + “\n” + e.stack + “</pre></div>”;
+}
 </script>
 
 </body>
