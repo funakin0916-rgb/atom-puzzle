@@ -315,7 +315,6 @@ function(a,b,c){if(!Vd(b))throw Error(n(200));return Wd(null,a,b,!1,c)};Q.unmoun
 </script>
 <script>
 const { useState, useEffect, useCallback, useRef, createContext, useContext } = React;
-
 // ═══════════════════════════════════════════════════════════
 // げんしパズルゲーム 🧪 v3
 // ═══════════════════════════════════════════════════════════
@@ -1719,7 +1718,7 @@ const CpuOv = ({
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      background: ph >= 1 ? "rgba(10,10,30,.94)" : "rgba(0,0,0,0)",
+      background: ph >= 1 ? "rgba(10,30,10,.94)" : "rgba(0,0,0,0)",
       transition: "background .3s"
     }
   }, /*#__PURE__*/React.createElement("div", {
@@ -1737,7 +1736,7 @@ const CpuOv = ({
     style: {
       fontSize: 18,
       fontWeight: 900,
-      color: "#b388ff",
+      color: "#66ff66",
       marginBottom: 4
     }
   }, name), action === "bond" && comp && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
@@ -2384,6 +2383,28 @@ function Game({
   const t = useT();
   const pl = state.pl[pi],
     hand = pl.hand;
+  const PLCOLORS = [{
+    bg: "linear-gradient(180deg,#0a0a1a,#0a1628)",
+    accent: "#b388ff",
+    headerBg: "rgba(124,77,255,.06)",
+    border: "rgba(124,77,255,.15)"
+  }, {
+    bg: "linear-gradient(180deg,#0a1a0a,#0a2810)",
+    accent: "#66ff66",
+    headerBg: "rgba(102,255,102,.06)",
+    border: "rgba(102,255,102,.15)"
+  }, {
+    bg: "linear-gradient(180deg,#1a0a0a,#281010)",
+    accent: "#ff8a65",
+    headerBg: "rgba(255,138,101,.06)",
+    border: "rgba(255,138,101,.15)"
+  }, {
+    bg: "linear-gradient(180deg,#1a1a0a,#282010)",
+    accent: "#ffcc00",
+    headerBg: "rgba(255,204,0,.06)",
+    border: "rgba(255,204,0,.15)"
+  }];
+  const pco = PLCOLORS[pi % PLCOLORS.length];
   const [sel, setSel] = useState(new Set());
   const [showC, setSC] = useState(false);
   const [drew, setDrew] = useState(false);
@@ -2443,7 +2464,7 @@ function Game({
       minHeight: "100dvh",
       display: "flex",
       flexDirection: "column",
-      background: "linear-gradient(180deg,#0a0a1a,#0f1628)"
+      background: pco.bg
     }
   }, cel && /*#__PURE__*/React.createElement(Celeb, {
     comp: cel,
@@ -2454,14 +2475,14 @@ function Game({
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
-      background: "rgba(255,255,255,.03)",
-      borderBottom: "1px solid rgba(255,255,255,.06)"
+      background: pco.headerBg,
+      borderBottom: `1px solid ${pco.border}`
     }
   }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 18,
       fontWeight: 900,
-      color: "#b388ff"
+      color: pco.accent
     }
   }, pl.name), /*#__PURE__*/React.createElement("span", {
     style: {
@@ -3330,6 +3351,17 @@ window.__App = function App() {
   const [lang, setLang] = useState("kanji");
   const [premium, setPremium] = useState(true); // App Store公開時にfalseに戻す
 
+  // ゲーム中にブラウザの更新ボタンで戻るのを防止
+  useEffect(() => {
+    const handler = e => {
+      if (scr === "game") {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [scr]);
   const init = (pn, cs, d, lim, testCards) => {
     let deck = buildDeck();
     if (testCards) deck = deck.slice(0, testCards);
