@@ -2472,7 +2472,8 @@ function Game({
     onDone: () => setCel(null)
   }), /*#__PURE__*/React.createElement(BgmBtn, null), /*#__PURE__*/React.createElement("div", {
     style: {
-      padding: "10px 16px",
+      paddingTop: "max(14px, env(safe-area-inset-top))",
+      padding: "max(14px, env(safe-area-inset-top)) 16px 10px 16px",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
@@ -2952,7 +2953,7 @@ function Game({
     }
   }, p.bonds.reduce((s, b) => s + b.p, 0), t("pt"))))))), /*#__PURE__*/React.createElement("div", {
     style: {
-      padding: "12px 16px 28px",
+      padding: "12px 16px max(28px, env(safe-area-inset-bottom))",
       borderTop: "1px solid rgba(255,255,255,.06)",
       display: "flex",
       gap: 10,
