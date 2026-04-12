@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -13,3246 +12,3268 @@
 <style>html,body,#root{margin:0;padding:0;height:100%;background:#0a0a1a}#root{min-height:100dvh}</style>
 </head>
 <body>
-<div id="root"></div>
+<div id="root"><div style="color:#888;text-align:center;padding-top:40vh;font-size:18px">読み込み中...</div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script>
-try {
-const {
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-  createContext,
-  useContext
-} = React;
-
 // ═══════════════════════════════════════════════════════════
 // げんしパズルゲーム 🧪 v3
 // ═══════════════════════════════════════════════════════════
 
 /* ── 言語コンテキスト ─── */
-const LangCtx = createContext(“hiragana”);
+const LangCtx = createContext("hiragana");
 const useLang = () => useContext(LangCtx);
 const useT = () => {
-const lang = useLang();
-return k => TX[lang]?.[k] ?? TX.hiragana[k] ?? k;
+  const lang = useLang();
+  return k => TX[lang]?.[k] ?? TX.hiragana[k] ?? k;
 };
 
 /* ── テキスト辞書 ─── */
 const TX = {
-hiragana: {
-title1: “げんしパズル”,
-title2: “ゲーム”,
-solo: “ひとりであそぶ”,
-soloSub: “コンピュータとたいせん”,
-multi: “みんなであそぶ”,
-multiSub: “スマホをまわしてたいせん”,
-rules: “あそびかた”,
-settings: “ルールせってい”,
-hlLabel: “てふだのじょうげん”,
-basic: “きほん”,
-langLabel: “もじのせってい”,
-langH: “ひらがな”,
-langK: “かんじ”,
-r1: “カードを1まいひく”,
-r2: “てふだのげんしをくみあわせて ものをつくる →「できた！」🎉”,
-r3: “つくれない →「パス」でつぎへ”,
-r4: “まいをこえたら1まいすてる”,
-r5: “やまふだがなくなったらおわり！”,
-r6: “とくてんがたかいひとのかち🏆”,
-r7: “💎 Cを7まいあつめたら35てん！”,
-name: “じぶんのなまえ”,
-opp: “あいてのにんずう”,
-str: “つよさ”,
-easy: “😊やさしい”,
-normal: “😐ふつう”,
-hard: “😈つよい”,
-start: “スタート！”,
-gstart: “ゲームスタート！”,
-back: “← もどる”,
-howMany: “なんにん？”,
-pn: “ばんめのひとのなまえ”,
-unit: “たい”,
-unitP: “にん”,
-passD: “スマホをわたしてね！”,
-next: “つぎは”,
-trn: “のばん！”,
-ready: “👋 じゅんびOK！”,
-dkRem: “やまふだのこり”,
-mai: “まい”,
-lastR: “⚡ さいごのラウンド！”,
-sc: “とくてん”,
-dk: “やまふだ”,
-tl: “のばん”,
-drawn: “ひいたカード →”,
-bondOk: “✅ できた！つづけてつくることもできるよ”,
-discW: “まいをこえています！つくるか、1まいすてよう”,
-hand: “てふだ”,
-tapS: “– タップでえらぶ”,
-tapD: “– すてるカードをタップ”,
-canB: “つくれるよ！”,
-sp: “スペシャル！”,
-bBtn: “🔗 できた！”,
-drB: “🃏 カードをひく”,
-tEnd: “➡️ ターンおわり”,
-exp: “🔬 パス”,
-fin: “🏁 ゲームしゅうりょう！”,
-crO: “▼ カードのこりすうをみる”,
-crC: “▲ カードのこりすうをとじる”,
-crN: “※「のこり」＝やまふだ＋ほかのひとのてふだ”,
-cpO: “▼ とくてんひょうをみる”,
-cpC: “▲ とくてんひょうをとじる”,
-now: “🟢 いまつくれるもの”,
-all: “ぜんぶのかごうぶつ”,
-scL: “🏆 スコア”,
-pt: “てん”,
-gOver: “ゲームしゅうりょう！”,
-res: “けっかはっぴょう🎉”,
-win: “のかち！”,
-tie: “ひきわけ！”,
-lose: “ざんねん…”,
-loseMsg: “まけてしまった…”,
-retry: “つぎはがんばろう！”,
-again: “🔄 もういちどあそぶ”,
-pdif: “てんさ”,
-more: “てんおおい！”,
-noB: “つくれなかった”,
-cpuT: “🔬 パス…”,
-cpuB: “できた！”,
-bgmOn: “🔊 BGM”,
-bgmOff: “🔇 BGM”,
-locked: “🔒”,
-premTitle: “🧪 ぜんぶあそべるばん”,
-premMsg: “のこり10しゅの かごうぶつが つくれるようになるよ！”,
-premBtn: “🔓 かいほうする（¥250）”,
-premDone: “✅ かいほうずみ！”,
-H: “すいそ”,
-O: “さんそ”,
-C: “たんそ”,
-N: “ちっそ”,
-S: “いおう”,
-Cl: “えんそ”,
-Na: “ナトリウム”,
-Cu: “どう”,
-Ag: “ぎん”,
-Fe: “てつ”,
-cH2: “すいそぶんし”,
-cO2: “さんそぶんし”,
-cH2O: “みず”,
-cHCl: “えんかすいそ”,
-cCO2: “にさんかたんそ”,
-cN2: “ちっそぶんし”,
-cCl2: “えんそぶんし”,
-cCuO: “さんかどう”,
-cNaCl: “えんかナトリウム”,
-cAgCl: “えんかぎん”,
-cFeO: “さんかてつ”,
-cNaOH: “すいさんかナトリウム”,
-cCuS: “りゅうかどう”,
-cFeS: “りゅうかてつ”,
-cH2S: “りゅうかすいそ”,
-cCH4: “メタン”,
-cAg2O: “さんかぎん”,
-cNH3: “アンモニア”,
-cCuCl2: “えんかどう”,
-cFeCl2: “えんかてつ”,
-cAg2S: “りゅうかぎん”,
-cNaHCO3: “たんさんすいそナトリウム”,
-cNa2CO3: “たんさんナトリウム”,
-cH2SO4: “りゅうさん”,
-cC7: “ダイヤモンド”
-},
-kanji: {
-title1: “原子パズル”,
-title2: “ゲーム”,
-solo: “一人で遊ぶ”,
-soloSub: “コンピュータと対戦”,
-multi: “みんなで遊ぶ”,
-multiSub: “スマホを回して対戦”,
-rules: “遊び方”,
-settings: “ルール設定”,
-hlLabel: “手札の上限”,
-basic: “基本”,
-langLabel: “文字の設定”,
-langH: “ひらがな”,
-langK: “漢字”,
-r1: “カードを1枚引く”,
-r2: “手札の原子を組み合わせて物質を作る →「できた！」🎉”,
-r3: “作れない →「パス」で次へ”,
-r4: “枚を超えたら1枚捨てる”,
-r5: “山札がなくなったら終わり！”,
-r6: “得点が高い人の勝ち🏆”,
-r7: “💎 Cを7枚集めたら35点！”,
-name: “自分の名前”,
-opp: “相手の人数”,
-str: “強さ”,
-easy: “😊やさしい”,
-normal: “😐ふつう”,
-hard: “😈強い”,
-start: “スタート！”,
-gstart: “ゲームスタート！”,
-back: “← 戻る”,
-howMany: “何人？”,
-pn: “番目の人の名前”,
-unit: “体”,
-unitP: “人”,
-passD: “スマホを渡してね！”,
-next: “次は”,
-trn: “の番！”,
-ready: “👋 準備OK！”,
-dkRem: “山札残り”,
-mai: “枚”,
-lastR: “⚡ 最後のラウンド！”,
-sc: “得点”,
-dk: “山札”,
-tl: “の番”,
-drawn: “引いたカード →”,
-bondOk: “✅ できた！続けて作ることもできるよ”,
-discW: “枚を超えています！作るか、1枚捨てよう”,
-hand: “手札”,
-tapS: “– タップで選ぶ”,
-tapD: “– 捨てるカードをタップ”,
-canB: “作れるよ！”,
-sp: “スペシャル！”,
-bBtn: “🔗 できた！”,
-drB: “🃏 カードを引く”,
-tEnd: “➡️ ターン終わり”,
-exp: “🔬 パス”,
-fin: “🏁 ゲーム終了！”,
-crO: “▼ カード残り数を見る”,
-crC: “▲ カード残り数を閉じる”,
-crN: “※「残り」＝山札＋他の人の手札”,
-cpO: “▼ 得点表を見る”,
-cpC: “▲ 得点表を閉じる”,
-now: “🟢 今作れるもの”,
-all: “全ての化合物”,
-scL: “🏆 スコア”,
-pt: “点”,
-gOver: “ゲーム終了！”,
-res: “結果発表🎉”,
-win: “の勝ち！”,
-tie: “引き分け！”,
-lose: “残念…”,
-loseMsg: “負けてしまった…”,
-retry: “次はがんばろう！”,
-again: “🔄 もう一度遊ぶ”,
-pdif: “点差”,
-more: “点多い！”,
-noB: “作れなかった”,
-cpuT: “🔬 パス…”,
-cpuB: “できた！”,
-bgmOn: “🔊 BGM”,
-bgmOff: “🔇 BGM”,
-locked: “🔒”,
-premTitle: “🧪 全部遊べる版”,
-premMsg: “残り10種の化合物が作れるようになるよ！”,
-premBtn: “🔓 解放する（¥250）”,
-premDone: “✅ 解放済み！”,
-H: “水素”,
-O: “酸素”,
-C: “炭素”,
-N: “窒素”,
-S: “硫黄”,
-Cl: “塩素”,
-Na: “ナトリウム”,
-Cu: “銅”,
-Ag: “銀”,
-Fe: “鉄”,
-cH2: “水素分子”,
-cO2: “酸素分子”,
-cH2O: “水”,
-cHCl: “塩化水素”,
-cCO2: “二酸化炭素”,
-cN2: “窒素分子”,
-cCl2: “塩素分子”,
-cCuO: “酸化銅”,
-cNaCl: “塩化ナトリウム”,
-cAgCl: “塩化銀”,
-cFeO: “酸化鉄”,
-cNaOH: “水酸化ナトリウム”,
-cCuS: “硫化銅”,
-cFeS: “硫化鉄”,
-cH2S: “硫化水素”,
-cCH4: “メタン”,
-cAg2O: “酸化銀”,
-cNH3: “アンモニア”,
-cCuCl2: “塩化銅”,
-cFeCl2: “塩化鉄”,
-cAg2S: “硫化銀”,
-cNaHCO3: “炭酸水素ナトリウム”,
-cNa2CO3: “炭酸ナトリウム”,
-cH2SO4: “硫酸”,
-cC7: “ダイヤモンド”
-}
+  hiragana: {
+    title1: "げんしパズル",
+    title2: "ゲーム",
+    solo: "ひとりであそぶ",
+    soloSub: "コンピュータとたいせん",
+    multi: "みんなであそぶ",
+    multiSub: "スマホをまわしてたいせん",
+    rules: "あそびかた",
+    settings: "ルールせってい",
+    hlLabel: "てふだのじょうげん",
+    basic: "きほん",
+    langLabel: "もじのせってい",
+    langH: "ひらがな",
+    langK: "かんじ",
+    r1: "カードを1まいひく",
+    r2: "てふだのげんしをくみあわせて ものをつくる →「できた！」🎉",
+    r3: "つくれない →「パス」でつぎへ",
+    r4: "まいをこえたら1まいすてる",
+    r5: "やまふだがなくなったらおわり！",
+    r6: "とくてんがたかいひとのかち🏆",
+    r7: "💎 Cを7まいあつめたら35てん！",
+    name: "じぶんのなまえ",
+    opp: "あいてのにんずう",
+    str: "つよさ",
+    easy: "😊やさしい",
+    normal: "😐ふつう",
+    hard: "😈つよい",
+    start: "スタート！",
+    gstart: "ゲームスタート！",
+    back: "← もどる",
+    howMany: "なんにん？",
+    pn: "ばんめのひとのなまえ",
+    unit: "たい",
+    unitP: "にん",
+    passD: "スマホをわたしてね！",
+    next: "つぎは",
+    trn: "のばん！",
+    ready: "👋 じゅんびOK！",
+    dkRem: "やまふだのこり",
+    mai: "まい",
+    lastR: "⚡ さいごのラウンド！",
+    sc: "とくてん",
+    dk: "やまふだ",
+    tl: "のばん",
+    drawn: "ひいたカード →",
+    bondOk: "✅ できた！つづけてつくることもできるよ",
+    discW: "まいをこえています！つくるか、1まいすてよう",
+    hand: "てふだ",
+    tapS: "– タップでえらぶ",
+    tapD: "– すてるカードをタップ",
+    canB: "つくれるよ！",
+    sp: "スペシャル！",
+    bBtn: "🔗 できた！",
+    drB: "🃏 カードをひく",
+    tEnd: "➡️ ターンおわり",
+    exp: "🔬 パス",
+    fin: "🏁 ゲームしゅうりょう！",
+    crO: "▼ カードのこりすうをみる",
+    crC: "▲ カードのこりすうをとじる",
+    crN: "※「のこり」＝やまふだ＋ほかのひとのてふだ",
+    cpO: "▼ とくてんひょうをみる",
+    cpC: "▲ とくてんひょうをとじる",
+    now: "🟢 いまつくれるもの",
+    all: "ぜんぶのかごうぶつ",
+    scL: "🏆 スコア",
+    pt: "てん",
+    gOver: "ゲームしゅうりょう！",
+    res: "けっかはっぴょう🎉",
+    win: "のかち！",
+    tie: "ひきわけ！",
+    lose: "ざんねん…",
+    loseMsg: "まけてしまった…",
+    retry: "つぎはがんばろう！",
+    again: "🔄 もういちどあそぶ",
+    pdif: "てんさ",
+    more: "てんおおい！",
+    noB: "つくれなかった",
+    cpuT: "🔬 パス…",
+    cpuB: "できた！",
+    bgmOn: "🔊 BGM",
+    bgmOff: "🔇 BGM",
+    locked: "🔒",
+    premTitle: "🧪 ぜんぶあそべるばん",
+    premMsg: "のこり10しゅの かごうぶつが つくれるようになるよ！",
+    premBtn: "🔓 かいほうする（¥250）",
+    premDone: "✅ かいほうずみ！",
+    H: "すいそ",
+    O: "さんそ",
+    C: "たんそ",
+    N: "ちっそ",
+    S: "いおう",
+    Cl: "えんそ",
+    Na: "ナトリウム",
+    Cu: "どう",
+    Ag: "ぎん",
+    Fe: "てつ",
+    cH2: "すいそぶんし",
+    cO2: "さんそぶんし",
+    cH2O: "みず",
+    cHCl: "えんかすいそ",
+    cCO2: "にさんかたんそ",
+    cN2: "ちっそぶんし",
+    cCl2: "えんそぶんし",
+    cCuO: "さんかどう",
+    cNaCl: "えんかナトリウム",
+    cAgCl: "えんかぎん",
+    cFeO: "さんかてつ",
+    cNaOH: "すいさんかナトリウム",
+    cCuS: "りゅうかどう",
+    cFeS: "りゅうかてつ",
+    cH2S: "りゅうかすいそ",
+    cCH4: "メタン",
+    cAg2O: "さんかぎん",
+    cNH3: "アンモニア",
+    cCuCl2: "えんかどう",
+    cFeCl2: "えんかてつ",
+    cAg2S: "りゅうかぎん",
+    cNaHCO3: "たんさんすいそナトリウム",
+    cNa2CO3: "たんさんナトリウム",
+    cH2SO4: "りゅうさん",
+    cC7: "ダイヤモンド"
+  },
+  kanji: {
+    title1: "原子パズル",
+    title2: "ゲーム",
+    solo: "一人で遊ぶ",
+    soloSub: "コンピュータと対戦",
+    multi: "みんなで遊ぶ",
+    multiSub: "スマホを回して対戦",
+    rules: "遊び方",
+    settings: "ルール設定",
+    hlLabel: "手札の上限",
+    basic: "基本",
+    langLabel: "文字の設定",
+    langH: "ひらがな",
+    langK: "漢字",
+    r1: "カードを1枚引く",
+    r2: "手札の原子を組み合わせて物質を作る →「できた！」🎉",
+    r3: "作れない →「パス」で次へ",
+    r4: "枚を超えたら1枚捨てる",
+    r5: "山札がなくなったら終わり！",
+    r6: "得点が高い人の勝ち🏆",
+    r7: "💎 Cを7枚集めたら35点！",
+    name: "自分の名前",
+    opp: "相手の人数",
+    str: "強さ",
+    easy: "😊やさしい",
+    normal: "😐ふつう",
+    hard: "😈強い",
+    start: "スタート！",
+    gstart: "ゲームスタート！",
+    back: "← 戻る",
+    howMany: "何人？",
+    pn: "番目の人の名前",
+    unit: "体",
+    unitP: "人",
+    passD: "スマホを渡してね！",
+    next: "次は",
+    trn: "の番！",
+    ready: "👋 準備OK！",
+    dkRem: "山札残り",
+    mai: "枚",
+    lastR: "⚡ 最後のラウンド！",
+    sc: "得点",
+    dk: "山札",
+    tl: "の番",
+    drawn: "引いたカード →",
+    bondOk: "✅ できた！続けて作ることもできるよ",
+    discW: "枚を超えています！作るか、1枚捨てよう",
+    hand: "手札",
+    tapS: "– タップで選ぶ",
+    tapD: "– 捨てるカードをタップ",
+    canB: "作れるよ！",
+    sp: "スペシャル！",
+    bBtn: "🔗 できた！",
+    drB: "🃏 カードを引く",
+    tEnd: "➡️ ターン終わり",
+    exp: "🔬 パス",
+    fin: "🏁 ゲーム終了！",
+    crO: "▼ カード残り数を見る",
+    crC: "▲ カード残り数を閉じる",
+    crN: "※「残り」＝山札＋他の人の手札",
+    cpO: "▼ 得点表を見る",
+    cpC: "▲ 得点表を閉じる",
+    now: "🟢 今作れるもの",
+    all: "全ての化合物",
+    scL: "🏆 スコア",
+    pt: "点",
+    gOver: "ゲーム終了！",
+    res: "結果発表🎉",
+    win: "の勝ち！",
+    tie: "引き分け！",
+    lose: "残念…",
+    loseMsg: "負けてしまった…",
+    retry: "次はがんばろう！",
+    again: "🔄 もう一度遊ぶ",
+    pdif: "点差",
+    more: "点多い！",
+    noB: "作れなかった",
+    cpuT: "🔬 パス…",
+    cpuB: "できた！",
+    bgmOn: "🔊 BGM",
+    bgmOff: "🔇 BGM",
+    locked: "🔒",
+    premTitle: "🧪 全部遊べる版",
+    premMsg: "残り10種の化合物が作れるようになるよ！",
+    premBtn: "🔓 解放する（¥250）",
+    premDone: "✅ 解放済み！",
+    H: "水素",
+    O: "酸素",
+    C: "炭素",
+    N: "窒素",
+    S: "硫黄",
+    Cl: "塩素",
+    Na: "ナトリウム",
+    Cu: "銅",
+    Ag: "銀",
+    Fe: "鉄",
+    cH2: "水素分子",
+    cO2: "酸素分子",
+    cH2O: "水",
+    cHCl: "塩化水素",
+    cCO2: "二酸化炭素",
+    cN2: "窒素分子",
+    cCl2: "塩素分子",
+    cCuO: "酸化銅",
+    cNaCl: "塩化ナトリウム",
+    cAgCl: "塩化銀",
+    cFeO: "酸化鉄",
+    cNaOH: "水酸化ナトリウム",
+    cCuS: "硫化銅",
+    cFeS: "硫化鉄",
+    cH2S: "硫化水素",
+    cCH4: "メタン",
+    cAg2O: "酸化銀",
+    cNH3: "アンモニア",
+    cCuCl2: "塩化銅",
+    cFeCl2: "塩化鉄",
+    cAg2S: "硫化銀",
+    cNaHCO3: "炭酸水素ナトリウム",
+    cNa2CO3: "炭酸ナトリウム",
+    cH2SO4: "硫酸",
+    cC7: "ダイヤモンド"
+  }
 };
 
 /* ── サウンドエンジン ─── */
 const SE = (() => {
-let ctx = null;
-const gc = () => {
-if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-if (ctx.state === “suspended”) ctx.resume();
-return ctx;
-};
-const p = fn => {
-try {
-fn(gc());
-} catch (e) {}
-};
-const tone = (c, type, f1, f2, dur, vol = 0.12) => {
-const o = c.createOscillator(),
-g = c.createGain();
-o.type = type;
-o.frequency.setValueAtTime(f1, c.currentTime);
-if (f2) o.frequency.exponentialRampToValueAtTime(f2, c.currentTime + dur * 0.6);
-g.gain.setValueAtTime(vol, c.currentTime);
-g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + dur);
-o.connect(g).connect(c.destination);
-o.start(c.currentTime);
-o.stop(c.currentTime + dur);
-};
-return {
-cardDraw: () => p(c => tone(c, “sine”, 800, 1200, 0.15, 0.15)),
-cardSel: () => p(c => tone(c, “triangle”, 600, 900, 0.1, 0.1)),
-cardDesel: () => p(c => tone(c, “triangle”, 700, 400, 0.1, 0.08)),
-bond: pts => p(c => {
-const t = c.currentTime;
-const ns = pts >= 15 ? [523, 659, 784, 1047, 1319] : pts >= 9 ? [523, 659, 784, 1047] : pts >= 5 ? [523, 659, 784] : [523, 659];
-ns.forEach((f, i) => {
-const o = c.createOscillator(),
-g = c.createGain();
-o.type = pts >= 15 ? “square” : “sine”;
-o.frequency.setValueAtTime(f, t + i * 0.12);
-g.gain.setValueAtTime(0.12, t + i * 0.12);
-g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.12 + 0.4);
-o.connect(g).connect(c.destination);
-o.start(t + i * 0.12);
-o.stop(t + i * 0.12 + 0.4);
-});
-}),
-pass: () => p(c => tone(c, “sine”, 400, 300, 0.25, 0.08)),
-discard: () => p(c => tone(c, “sawtooth”, 300, 100, 0.2, 0.06)),
-gStart: () => p(c => {
-const t = c.currentTime;
-[523, 659, 784, 1047].forEach((f, i) => {
-const o = c.createOscillator(),
-g = c.createGain();
-o.type = “sine”;
-o.frequency.setValueAtTime(f, t + i * 0.1);
-g.gain.setValueAtTime(0.12, t + i * 0.1);
-g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.1 + 0.3);
-o.connect(g).connect(c.destination);
-o.start(t + i * 0.1);
-o.stop(t + i * 0.1 + 0.3);
-});
-}),
-tap: () => p(c => tone(c, “sine”, 1000, null, 0.05, 0.05)),
-victory: () => p(c => {
-const t = c.currentTime;
-[523, 523, 523, 698, 784, 698, 784, 1047].forEach((f, i) => {
-const o = c.createOscillator(),
-g = c.createGain();
-o.type = i >= 6 ? “square” : “sine”;
-o.frequency.setValueAtTime(f, t + i * 0.18);
-g.gain.setValueAtTime(0.15, t + i * 0.18);
-g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.18 + 0.5);
-o.connect(g).connect(c.destination);
-o.start(t + i * 0.18);
-o.stop(t + i * 0.18 + 0.5);
-});
-}),
-lose: () => p(c => {
-const t = c.currentTime;
-[392, 349, 330, 294, 262].forEach((f, i) => {
-const o = c.createOscillator(),
-g = c.createGain();
-o.type = “sine”;
-o.frequency.setValueAtTime(f, t + i * 0.3);
-g.gain.setValueAtTime(0.1, t + i * 0.3);
-g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.3 + 0.6);
-o.connect(g).connect(c.destination);
-o.start(t + i * 0.3);
-o.stop(t + i * 0.3 + 0.6);
-});
-}),
-drum: () => p(c => {
-const t = c.currentTime;
-for (let i = 0; i < 20; i++) {
-const o = c.createOscillator(),
-g = c.createGain();
-o.type = “sawtooth”;
-o.frequency.setValueAtTime(80 + i * 3, t + i * 0.06);
-g.gain.setValueAtTime(0.03 + i * 0.005, t + i * 0.06);
-g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.06 + 0.08);
-o.connect(g).connect(c.destination);
-o.start(t + i * 0.06);
-o.stop(t + i * 0.06 + 0.08);
-}
-})
-};
+  let ctx = null;
+  const gc = () => {
+    if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (ctx.state === "suspended") ctx.resume();
+    return ctx;
+  };
+  const p = fn => {
+    try {
+      fn(gc());
+    } catch (e) {}
+  };
+  const tone = (c, type, f1, f2, dur, vol = 0.12) => {
+    const o = c.createOscillator(),
+      g = c.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(f1, c.currentTime);
+    if (f2) o.frequency.exponentialRampToValueAtTime(f2, c.currentTime + dur * 0.6);
+    g.gain.setValueAtTime(vol, c.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + dur);
+    o.connect(g).connect(c.destination);
+    o.start(c.currentTime);
+    o.stop(c.currentTime + dur);
+  };
+  return {
+    cardDraw: () => p(c => tone(c, "sine", 800, 1200, 0.15, 0.15)),
+    cardSel: () => p(c => tone(c, "triangle", 600, 900, 0.1, 0.1)),
+    cardDesel: () => p(c => tone(c, "triangle", 700, 400, 0.1, 0.08)),
+    bond: pts => p(c => {
+      const t = c.currentTime;
+      const ns = pts >= 15 ? [523, 659, 784, 1047, 1319] : pts >= 9 ? [523, 659, 784, 1047] : pts >= 5 ? [523, 659, 784] : [523, 659];
+      ns.forEach((f, i) => {
+        const o = c.createOscillator(),
+          g = c.createGain();
+        o.type = pts >= 15 ? "square" : "sine";
+        o.frequency.setValueAtTime(f, t + i * 0.12);
+        g.gain.setValueAtTime(0.12, t + i * 0.12);
+        g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.12 + 0.4);
+        o.connect(g).connect(c.destination);
+        o.start(t + i * 0.12);
+        o.stop(t + i * 0.12 + 0.4);
+      });
+    }),
+    pass: () => p(c => tone(c, "sine", 400, 300, 0.25, 0.08)),
+    discard: () => p(c => tone(c, "sawtooth", 300, 100, 0.2, 0.06)),
+    gStart: () => p(c => {
+      const t = c.currentTime;
+      [523, 659, 784, 1047].forEach((f, i) => {
+        const o = c.createOscillator(),
+          g = c.createGain();
+        o.type = "sine";
+        o.frequency.setValueAtTime(f, t + i * 0.1);
+        g.gain.setValueAtTime(0.12, t + i * 0.1);
+        g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.1 + 0.3);
+        o.connect(g).connect(c.destination);
+        o.start(t + i * 0.1);
+        o.stop(t + i * 0.1 + 0.3);
+      });
+    }),
+    tap: () => p(c => tone(c, "sine", 1000, null, 0.05, 0.05)),
+    victory: () => p(c => {
+      const t = c.currentTime;
+      [523, 523, 523, 698, 784, 698, 784, 1047].forEach((f, i) => {
+        const o = c.createOscillator(),
+          g = c.createGain();
+        o.type = i >= 6 ? "square" : "sine";
+        o.frequency.setValueAtTime(f, t + i * 0.18);
+        g.gain.setValueAtTime(0.15, t + i * 0.18);
+        g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.18 + 0.5);
+        o.connect(g).connect(c.destination);
+        o.start(t + i * 0.18);
+        o.stop(t + i * 0.18 + 0.5);
+      });
+    }),
+    lose: () => p(c => {
+      const t = c.currentTime;
+      [392, 349, 330, 294, 262].forEach((f, i) => {
+        const o = c.createOscillator(),
+          g = c.createGain();
+        o.type = "sine";
+        o.frequency.setValueAtTime(f, t + i * 0.3);
+        g.gain.setValueAtTime(0.1, t + i * 0.3);
+        g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.3 + 0.6);
+        o.connect(g).connect(c.destination);
+        o.start(t + i * 0.3);
+        o.stop(t + i * 0.3 + 0.6);
+      });
+    }),
+    drum: () => p(c => {
+      const t = c.currentTime;
+      for (let i = 0; i < 20; i++) {
+        const o = c.createOscillator(),
+          g = c.createGain();
+        o.type = "sawtooth";
+        o.frequency.setValueAtTime(80 + i * 3, t + i * 0.06);
+        g.gain.setValueAtTime(0.03 + i * 0.005, t + i * 0.06);
+        g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.06 + 0.08);
+        o.connect(g).connect(c.destination);
+        o.start(t + i * 0.06);
+        o.stop(t + i * 0.06 + 0.08);
+      }
+    })
+  };
 })();
 
 /* ── BGMエンジン ─── */
 const BGM = (() => {
-let ctx = null,
-playing = false,
-nodes = [],
-timer = null;
-const mel = [[523, .3], [587, .3], [659, .3], [523, .3], [523, .3], [587, .3], [659, .3], [523, .3], [659, .3], [698, .3], [784, .6], [659, .3], [698, .3], [784, .6], [784, .15], [880, .15], [784, .15], [698, .15], [659, .3], [523, .3], [784, .15], [880, .15], [784, .15], [698, .15], [659, .3], [523, .3], [523, .3], [392, .3], [523, .6], [523, .3], [392, .3], [523, .6]];
-const bas = [[262, .6], [262, .6], [262, .6], [262, .6], [330, .6], [349, .6], [392, 1.2], [349, .6], [330, .6], [262, .6], [262, .6], [349, .6], [330, .6], [262, .6], [262, .6], [262, .6], [196, .6], [262, 1.2], [262, .6], [196, .6], [262, 1.2]];
-const loop = () => {
-if (!playing) return;
-try {
-if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-if (ctx.state === “suspended”) ctx.resume();
-const t = ctx.currentTime;
-let off = 0;
-mel.forEach(([f, d]) => {
-const o = ctx.createOscillator(),
-g = ctx.createGain();
-o.type = “triangle”;
-o.frequency.setValueAtTime(f, t + off);
-g.gain.setValueAtTime(0.06, t + off);
-g.gain.exponentialRampToValueAtTime(0.001, t + off + d * 0.95);
-o.connect(g).connect(ctx.destination);
-o.start(t + off);
-o.stop(t + off + d);
-nodes.push(o);
-off += d;
-});
-const ld = off;
-let bo = 0;
-bas.forEach(([f, d]) => {
-if (bo >= ld) return;
-const o = ctx.createOscillator(),
-g = ctx.createGain();
-o.type = “sine”;
-o.frequency.setValueAtTime(f, t + bo);
-g.gain.setValueAtTime(0.04, t + bo);
-g.gain.exponentialRampToValueAtTime(0.001, t + bo + d * 0.9);
-o.connect(g).connect(ctx.destination);
-o.start(t + bo);
-o.stop(t + bo + d);
-nodes.push(o);
-bo += d;
-});
-timer = setTimeout(loop, ld * 1000 - 100);
-} catch (e) {}
-};
-return {
-start: () => {
-if (playing) return;
-playing = true;
-loop();
-},
-stop: () => {
-playing = false;
-if (timer) clearTimeout(timer);
-nodes.forEach(n => {
-try {
-n.stop();
-} catch (e) {}
-});
-nodes = [];
-},
-on: () => playing
-};
+  let ctx = null,
+    playing = false,
+    nodes = [],
+    timer = null;
+  const mel = [[523, .3], [587, .3], [659, .3], [523, .3], [523, .3], [587, .3], [659, .3], [523, .3], [659, .3], [698, .3], [784, .6], [659, .3], [698, .3], [784, .6], [784, .15], [880, .15], [784, .15], [698, .15], [659, .3], [523, .3], [784, .15], [880, .15], [784, .15], [698, .15], [659, .3], [523, .3], [523, .3], [392, .3], [523, .6], [523, .3], [392, .3], [523, .6]];
+  const bas = [[262, .6], [262, .6], [262, .6], [262, .6], [330, .6], [349, .6], [392, 1.2], [349, .6], [330, .6], [262, .6], [262, .6], [349, .6], [330, .6], [262, .6], [262, .6], [262, .6], [196, .6], [262, 1.2], [262, .6], [196, .6], [262, 1.2]];
+  const loop = () => {
+    if (!playing) return;
+    try {
+      if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+      if (ctx.state === "suspended") ctx.resume();
+      const t = ctx.currentTime;
+      let off = 0;
+      mel.forEach(([f, d]) => {
+        const o = ctx.createOscillator(),
+          g = ctx.createGain();
+        o.type = "triangle";
+        o.frequency.setValueAtTime(f, t + off);
+        g.gain.setValueAtTime(0.06, t + off);
+        g.gain.exponentialRampToValueAtTime(0.001, t + off + d * 0.95);
+        o.connect(g).connect(ctx.destination);
+        o.start(t + off);
+        o.stop(t + off + d);
+        nodes.push(o);
+        off += d;
+      });
+      const ld = off;
+      let bo = 0;
+      bas.forEach(([f, d]) => {
+        if (bo >= ld) return;
+        const o = ctx.createOscillator(),
+          g = ctx.createGain();
+        o.type = "sine";
+        o.frequency.setValueAtTime(f, t + bo);
+        g.gain.setValueAtTime(0.04, t + bo);
+        g.gain.exponentialRampToValueAtTime(0.001, t + bo + d * 0.9);
+        o.connect(g).connect(ctx.destination);
+        o.start(t + bo);
+        o.stop(t + bo + d);
+        nodes.push(o);
+        bo += d;
+      });
+      timer = setTimeout(loop, ld * 1000 - 100);
+    } catch (e) {}
+  };
+  return {
+    start: () => {
+      if (playing) return;
+      playing = true;
+      loop();
+    },
+    stop: () => {
+      playing = false;
+      if (timer) clearTimeout(timer);
+      nodes.forEach(n => {
+        try {
+          n.stop();
+        } catch (e) {}
+      });
+      nodes = [];
+    },
+    on: () => playing
+  };
 })();
 
 /* ── データ（オリジナルバランス） ─── */
 const ATOMS = [{
-s: “H”,
-k: “H”,
-c: “#c8f7c5”,
-tc: “#1b6e1b”,
-e: “💧”,
-n: 18,
-g: “#4cff4c”
+  s: "H",
+  k: "H",
+  c: "#c8f7c5",
+  tc: "#1b6e1b",
+  e: "💧",
+  n: 18,
+  g: "#4cff4c"
 }, {
-s: “O”,
-k: “O”,
-c: “#ffe0b2”,
-tc: “#bf360c”,
-e: “🌬️”,
-n: 14,
-g: “#ff9100”
+  s: "O",
+  k: "O",
+  c: "#ffe0b2",
+  tc: "#bf360c",
+  e: "🌬️",
+  n: 14,
+  g: "#ff9100"
 }, {
-s: “C”,
-k: “C”,
-c: “#bbdefb”,
-tc: “#0d47a1”,
-e: “✏️”,
-n: 9,
-g: “#448aff”
+  s: "C",
+  k: "C",
+  c: "#bbdefb",
+  tc: "#0d47a1",
+  e: "✏️",
+  n: 9,
+  g: "#448aff"
 }, {
-s: “N”,
-k: “N”,
-c: “#e1bee7”,
-tc: “#6a1b9a”,
-e: “🌸”,
-n: 4,
-g: “#d500f9”
+  s: "N",
+  k: "N",
+  c: "#e1bee7",
+  tc: "#6a1b9a",
+  e: "🌸",
+  n: 4,
+  g: "#d500f9"
 }, {
-s: “S”,
-k: “S”,
-c: “#fff9c4”,
-tc: “#f57f17”,
-e: “⚡”,
-n: 4,
-g: “#ffd600”
+  s: "S",
+  k: "S",
+  c: "#fff9c4",
+  tc: "#f57f17",
+  e: "⚡",
+  n: 4,
+  g: "#ffd600"
 }, {
-s: “Cl”,
-k: “Cl”,
-c: “#b2ebf2”,
-tc: “#006064”,
-e: “🫧”,
-n: 6,
-g: “#00e5ff”
+  s: "Cl",
+  k: "Cl",
+  c: "#b2ebf2",
+  tc: "#006064",
+  e: "🫧",
+  n: 6,
+  g: "#00e5ff"
 }, {
-s: “Na”,
-k: “Na”,
-c: “#f8bbd0”,
-tc: “#b71c1c”,
-e: “🧂”,
-n: 6,
-g: “#ff1744”
+  s: "Na",
+  k: "Na",
+  c: "#f8bbd0",
+  tc: "#b71c1c",
+  e: "🧂",
+  n: 6,
+  g: "#ff1744"
 }, {
-s: “Cu”,
-k: “Cu”,
-c: “#ffccbc”,
-tc: “#bf360c”,
-e: “🪙”,
-n: 4,
-g: “#ff6e40”
+  s: "Cu",
+  k: "Cu",
+  c: "#ffccbc",
+  tc: "#bf360c",
+  e: "🪙",
+  n: 4,
+  g: "#ff6e40"
 }, {
-s: “Ag”,
-k: “Ag”,
-c: “#cfd8dc”,
-tc: “#37474f”,
-e: “🥈”,
-n: 4,
-g: “#90a4ae”
+  s: "Ag",
+  k: "Ag",
+  c: "#cfd8dc",
+  tc: "#37474f",
+  e: "🥈",
+  n: 4,
+  g: "#90a4ae"
 }, {
-s: “Fe”,
-k: “Fe”,
-c: “#d7ccc8”,
-tc: “#3e2723”,
-e: “🔩”,
-n: 4,
-g: “#8d6e63”
+  s: "Fe",
+  k: "Fe",
+  c: "#d7ccc8",
+  tc: "#3e2723",
+  e: "🔩",
+  n: 4,
+  g: "#8d6e63"
 }];
 // 合計 73枚
 const COMPS = [
 // 無料 15種
 {
-k: “cH2”,
-f: “H₂”,
-a: {
-H: 2
-},
-p: 2,
-e: “💧”,
-free: true
+  k: "cH2",
+  f: "H₂",
+  a: {
+    H: 2
+  },
+  p: 2,
+  e: "💧",
+  free: true
 }, {
-k: “cO2”,
-f: “O₂”,
-a: {
-O: 2
-},
-p: 3,
-e: “🌬️”,
-free: true
+  k: "cO2",
+  f: "O₂",
+  a: {
+    O: 2
+  },
+  p: 3,
+  e: "🌬️",
+  free: true
 }, {
-k: “cH2O”,
-f: “H₂O”,
-a: {
-H: 2,
-O: 1
-},
-p: 4,
-e: “💧”,
-free: true
+  k: "cH2O",
+  f: "H₂O",
+  a: {
+    H: 2,
+    O: 1
+  },
+  p: 4,
+  e: "💧",
+  free: true
 }, {
-k: “cHCl”,
-f: “HCl”,
-a: {
-H: 1,
-Cl: 1
-},
-p: 3,
-e: “🫧”,
-free: true
+  k: "cHCl",
+  f: "HCl",
+  a: {
+    H: 1,
+    Cl: 1
+  },
+  p: 3,
+  e: "🫧",
+  free: true
 }, {
-k: “cCO2”,
-f: “CO₂”,
-a: {
-C: 1,
-O: 2
-},
-p: 5,
-e: “💨”,
-free: true
+  k: "cCO2",
+  f: "CO₂",
+  a: {
+    C: 1,
+    O: 2
+  },
+  p: 5,
+  e: "💨",
+  free: true
 }, {
-k: “cN2”,
-f: “N₂”,
-a: {
-N: 2
-},
-p: 5,
-e: “🌸”,
-free: true
+  k: "cN2",
+  f: "N₂",
+  a: {
+    N: 2
+  },
+  p: 5,
+  e: "🌸",
+  free: true
 }, {
-k: “cCl2”,
-f: “Cl₂”,
-a: {
-Cl: 2
-},
-p: 3,
-e: “🫧”,
-free: true
+  k: "cCl2",
+  f: "Cl₂",
+  a: {
+    Cl: 2
+  },
+  p: 3,
+  e: "🫧",
+  free: true
 }, {
-k: “cCuO”,
-f: “CuO”,
-a: {
-Cu: 1,
-O: 1
-},
-p: 5,
-e: “🪙”,
-free: true
+  k: "cCuO",
+  f: "CuO",
+  a: {
+    Cu: 1,
+    O: 1
+  },
+  p: 5,
+  e: "🪙",
+  free: true
 }, {
-k: “cNaCl”,
-f: “NaCl”,
-a: {
-Na: 1,
-Cl: 1
-},
-p: 4,
-e: “🧂”,
-free: true
+  k: "cNaCl",
+  f: "NaCl",
+  a: {
+    Na: 1,
+    Cl: 1
+  },
+  p: 4,
+  e: "🧂",
+  free: true
 }, {
-k: “cAgCl”,
-f: “AgCl”,
-a: {
-Ag: 1,
-Cl: 1
-},
-p: 5,
-e: “🥈”,
-free: true
+  k: "cAgCl",
+  f: "AgCl",
+  a: {
+    Ag: 1,
+    Cl: 1
+  },
+  p: 5,
+  e: "🥈",
+  free: true
 }, {
-k: “cFeO”,
-f: “FeO”,
-a: {
-Fe: 1,
-O: 1
-},
-p: 5,
-e: “🔩”,
-free: true
+  k: "cFeO",
+  f: "FeO",
+  a: {
+    Fe: 1,
+    O: 1
+  },
+  p: 5,
+  e: "🔩",
+  free: true
 }, {
-k: “cNaOH”,
-f: “NaOH”,
-a: {
-Na: 1,
-O: 1,
-H: 1
-},
-p: 6,
-e: “🧪”,
-free: true
+  k: "cNaOH",
+  f: "NaOH",
+  a: {
+    Na: 1,
+    O: 1,
+    H: 1
+  },
+  p: 6,
+  e: "🧪",
+  free: true
 }, {
-k: “cCuS”,
-f: “CuS”,
-a: {
-Cu: 1,
-S: 1
-},
-p: 6,
-e: “🪙”,
-free: true
+  k: "cCuS",
+  f: "CuS",
+  a: {
+    Cu: 1,
+    S: 1
+  },
+  p: 6,
+  e: "🪙",
+  free: true
 }, {
-k: “cFeS”,
-f: “FeS”,
-a: {
-Fe: 1,
-S: 1
-},
-p: 6,
-e: “🔩”,
-free: true
+  k: "cFeS",
+  f: "FeS",
+  a: {
+    Fe: 1,
+    S: 1
+  },
+  p: 6,
+  e: "🔩",
+  free: true
 }, {
-k: “cH2S”,
-f: “H₂S”,
-a: {
-H: 2,
-S: 1
-},
-p: 4,
-e: “🥚”,
-free: true
+  k: "cH2S",
+  f: "H₂S",
+  a: {
+    H: 2,
+    S: 1
+  },
+  p: 4,
+  e: "🥚",
+  free: true
 },
 // 有料 10種 🔒
 {
-k: “cCH4”,
-f: “CH₄”,
-a: {
-C: 1,
-H: 4
-},
-p: 7,
-e: “🔥”
+  k: "cCH4",
+  f: "CH₄",
+  a: {
+    C: 1,
+    H: 4
+  },
+  p: 7,
+  e: "🔥"
 }, {
-k: “cAg2O”,
-f: “Ag₂O”,
-a: {
-Ag: 2,
-O: 1
-},
-p: 8,
-e: “🥈”
+  k: "cAg2O",
+  f: "Ag₂O",
+  a: {
+    Ag: 2,
+    O: 1
+  },
+  p: 8,
+  e: "🥈"
 }, {
-k: “cNH3”,
-f: “NH₃”,
-a: {
-N: 1,
-H: 3
-},
-p: 8,
-e: “💜”
+  k: "cNH3",
+  f: "NH₃",
+  a: {
+    N: 1,
+    H: 3
+  },
+  p: 8,
+  e: "💜"
 }, {
-k: “cCuCl2”,
-f: “CuCl₂”,
-a: {
-Cu: 1,
-Cl: 2
-},
-p: 9,
-e: “🪙”
+  k: "cCuCl2",
+  f: "CuCl₂",
+  a: {
+    Cu: 1,
+    Cl: 2
+  },
+  p: 9,
+  e: "🪙"
 }, {
-k: “cFeCl2”,
-f: “FeCl₂”,
-a: {
-Fe: 1,
-Cl: 2
-},
-p: 9,
-e: “🔩”
+  k: "cFeCl2",
+  f: "FeCl₂",
+  a: {
+    Fe: 1,
+    Cl: 2
+  },
+  p: 9,
+  e: "🔩"
 }, {
-k: “cAg2S”,
-f: “Ag₂S”,
-a: {
-Ag: 2,
-S: 1
-},
-p: 11,
-e: “🥈”
+  k: "cAg2S",
+  f: "Ag₂S",
+  a: {
+    Ag: 2,
+    S: 1
+  },
+  p: 11,
+  e: "🥈"
 }, {
-k: “cNaHCO3”,
-f: “NaHCO₃”,
-a: {
-Na: 1,
-H: 1,
-C: 1,
-O: 3
-},
-p: 15,
-e: “🧁”
+  k: "cNaHCO3",
+  f: "NaHCO₃",
+  a: {
+    Na: 1,
+    H: 1,
+    C: 1,
+    O: 3
+  },
+  p: 15,
+  e: "🧁"
 }, {
-k: “cNa2CO3”,
-f: “Na₂CO₃”,
-a: {
-Na: 2,
-C: 1,
-O: 3
-},
-p: 19,
-e: “🧪”
+  k: "cNa2CO3",
+  f: "Na₂CO₃",
+  a: {
+    Na: 2,
+    C: 1,
+    O: 3
+  },
+  p: 19,
+  e: "🧪"
 }, {
-k: “cH2SO4”,
-f: “H₂SO₄”,
-a: {
-H: 2,
-S: 1,
-O: 4
-},
-p: 22,
-e: “⚗️”
+  k: "cH2SO4",
+  f: "H₂SO₄",
+  a: {
+    H: 2,
+    S: 1,
+    O: 4
+  },
+  p: 22,
+  e: "⚗️"
 }, {
-k: “cC7”,
-f: “C◆◆◆◆◆◆”,
-a: {
-C: 7
-},
-p: 35,
-e: “💎”,
-sp: true
+  k: "cC7",
+  f: "C◆◆◆◆◆◆",
+  a: {
+    C: 7
+  },
+  p: 35,
+  e: "💎",
+  sp: true
 }];
 
 /* ── ユーティリティ ─── */
 const shuffle = a => {
-const b = […a];
-for (let i = b.length - 1; i > 0; i–) {
-const j = 0 | Math.random() * (i + 1);
-[b[i], b[j]] = [b[j], b[i]];
-}
-return b;
+  const b = [...a];
+  for (let i = b.length - 1; i > 0; i--) {
+    const j = 0 | Math.random() * (i + 1);
+    [b[i], b[j]] = [b[j], b[i]];
+  }
+  return b;
 };
 const buildDeck = () => {
-const d = [];
-let id = 0;
-for (const a of ATOMS) for (let i = 0; i < a.n; i++) d.push({
-id: id++,
-s: a.s,
-k: a.k,
-c: a.c,
-tc: a.tc,
-e: a.e,
-g: a.g
-});
-return shuffle(d);
+  const d = [];
+  let id = 0;
+  for (const a of ATOMS) for (let i = 0; i < a.n; i++) d.push({
+    id: id++,
+    s: a.s,
+    k: a.k,
+    c: a.c,
+    tc: a.tc,
+    e: a.e,
+    g: a.g
+  });
+  return shuffle(d);
 };
 const cntA = cards => {
-const c = {};
-for (const x of cards) c[x.s] = (c[x.s] || 0) + 1;
-return c;
+  const c = {};
+  for (const x of cards) c[x.s] = (c[x.s] || 0) + 1;
+  return c;
 };
 const findP = (hc, prem) => COMPS.filter(c => (prem || c.free) && Object.entries(c.a).every(([s, n]) => (hc[s] || 0) >= n));
 const getAI = s => ATOMS.find(a => a.s === s) || {
-c: “#eee”,
-tc: “#333”,
-e: “⚪”,
-g: “#999”,
-k: “?”
+  c: "#eee",
+  tc: "#333",
+  e: "⚪",
+  g: "#999",
+  k: "?"
 };
-const CPUN = [“コンピュータ🤖”, “ロボくん🤖”, “AIちゃん🤖”];
+const CPUN = ["コンピュータ🤖", "ロボくん🤖", "AIちゃん🤖"];
 
 /* ── CPU AI ─── */
 const cpuBond = (hand, d, prem) => {
-const p = findP(cntA(hand), prem);
-if (!p.length) return null;
-if (d === “easy”) {
-if (Math.random() < 0.5) return null;
-return […p].sort((a, b) => a.p - b.p)[0];
-}
-if (d === “normal”) {
-if (Math.random() < 0.2) return null;
-const s = […p].sort((a, b) => b.p - a.p);
-return s[0 | s.length / 2] || s[0];
-}
-return […p].sort((a, b) => b.p - a.p)[0];
+  const p = findP(cntA(hand), prem);
+  if (!p.length) return null;
+  if (d === "easy") {
+    if (Math.random() < 0.5) return null;
+    return [...p].sort((a, b) => a.p - b.p)[0];
+  }
+  if (d === "normal") {
+    if (Math.random() < 0.2) return null;
+    const s = [...p].sort((a, b) => b.p - a.p);
+    return s[0 | s.length / 2] || s[0];
+  }
+  return [...p].sort((a, b) => b.p - a.p)[0];
 };
 const cpuDiscard = (hand, d) => {
-if (d === “hard”) {
-const c = cntA(hand),
-ss = {};
-for (const card of hand) {
-if (!ss[card.s]) ss[card.s] = 0;
-for (const comp of COMPS) if (comp.a[card.s]) ss[card.s] += comp.p;
-}
-let w = hand[0],
-ws = Infinity;
-for (const card of hand) {
-const sc = ss[card.s] / (c[card.s] || 1);
-if (sc < ws) {
-ws = sc;
-w = card;
-}
-}
-return w.id;
-}
-return hand[0 | Math.random() * hand.length].id;
+  if (d === "hard") {
+    const c = cntA(hand),
+      ss = {};
+    for (const card of hand) {
+      if (!ss[card.s]) ss[card.s] = 0;
+      for (const comp of COMPS) if (comp.a[card.s]) ss[card.s] += comp.p;
+    }
+    let w = hand[0],
+      ws = Infinity;
+    for (const card of hand) {
+      const sc = ss[card.s] / (c[card.s] || 1);
+      if (sc < ws) {
+        ws = sc;
+        w = card;
+      }
+    }
+    return w.id;
+  }
+  return hand[0 | Math.random() * hand.length].id;
 };
 const cpuCards = (hand, comp) => {
-const n = {
-…comp.a
-},
-ids = [];
-for (const c of hand) if (n[c.s] > 0) {
-ids.push(c.id);
-n[c.s]–;
-}
-return ids;
+  const n = {
+      ...comp.a
+    },
+    ids = [];
+  for (const c of hand) if (n[c.s] > 0) {
+    ids.push(c.id);
+    n[c.s]--;
+  }
+  return ids;
 };
 
 /* ── CSS ─── */
-const CSS = `@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap'); *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none} body{font-family:'Zen Maru Gothic',sans-serif;overflow-x:hidden;background:#0a0a1a} input::placeholder{color:#888}input{user-select:text;font-family:inherit}button{font-family:inherit;transition:transform .1s}button:active{transform:scale(.96)!important} @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}} @keyframes pg{0%,100%{box-shadow:0 0 8px var(--g)}50%{box-shadow:0 0 20px var(--g),0 0 40px var(--g)}} @keyframes su{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}} @keyframes ca{0%{opacity:0;transform:scale(.5) rotateY(90deg)}60%{transform:scale(1.08) rotateY(-5deg)}100%{opacity:1;transform:scale(1) rotateY(0)}} @keyframes bo{0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.1)}66%{transform:translate(-20px,15px) scale(.95)}100%{transform:translate(0,0) scale(1)}} @keyframes ke{0%{opacity:0;transform:translate(0,0) scale(.3)}30%{opacity:1;transform:translate(calc(var(--dx)*.4),calc(var(--dy)*.4)) scale(1.2)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2)}} @keyframes kb{0%{transform:scale(.3);opacity:0}50%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}} @keyframes ku{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}} @keyframes kt{0%,100%{opacity:.2;transform:scale(.5)}50%{opacity:1;transform:scale(1.2)}} @keyframes ks{0%,100%{transform:translate(0,0)}25%{transform:translate(-4px,2px)}50%{transform:translate(4px,-2px)}75%{transform:translate(-2px,4px)}} @keyframes cb{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}} @keyframes cf{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}} @keyframes crb{0%{transform:scale(0) rotate(-20deg)}40%{transform:scale(1.3) rotate(10deg)}70%{transform:scale(.9) rotate(-5deg)}100%{transform:scale(1) rotate(0)}} @keyframes sp{0%{transform:scale(0);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}} @keyframes gp{0%,100%{text-shadow:0 0 20px var(--gc),0 0 40px var(--gc)}50%{text-shadow:0 0 40px var(--gc),0 0 80px var(--gc),0 0 120px var(--gc)}} @keyframes fw{0%{transform:scale(0);opacity:1}50%{opacity:1}100%{transform:scale(1);opacity:0}} @keyframes rain{0%{transform:translateY(-20px);opacity:0}10%{opacity:.6}90%{opacity:.6}100%{transform:translateY(100vh);opacity:0}} @keyframes sadBounce{0%{transform:scale(0) rotate(10deg)}50%{transform:scale(1.1) rotate(-5deg)}100%{transform:scale(1) rotate(0)}} @keyframes charge{0%{transform:scale(.5);opacity:.3;filter:blur(8px)}60%{transform:scale(.8);opacity:.8;filter:blur(4px)}80%{transform:scale(.9);opacity:1;filter:blur(2px)}100%{transform:scale(1);opacity:1;filter:blur(0)}} @keyframes chargeGlow{0%{box-shadow:0 0 20px var(--cg)}50%{box-shadow:0 0 60px var(--cg),0 0 120px var(--cg)}100%{box-shadow:0 0 20px var(--cg)}} @keyframes flash{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(3)}} @keyframes ringBurst{0%{transform:scale(0);opacity:1;border-width:8px}100%{transform:scale(3);opacity:0;border-width:1px}} @keyframes megaBounce{0%{transform:scale(0) rotate(-10deg)}30%{transform:scale(1.4) rotate(5deg)}50%{transform:scale(.85) rotate(-3deg)}70%{transform:scale(1.15) rotate(2deg)}100%{transform:scale(1) rotate(0)}} @keyframes textReveal{0%{transform:scale(3);opacity:0;filter:blur(12px)}100%{transform:scale(1);opacity:1;filter:blur(0)}} @keyframes starSpin{0%{transform:rotate(0) scale(0);opacity:0}50%{opacity:1}100%{transform:rotate(360deg) scale(1);opacity:0}} @keyframes bgFlash{0%{opacity:.8}100%{opacity:0}} ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}`;
-const BG = “radial-gradient(ellipse at 30% 20%,rgba(124,77,255,.15) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(255,112,67,.12) 0%,transparent 50%),linear-gradient(180deg,#0a0a1a,#0f1628)”;
+const CSS = `
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+body{font-family:'Zen Maru Gothic',sans-serif;overflow-x:hidden;background:#0a0a1a}
+input::placeholder{color:#888}input{user-select:text;font-family:inherit}button{font-family:inherit;transition:transform .1s}button:active{transform:scale(.96)!important}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes pg{0%,100%{box-shadow:0 0 8px var(--g)}50%{box-shadow:0 0 20px var(--g),0 0 40px var(--g)}}
+@keyframes su{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ca{0%{opacity:0;transform:scale(.5) rotateY(90deg)}60%{transform:scale(1.08) rotateY(-5deg)}100%{opacity:1;transform:scale(1) rotateY(0)}}
+@keyframes bo{0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.1)}66%{transform:translate(-20px,15px) scale(.95)}100%{transform:translate(0,0) scale(1)}}
+@keyframes ke{0%{opacity:0;transform:translate(0,0) scale(.3)}30%{opacity:1;transform:translate(calc(var(--dx)*.4),calc(var(--dy)*.4)) scale(1.2)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2)}}
+@keyframes kb{0%{transform:scale(.3);opacity:0}50%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+@keyframes ku{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes kt{0%,100%{opacity:.2;transform:scale(.5)}50%{opacity:1;transform:scale(1.2)}}
+@keyframes ks{0%,100%{transform:translate(0,0)}25%{transform:translate(-4px,2px)}50%{transform:translate(4px,-2px)}75%{transform:translate(-2px,4px)}}
+@keyframes cb{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+@keyframes cf{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+@keyframes crb{0%{transform:scale(0) rotate(-20deg)}40%{transform:scale(1.3) rotate(10deg)}70%{transform:scale(.9) rotate(-5deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes sp{0%{transform:scale(0);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+@keyframes gp{0%,100%{text-shadow:0 0 20px var(--gc),0 0 40px var(--gc)}50%{text-shadow:0 0 40px var(--gc),0 0 80px var(--gc),0 0 120px var(--gc)}}
+@keyframes fw{0%{transform:scale(0);opacity:1}50%{opacity:1}100%{transform:scale(1);opacity:0}}
+@keyframes rain{0%{transform:translateY(-20px);opacity:0}10%{opacity:.6}90%{opacity:.6}100%{transform:translateY(100vh);opacity:0}}
+@keyframes sadBounce{0%{transform:scale(0) rotate(10deg)}50%{transform:scale(1.1) rotate(-5deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes charge{0%{transform:scale(.5);opacity:.3;filter:blur(8px)}60%{transform:scale(.8);opacity:.8;filter:blur(4px)}80%{transform:scale(.9);opacity:1;filter:blur(2px)}100%{transform:scale(1);opacity:1;filter:blur(0)}}
+@keyframes chargeGlow{0%{box-shadow:0 0 20px var(--cg)}50%{box-shadow:0 0 60px var(--cg),0 0 120px var(--cg)}100%{box-shadow:0 0 20px var(--cg)}}
+@keyframes flash{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(3)}}
+@keyframes ringBurst{0%{transform:scale(0);opacity:1;border-width:8px}100%{transform:scale(3);opacity:0;border-width:1px}}
+@keyframes megaBounce{0%{transform:scale(0) rotate(-10deg)}30%{transform:scale(1.4) rotate(5deg)}50%{transform:scale(.85) rotate(-3deg)}70%{transform:scale(1.15) rotate(2deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes textReveal{0%{transform:scale(3);opacity:0;filter:blur(12px)}100%{transform:scale(1);opacity:1;filter:blur(0)}}
+@keyframes starSpin{0%{transform:rotate(0) scale(0);opacity:0}50%{opacity:1}100%{transform:rotate(360deg) scale(1);opacity:0}}
+@keyframes bgFlash{0%{opacity:.8}100%{opacity:0}}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
+`;
+const BG = "radial-gradient(ellipse at 30% 20%,rgba(124,77,255,.15) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(255,112,67,.12) 0%,transparent 50%),linear-gradient(180deg,#0a0a1a,#0f1628)";
 
 /* ── 共通小パーツ ─── */
 const Orbs = ({
-n = 8,
-co = “rgba(124,77,255,.06)”
+  n = 8,
+  co = "rgba(124,77,255,.06)"
 }) => {
-const o = useRef(Array.from({
-length: n
-}, (_, i) => ({
-id: i,
-x: Math.random() * 100,
-y: Math.random() * 100,
-sz: 60 + Math.random() * 160,
-d: 12 + Math.random() * 18,
-dl: Math.random() * -20
-}))).current;
-return /*#**PURE***/React.createElement(“div”, {
-style: {
-position: “fixed”,
-inset: 0,
-pointerEvents: “none”,
-zIndex: 0,
-overflow: “hidden”
-}
-}, o.map(v => /*#**PURE***/React.createElement(“div”, {
-key: v.id,
-style: {
-position: “absolute”,
-left: `${v.x}%`,
-top: `${v.y}%`,
-width: v.sz,
-height: v.sz,
-borderRadius: “50%”,
-background: co,
-filter: “blur(40px)”,
-animation: `bo ${v.d}s ${v.dl}s ease-in-out infinite`
-}
-})));
+  const o = useRef(Array.from({
+    length: n
+  }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    sz: 60 + Math.random() * 160,
+    d: 12 + Math.random() * 18,
+    dl: Math.random() * -20
+  }))).current;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "fixed",
+      inset: 0,
+      pointerEvents: "none",
+      zIndex: 0,
+      overflow: "hidden"
+    }
+  }, o.map(v => /*#__PURE__*/React.createElement("div", {
+    key: v.id,
+    style: {
+      position: "absolute",
+      left: `${v.x}%`,
+      top: `${v.y}%`,
+      width: v.sz,
+      height: v.sz,
+      borderRadius: "50%",
+      background: co,
+      filter: "blur(40px)",
+      animation: `bo ${v.d}s ${v.dl}s ease-in-out infinite`
+    }
+  })));
 };
 const BgmBtn = () => {
-const t = useT();
-const [on, setOn] = useState(BGM.on());
-return /*#**PURE***/React.createElement(“button”, {
-onClick: () => {
-if (on) {
-BGM.stop();
-setOn(false);
-} else {
-BGM.start();
-setOn(true);
-}
-},
-style: {
-position: “fixed”,
-top: 12,
-right: 12,
-zIndex: 100,
-padding: “6px 12px”,
-borderRadius: 20,
-border: “1px solid rgba(255,255,255,.15)”,
-background: on ? “rgba(102,255,102,.12)” : “rgba(255,255,255,.06)”,
-color: on ? “#66ff66” : “rgba(255,255,255,.4)”,
-fontSize: 12,
-fontWeight: 700,
-cursor: “pointer”
-}
-}, on ? t(“bgmOn”) : t(“bgmOff”));
+  const t = useT();
+  const [on, setOn] = useState(BGM.on());
+  return /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      if (on) {
+        BGM.stop();
+        setOn(false);
+      } else {
+        BGM.start();
+        setOn(true);
+      }
+    },
+    style: {
+      position: "fixed",
+      top: 12,
+      right: 12,
+      zIndex: 100,
+      padding: "6px 12px",
+      borderRadius: 20,
+      border: "1px solid rgba(255,255,255,.15)",
+      background: on ? "rgba(102,255,102,.12)" : "rgba(255,255,255,.06)",
+      color: on ? "#66ff66" : "rgba(255,255,255,.4)",
+      fontSize: 12,
+      fontWeight: 700,
+      cursor: "pointer"
+    }
+  }, on ? t("bgmOn") : t("bgmOff"));
 };
 const SBtn = ({
-l,
-a,
-co = “#ffcc00”,
-onClick
-}) => /*#**PURE***/React.createElement(“button”, {
-onClick: () => {
-onClick();
-SE.tap();
-},
-style: {
-padding: “8px 12px”,
-borderRadius: 12,
-border: `2px solid ${a ? co : "rgba(255,255,255,.1)"}`,
-background: a ? `${co}18` : “rgba(255,255,255,.04)”,
-color: a ? co : “rgba(255,255,255,.4)”,
-fontSize: 13,
-fontWeight: 900,
-cursor: “pointer”
-}
+  l,
+  a,
+  co = "#ffcc00",
+  onClick
+}) => /*#__PURE__*/React.createElement("button", {
+  onClick: () => {
+    onClick();
+    SE.tap();
+  },
+  style: {
+    padding: "8px 12px",
+    borderRadius: 12,
+    border: `2px solid ${a ? co : "rgba(255,255,255,.1)"}`,
+    background: a ? `${co}18` : "rgba(255,255,255,.04)",
+    color: a ? co : "rgba(255,255,255,.4)",
+    fontSize: 13,
+    fontWeight: 900,
+    cursor: "pointer"
+  }
 }, l);
 
 /* ── カード ─── */
 const Card = ({
-card,
-sel,
-onTap,
-dl = 0
+  card,
+  sel,
+  onTap,
+  dl = 0
 }) => {
-const t = useT();
-const i = getAI(card.s);
-return /*#**PURE***/React.createElement(“div”, {
-onClick: () => onTap?.(card),
-style: {
-width: 70,
-minWidth: 70,
-height: 92,
-borderRadius: 16,
-background: sel ? `linear-gradient(145deg,${i.c},${i.tc}22)` : “linear-gradient(145deg,#1a1a2e,#16213e)”,
-border: sel ? `3px solid ${i.g}` : “2px solid rgba(255,255,255,.08)”,
-display: “flex”,
-flexDirection: “column”,
-alignItems: “center”,
-justifyContent: “center”,
-boxShadow: sel ? `0 0 16px ${i.g}66` : “0 2px 8px rgba(0,0,0,.3)”,
-cursor: onTap ? “pointer” : “default”,
-transition: “all .2s cubic-bezier(.34,1.56,.64,1)”,
-flexShrink: 0,
-transform: sel ? “translateY(-8px) scale(1.08)” : “none”,
-gap: 1,
-“–g”: i.g,
-animation: sel ? `pg 1.5s ease-in-out infinite` : `ca .3s ${dl}s ease both`
-}
-}, /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 20
-}
-}, i.e), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 22,
-fontWeight: 900,
-color: sel ? i.tc : “#fff”,
-lineHeight: 1
-}
-}, card.s), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 9,
-color: sel ? i.tc : “rgba(255,255,255,.5)”,
-fontWeight: 700
-}
-}, t(card.k)));
+  const t = useT();
+  const i = getAI(card.s);
+  return /*#__PURE__*/React.createElement("div", {
+    onClick: () => onTap?.(card),
+    style: {
+      width: 70,
+      minWidth: 70,
+      height: 92,
+      borderRadius: 16,
+      background: sel ? `linear-gradient(145deg,${i.c},${i.tc}22)` : "linear-gradient(145deg,#1a1a2e,#16213e)",
+      border: sel ? `3px solid ${i.g}` : "2px solid rgba(255,255,255,.08)",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      boxShadow: sel ? `0 0 16px ${i.g}66` : "0 2px 8px rgba(0,0,0,.3)",
+      cursor: onTap ? "pointer" : "default",
+      transition: "all .2s cubic-bezier(.34,1.56,.64,1)",
+      flexShrink: 0,
+      transform: sel ? "translateY(-8px) scale(1.08)" : "none",
+      gap: 1,
+      "--g": i.g,
+      animation: sel ? `pg 1.5s ease-in-out infinite` : `ca .3s ${dl}s ease both`
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 20
+    }
+  }, i.e), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 22,
+      fontWeight: 900,
+      color: sel ? i.tc : "#fff",
+      lineHeight: 1
+    }
+  }, card.s), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 9,
+      color: sel ? i.tc : "rgba(255,255,255,.5)",
+      fontWeight: 700
+    }
+  }, t(card.k)));
 };
 const Badge = ({
-comp
+  comp
 }) => {
-const t = useT();
-return /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “inline-flex”,
-alignItems: “center”,
-gap: 4,
-background: “rgba(255,255,255,.06)”,
-borderRadius: 10,
-padding: “4px 10px”,
-border: comp.sp ? “2px solid #CE93D8” : “1px solid rgba(255,255,255,.1)”
-}
-}, /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 14
-}
-}, comp.e), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 12,
-fontWeight: 700,
-color: “#ddd”
-}
-}, t(comp.k)), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 11,
-fontWeight: 800,
-color: comp.sp ? “#e1bee7” : “#ffcc00”,
-background: comp.sp ? “rgba(156,39,176,.3)” : “rgba(255,152,0,.2)”,
-borderRadius: 6,
-padding: “1px 6px”
-}
-}, comp.p, t(“pt”)));
+  const t = useT();
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "inline-flex",
+      alignItems: "center",
+      gap: 4,
+      background: "rgba(255,255,255,.06)",
+      borderRadius: 10,
+      padding: "4px 10px",
+      border: comp.sp ? "2px solid #CE93D8" : "1px solid rgba(255,255,255,.1)"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 14
+    }
+  }, comp.e), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12,
+      fontWeight: 700,
+      color: "#ddd"
+    }
+  }, t(comp.k)), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 11,
+      fontWeight: 800,
+      color: comp.sp ? "#e1bee7" : "#ffcc00",
+      background: comp.sp ? "rgba(156,39,176,.3)" : "rgba(255,152,0,.2)",
+      borderRadius: 6,
+      padding: "1px 6px"
+    }
+  }, comp.p, t("pt")));
 };
 
 /* ── カード残数 ─── */
 const Inv = ({
-state,
-myHand
+  state,
+  myHand
 }) => {
-const t = useT();
-const [open, setOpen] = useState(false);
-const hc = cntA(myHand),
-dc = cntA(state.dp || []);
-const bu = {};
-ATOMS.forEach(a => bu[a.s] = 0);
-state.pl.forEach(p => p.bonds.forEach(b => Object.entries(b.a).forEach(([s, n]) => bu[s] = (bu[s] || 0) + n)));
-return /*#**PURE***/React.createElement(“div”, {
-style: {
-marginTop: 12
-}
-}, /*#**PURE***/React.createElement(“button”, {
-onClick: () => {
-setOpen(!open);
-SE.tap();
-},
-style: {
-width: “100%”,
-padding: 12,
-borderRadius: 14,
-border: “1px solid rgba(255,255,255,.1)”,
-background: “rgba(255,255,255,.05)”,
-color: “rgba(255,255,255,.5)”,
-fontSize: 14,
-fontWeight: 700,
-cursor: “pointer”
-}
-}, “\uD83E\uDDEA “, open ? t(“crC”) : t(“crO”)), open && /*#**PURE***/React.createElement(“div”, {
-style: {
-marginTop: 6,
-padding: 12,
-borderRadius: 14,
-background: “rgba(255,255,255,.04)”,
-border: “1px solid rgba(255,255,255,.08)”,
-animation: “su .3s ease”
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-gap: 4,
-justifyContent: “center”,
-flexWrap: “wrap”,
-marginBottom: 8
-}
-}, ATOMS.map(at => {
-const rem = at.n - (hc[at.s] || 0) - (bu[at.s] || 0) - (dc[at.s] || 0);
-return /*#**PURE***/React.createElement(“div”, {
-key: at.s,
-style: {
-display: “flex”,
-flexDirection: “column”,
-alignItems: “center”,
-width: 28
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-width: 20,
-height: 36,
-borderRadius: 5,
-background: “rgba(255,255,255,.05)”,
-position: “relative”,
-overflow: “hidden”
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-position: “absolute”,
-bottom: 0,
-width: “100%”,
-height: `${Math.max(0, rem / at.n * 100)}%`,
-background: `linear-gradient(180deg,${at.g}88,${at.g}33)`,
-borderRadius: 3,
-transition: “height .3s”
-}
-})), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 10,
-marginTop: 2
-}
-}, at.e), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 9,
-fontWeight: 800,
-color: at.g
-}
-}, at.s), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 10,
-fontWeight: 800,
-color: rem > at.n * .5 ? “#66ff66” : rem > 0 ? “#ffcc00” : “#ff4444”
-}
-}, rem));
-})), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 10,
-color: “rgba(255,255,255,.25)”,
-textAlign: “center”
-}
-}, t(“crN”))));
+  const t = useT();
+  const [open, setOpen] = useState(false);
+  const hc = cntA(myHand),
+    dc = cntA(state.dp || []);
+  const bu = {};
+  ATOMS.forEach(a => bu[a.s] = 0);
+  state.pl.forEach(p => p.bonds.forEach(b => Object.entries(b.a).forEach(([s, n]) => bu[s] = (bu[s] || 0) + n)));
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 12
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setOpen(!open);
+      SE.tap();
+    },
+    style: {
+      width: "100%",
+      padding: 12,
+      borderRadius: 14,
+      border: "1px solid rgba(255,255,255,.1)",
+      background: "rgba(255,255,255,.05)",
+      color: "rgba(255,255,255,.5)",
+      fontSize: 14,
+      fontWeight: 700,
+      cursor: "pointer"
+    }
+  }, "\uD83E\uDDEA ", open ? t("crC") : t("crO")), open && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 6,
+      padding: 12,
+      borderRadius: 14,
+      background: "rgba(255,255,255,.04)",
+      border: "1px solid rgba(255,255,255,.08)",
+      animation: "su .3s ease"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 4,
+      justifyContent: "center",
+      flexWrap: "wrap",
+      marginBottom: 8
+    }
+  }, ATOMS.map(at => {
+    const rem = at.n - (hc[at.s] || 0) - (bu[at.s] || 0) - (dc[at.s] || 0);
+    return /*#__PURE__*/React.createElement("div", {
+      key: at.s,
+      style: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: 28
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: 20,
+        height: 36,
+        borderRadius: 5,
+        background: "rgba(255,255,255,.05)",
+        position: "relative",
+        overflow: "hidden"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        position: "absolute",
+        bottom: 0,
+        width: "100%",
+        height: `${Math.max(0, rem / at.n * 100)}%`,
+        background: `linear-gradient(180deg,${at.g}88,${at.g}33)`,
+        borderRadius: 3,
+        transition: "height .3s"
+      }
+    })), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 10,
+        marginTop: 2
+      }
+    }, at.e), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 9,
+        fontWeight: 800,
+        color: at.g
+      }
+    }, at.s), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 10,
+        fontWeight: 800,
+        color: rem > at.n * .5 ? "#66ff66" : rem > 0 ? "#ffcc00" : "#ff4444"
+      }
+    }, rem));
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: "rgba(255,255,255,.25)",
+      textAlign: "center"
+    }
+  }, t("crN"))));
 };
 
 /* ── おいわい（派手版） ─── */
 const Celeb = ({
-comp,
-onDone
+  comp,
+  onDone
 }) => {
-const t = useT();
-const pts = comp.p;
-const [ph, setPh] = useState(0);
-const tier = pts >= 15 ? 3 : pts >= 9 ? 2 : pts >= 5 ? 1 : 0;
-const mc = [”#66ff66”, “#ffcc00”, “#ff6633”, “#cc66ff”][tier];
-const bg = [“rgba(20,40,20,.95)”, “rgba(40,30,10,.95)”, “rgba(50,15,5,.95)”, “rgba(25,5,45,.95)”][tier];
-useEffect(() => {
-if (tier >= 2) {
-SE.tap();
-requestAnimationFrame(() => setPh(1));
-const a = setTimeout(() => {
-SE.bond(pts);
-setPh(2);
-}, tier >= 3 ? 2000 : 1200);
-const b = setTimeout(() => setPh(3), tier >= 3 ? 2600 : 1700);
-const c = setTimeout(() => setPh(4), tier >= 3 ? 3200 : 2200);
-const d = setTimeout(onDone, tier >= 3 ? 5500 : 4000);
-return () => {
-[a, b, c, d].forEach(clearTimeout);
-};
-} else {
-SE.bond(pts);
-requestAnimationFrame(() => setPh(2));
-const a = setTimeout(() => setPh(3), 300);
-const b = setTimeout(() => setPh(4), 600);
-const c = setTimeout(onDone, tier >= 1 ? 2200 : 1600);
-return () => {
-[a, b, c].forEach(clearTimeout);
-};
-}
-}, []);
-const ce = [[“✨”, “⭐”], [“✨”, “⭐”, “🎵”, “💫”], [“🎉”, “✨”, “⭐”, “🔥”, “💫”, “🌟”], [“🎉”, “🎆”, “✨”, “⭐”, “🔥”, “💎”, “🌟”, “🏆”, “💫”, “🎊”, “⚡”, “👑”]][tier];
-const ec = [8, 14, 28, 50][tier];
-const ep = useRef(Array.from({
-length: ec
-}, (*, i) => {
-const a = i / ec * 360 + Math.random() * 20,
-d = 50 + Math.random() * (60 + tier * 50),
-r = a * Math.PI / 180;
-return {
-id: i,
-x: Math.cos(r) * d,
-y: Math.sin(r) * d,
-em: ce[i % ce.length],
-dl: Math.random() * .5,
-sz: 16 + Math.random() * (10 + tier * 8)
-};
-})).current;
-const spinS = useRef(tier >= 2 ? Array.from({
-length: tier >= 3 ? 16 : 8
-}, (*, i) => ({
-id: i,
-ang: i / (tier >= 3 ? 16 : 8) * 360,
-dist: 80 + Math.random() * 60,
-sz: 12 + Math.random() * 16,
-dl: Math.random() * .6,
-co: [”#FFD54F”, “#FF8A65”, “#CE93D8”, “#81D4FA”, “#A5D6A7”, “#ff4444”][i % 6]
-})) : []).current;
-const rings = tier >= 2 ? [0, .3, .6] : [];
-return /*#**PURE***/React.createElement(“div”, {
-style: {
-position: “fixed”,
-inset: 0,
-zIndex: 9999,
-display: “flex”,
-flexDirection: “column”,
-alignItems: “center”,
-justifyContent: “center”,
-background: ph >= 1 ? bg : “rgba(0,0,0,0)”,
-transition: `background ${tier >= 2 ? '.5s' : '.3s'}`,
-overflow: “hidden”
-}
-}, ph >= 2 && tier >= 2 && /*#**PURE***/React.createElement(“div”, {
-style: {
-position: “absolute”,
-inset: 0,
-background: mc,
-animation: “bgFlash .4s ease forwards”,
-zIndex: 1
-}
-}), ph === 1 && tier >= 2 && /*#**PURE***/React.createElement(“div”, {
-style: {
-position: “absolute”,
-width: tier >= 3 ? 160 : 120,
-height: tier >= 3 ? 160 : 120,
-borderRadius: “50%”,
-background: `radial-gradient(circle,${mc}44,${mc}11,transparent)`,
-“–cg”: `${mc}66`,
-animation: `charge ${tier >= 3 ? '1.8s' : '1s'} ease both, chargeGlow .4s ease-in-out infinite`,
-zIndex: 2
-}
-}), ph === 1 && tier >= 3 && Array.from({
-length: 20
-}).map((_, i) => {
-const a = i / 20 * 360 * Math.PI / 180;
-return /*#**PURE***/React.createElement(“div”, {
-key: `ch${i}`,
-style: {
-position: “absolute”,
-width: 6,
-height: 6,
-borderRadius: “50%”,
-background: mc,
-left: `calc(50% + ${Math.cos(a) * 150}px)`,
-top: `calc(50% + ${Math.sin(a) * 150}px)`,
-animation: `charge 1.5s ${i * .08}s ease both`,
-zIndex: 3
-}
-});
-}), ph >= 2 && rings.map((dl, i) => /*#**PURE***/React.createElement(“div”, {
-key: `r${i}`,
-style: {
-position: “absolute”,
-width: 100,
-height: 100,
-borderRadius: “50%”,
-border: `4px solid ${mc}`,
-animation: `ringBurst .8s ${dl}s ease-out forwards`,
-opacity: 0,
-zIndex: 4
-}
-})), ph >= 2 && ep.map(p => /*#**PURE***/React.createElement(“div”, {
-key: p.id,
-style: {
-position: “absolute”,
-fontSize: p.sz,
-“–dx”: `${p.x}px`,
-“–dy”: `${p.y}px`,
-animation: `ke ${.6 + tier * .3}s ${p.dl}s cubic-bezier(.2,.6,.3,1) forwards`,
-opacity: 0,
-zIndex: 5
-}
-}, p.em)), ph >= 2 && spinS.map(s => /*#**PURE***/React.createElement(“div”, {
-key: `ss${s.id}`,
-style: {
-position: “absolute”,
-width: s.sz,
-height: s.sz,
-borderRadius: “50%”,
-background: s.co,
-boxShadow: `0 0 ${s.sz}px ${s.co}`,
-animation: `starSpin 1s ${s.dl}s ease-out forwards`,
-opacity: 0,
-zIndex: 5,
-left: `calc(50% + ${Math.cos(s.ang * Math.PI / 180) * s.dist}px)`,
-top: `calc(50% + ${Math.sin(s.ang * Math.PI / 180) * s.dist}px)`
-}
-})), /*#**PURE***/React.createElement(“div”, {
-style: {
-textAlign: “center”,
-zIndex: 10,
-animation: tier >= 3 && ph >= 2 ? “ks .5s .1s ease both” : “none”
-}
-}, ph === 1 && tier >= 2 && /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 20,
-fontWeight: 900,
-color: mc,
-opacity: .8,
-animation: “kt .3s ease-in-out infinite”
-}
-}, tier >= 3 ? “・・・！！！” : “・・・！”), ph >= 2 && /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: tier >= 3 ? 90 : tier >= 2 ? 72 : tier >= 1 ? 56 : 48,
-animation: tier >= 2 ? “megaBounce .6s cubic-bezier(.34,1.56,.64,1) both” : “kb .5s .1s cubic-bezier(.34,1.56,.64,1) both”,
-opacity: 0,
-filter: tier >= 2 ? `drop-shadow(0 0 30px ${mc}88)` : “none”
-}
-}, comp.e), ph >= 2 && /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: tier >= 3 ? 72 : tier >= 2 ? 56 : tier >= 1 ? 44 : 36,
-fontWeight: 900,
-lineHeight: 1.1,
-color: mc,
-textShadow: tier >= 2 ? `0 0 40px ${mc}88,0 0 80px ${mc}44` : `0 0 20px ${mc}66`,
-animation: tier >= 2 ? “textReveal .5s .15s ease both” : “kb .5s .2s cubic-bezier(.34,1.56,.64,1) both”,
-opacity: 0
-}
-}, “+”, pts, /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: “50%”
-}
-}, t(“pt”))), ph >= 3 && /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: tier >= 2 ? 28 : tier >= 1 ? 22 : 18,
-fontWeight: 800,
-color: “#fff”,
-marginTop: 8,
-opacity: 0,
-animation: “ku .3s ease forwards”,
-textShadow: tier >= 2 ? `0 0 16px ${mc}44` : “none”
-}
-}, t(comp.k)), ph >= 3 && /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 16,
-color: “rgba(255,255,255,.5)”,
-marginTop: 2,
-opacity: 0,
-animation: “ku .3s .08s ease forwards”
-}
-}, comp.f), ph >= 4 && tier >= 1 && /*#**PURE***/React.createElement(“div”, {
-style: {
-marginTop: 16,
-display: “inline-block”,
-padding: tier >= 3 ? “10px 28px” : “6px 20px”,
-borderRadius: 24,
-background: tier >= 3 ? “linear-gradient(135deg,#CE93D8,#FFD54F,#81D4FA,#CE93D8)” : tier >= 2 ? “linear-gradient(135deg,#FF8A65,#FFD54F)” : “linear-gradient(135deg,#66BB6A,#A5D6A7)”,
-fontSize: tier >= 3 ? 18 : 15,
-fontWeight: 900,
-color: “#111”,
-opacity: 0,
-animation: “ku .3s ease forwards”
-}
-}, tier >= 3 ? pts >= 30 ? “💎👑 でんせつ！！！” : “🏆🔥 すごすぎ！！” : tier >= 2 ? “🔥 すごい！” : “⭐ いいね！”)));
+  const t = useT();
+  const pts = comp.p;
+  const [ph, setPh] = useState(0);
+  const tier = pts >= 15 ? 3 : pts >= 9 ? 2 : pts >= 5 ? 1 : 0;
+  const mc = ["#66ff66", "#ffcc00", "#ff6633", "#cc66ff"][tier];
+  const bg = ["rgba(20,40,20,.95)", "rgba(40,30,10,.95)", "rgba(50,15,5,.95)", "rgba(25,5,45,.95)"][tier];
+  useEffect(() => {
+    if (tier >= 2) {
+      SE.tap();
+      requestAnimationFrame(() => setPh(1));
+      const a = setTimeout(() => {
+        SE.bond(pts);
+        setPh(2);
+      }, tier >= 3 ? 2000 : 1200);
+      const b = setTimeout(() => setPh(3), tier >= 3 ? 2600 : 1700);
+      const c = setTimeout(() => setPh(4), tier >= 3 ? 3200 : 2200);
+      const d = setTimeout(onDone, tier >= 3 ? 5500 : 4000);
+      return () => {
+        [a, b, c, d].forEach(clearTimeout);
+      };
+    } else {
+      SE.bond(pts);
+      requestAnimationFrame(() => setPh(2));
+      const a = setTimeout(() => setPh(3), 300);
+      const b = setTimeout(() => setPh(4), 600);
+      const c = setTimeout(onDone, tier >= 1 ? 2200 : 1600);
+      return () => {
+        [a, b, c].forEach(clearTimeout);
+      };
+    }
+  }, []);
+  const ce = [["✨", "⭐"], ["✨", "⭐", "🎵", "💫"], ["🎉", "✨", "⭐", "🔥", "💫", "🌟"], ["🎉", "🎆", "✨", "⭐", "🔥", "💎", "🌟", "🏆", "💫", "🎊", "⚡", "👑"]][tier];
+  const ec = [8, 14, 28, 50][tier];
+  const ep = useRef(Array.from({
+    length: ec
+  }, (_, i) => {
+    const a = i / ec * 360 + Math.random() * 20,
+      d = 50 + Math.random() * (60 + tier * 50),
+      r = a * Math.PI / 180;
+    return {
+      id: i,
+      x: Math.cos(r) * d,
+      y: Math.sin(r) * d,
+      em: ce[i % ce.length],
+      dl: Math.random() * .5,
+      sz: 16 + Math.random() * (10 + tier * 8)
+    };
+  })).current;
+  const spinS = useRef(tier >= 2 ? Array.from({
+    length: tier >= 3 ? 16 : 8
+  }, (_, i) => ({
+    id: i,
+    ang: i / (tier >= 3 ? 16 : 8) * 360,
+    dist: 80 + Math.random() * 60,
+    sz: 12 + Math.random() * 16,
+    dl: Math.random() * .6,
+    co: ["#FFD54F", "#FF8A65", "#CE93D8", "#81D4FA", "#A5D6A7", "#ff4444"][i % 6]
+  })) : []).current;
+  const rings = tier >= 2 ? [0, .3, .6] : [];
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "fixed",
+      inset: 0,
+      zIndex: 9999,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      background: ph >= 1 ? bg : "rgba(0,0,0,0)",
+      transition: `background ${tier >= 2 ? '.5s' : '.3s'}`,
+      overflow: "hidden"
+    }
+  }, ph >= 2 && tier >= 2 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "absolute",
+      inset: 0,
+      background: mc,
+      animation: "bgFlash .4s ease forwards",
+      zIndex: 1
+    }
+  }), ph === 1 && tier >= 2 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "absolute",
+      width: tier >= 3 ? 160 : 120,
+      height: tier >= 3 ? 160 : 120,
+      borderRadius: "50%",
+      background: `radial-gradient(circle,${mc}44,${mc}11,transparent)`,
+      "--cg": `${mc}66`,
+      animation: `charge ${tier >= 3 ? '1.8s' : '1s'} ease both, chargeGlow .4s ease-in-out infinite`,
+      zIndex: 2
+    }
+  }), ph === 1 && tier >= 3 && Array.from({
+    length: 20
+  }).map((_, i) => {
+    const a = i / 20 * 360 * Math.PI / 180;
+    return /*#__PURE__*/React.createElement("div", {
+      key: `ch${i}`,
+      style: {
+        position: "absolute",
+        width: 6,
+        height: 6,
+        borderRadius: "50%",
+        background: mc,
+        left: `calc(50% + ${Math.cos(a) * 150}px)`,
+        top: `calc(50% + ${Math.sin(a) * 150}px)`,
+        animation: `charge 1.5s ${i * .08}s ease both`,
+        zIndex: 3
+      }
+    });
+  }), ph >= 2 && rings.map((dl, i) => /*#__PURE__*/React.createElement("div", {
+    key: `r${i}`,
+    style: {
+      position: "absolute",
+      width: 100,
+      height: 100,
+      borderRadius: "50%",
+      border: `4px solid ${mc}`,
+      animation: `ringBurst .8s ${dl}s ease-out forwards`,
+      opacity: 0,
+      zIndex: 4
+    }
+  })), ph >= 2 && ep.map(p => /*#__PURE__*/React.createElement("div", {
+    key: p.id,
+    style: {
+      position: "absolute",
+      fontSize: p.sz,
+      "--dx": `${p.x}px`,
+      "--dy": `${p.y}px`,
+      animation: `ke ${.6 + tier * .3}s ${p.dl}s cubic-bezier(.2,.6,.3,1) forwards`,
+      opacity: 0,
+      zIndex: 5
+    }
+  }, p.em)), ph >= 2 && spinS.map(s => /*#__PURE__*/React.createElement("div", {
+    key: `ss${s.id}`,
+    style: {
+      position: "absolute",
+      width: s.sz,
+      height: s.sz,
+      borderRadius: "50%",
+      background: s.co,
+      boxShadow: `0 0 ${s.sz}px ${s.co}`,
+      animation: `starSpin 1s ${s.dl}s ease-out forwards`,
+      opacity: 0,
+      zIndex: 5,
+      left: `calc(50% + ${Math.cos(s.ang * Math.PI / 180) * s.dist}px)`,
+      top: `calc(50% + ${Math.sin(s.ang * Math.PI / 180) * s.dist}px)`
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      zIndex: 10,
+      animation: tier >= 3 && ph >= 2 ? "ks .5s .1s ease both" : "none"
+    }
+  }, ph === 1 && tier >= 2 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 20,
+      fontWeight: 900,
+      color: mc,
+      opacity: .8,
+      animation: "kt .3s ease-in-out infinite"
+    }
+  }, tier >= 3 ? "・・・！！！" : "・・・！"), ph >= 2 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: tier >= 3 ? 90 : tier >= 2 ? 72 : tier >= 1 ? 56 : 48,
+      animation: tier >= 2 ? "megaBounce .6s cubic-bezier(.34,1.56,.64,1) both" : "kb .5s .1s cubic-bezier(.34,1.56,.64,1) both",
+      opacity: 0,
+      filter: tier >= 2 ? `drop-shadow(0 0 30px ${mc}88)` : "none"
+    }
+  }, comp.e), ph >= 2 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: tier >= 3 ? 72 : tier >= 2 ? 56 : tier >= 1 ? 44 : 36,
+      fontWeight: 900,
+      lineHeight: 1.1,
+      color: mc,
+      textShadow: tier >= 2 ? `0 0 40px ${mc}88,0 0 80px ${mc}44` : `0 0 20px ${mc}66`,
+      animation: tier >= 2 ? "textReveal .5s .15s ease both" : "kb .5s .2s cubic-bezier(.34,1.56,.64,1) both",
+      opacity: 0
+    }
+  }, "+", pts, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "50%"
+    }
+  }, t("pt"))), ph >= 3 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: tier >= 2 ? 28 : tier >= 1 ? 22 : 18,
+      fontWeight: 800,
+      color: "#fff",
+      marginTop: 8,
+      opacity: 0,
+      animation: "ku .3s ease forwards",
+      textShadow: tier >= 2 ? `0 0 16px ${mc}44` : "none"
+    }
+  }, t(comp.k)), ph >= 3 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 16,
+      color: "rgba(255,255,255,.5)",
+      marginTop: 2,
+      opacity: 0,
+      animation: "ku .3s .08s ease forwards"
+    }
+  }, comp.f), ph >= 4 && tier >= 1 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 16,
+      display: "inline-block",
+      padding: tier >= 3 ? "10px 28px" : "6px 20px",
+      borderRadius: 24,
+      background: tier >= 3 ? "linear-gradient(135deg,#CE93D8,#FFD54F,#81D4FA,#CE93D8)" : tier >= 2 ? "linear-gradient(135deg,#FF8A65,#FFD54F)" : "linear-gradient(135deg,#66BB6A,#A5D6A7)",
+      fontSize: tier >= 3 ? 18 : 15,
+      fontWeight: 900,
+      color: "#111",
+      opacity: 0,
+      animation: "ku .3s ease forwards"
+    }
+  }, tier >= 3 ? pts >= 30 ? "💎👑 でんせつ！！！" : "🏆🔥 すごすぎ！！" : tier >= 2 ? "🔥 すごい！" : "⭐ いいね！")));
 };
 const CpuOv = ({
-name,
-action,
-comp
+  name,
+  action,
+  comp
 }) => {
-const t = useT();
-const [ph, setPh] = useState(0);
-useEffect(() => {
-requestAnimationFrame(() => setPh(1));
-}, []);
-return /*#**PURE***/React.createElement(“div”, {
-style: {
-position: “fixed”,
-inset: 0,
-zIndex: 9998,
-display: “flex”,
-alignItems: “center”,
-justifyContent: “center”,
-background: ph >= 1 ? “rgba(10,10,30,.94)” : “rgba(0,0,0,0)”,
-transition: “background .3s”
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-textAlign: “center”,
-animation: ph >= 1 ? “cb .4s ease both” : “none”,
-opacity: 0
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 48,
-marginBottom: 8
-}
-}, “\uD83E\uDD16”), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 18,
-fontWeight: 900,
-color: “#b388ff”,
-marginBottom: 4
-}
-}, name), action === “bond” && comp && /*#**PURE***/React.createElement(React.Fragment, null, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 15,
-color: “#66ff66”,
-fontWeight: 800
-}
-}, t(“cpuB”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 36,
-marginTop: 4
-}
-}, comp.e), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 18,
-fontWeight: 900,
-color: “#fff”,
-marginTop: 2
-}
-}, t(comp.k)), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 14,
-color: “#ffcc00”,
-fontWeight: 800
-}
-}, “+”, comp.p, t(“pt”))), action === “pass” && /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 15,
-color: “rgba(255,255,255,.4)”
-}
-}, t(“cpuT”))));
+  const t = useT();
+  const [ph, setPh] = useState(0);
+  useEffect(() => {
+    requestAnimationFrame(() => setPh(1));
+  }, []);
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "fixed",
+      inset: 0,
+      zIndex: 9998,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: ph >= 1 ? "rgba(10,10,30,.94)" : "rgba(0,0,0,0)",
+      transition: "background .3s"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      animation: ph >= 1 ? "cb .4s ease both" : "none",
+      opacity: 0
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 48,
+      marginBottom: 8
+    }
+  }, "\uD83E\uDD16"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 18,
+      fontWeight: 900,
+      color: "#b388ff",
+      marginBottom: 4
+    }
+  }, name), action === "bond" && comp && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 15,
+      color: "#66ff66",
+      fontWeight: 800
+    }
+  }, t("cpuB")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 36,
+      marginTop: 4
+    }
+  }, comp.e), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 18,
+      fontWeight: 900,
+      color: "#fff",
+      marginTop: 2
+    }
+  }, t(comp.k)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      color: "#ffcc00",
+      fontWeight: 800
+    }
+  }, "+", comp.p, t("pt"))), action === "pass" && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 15,
+      color: "rgba(255,255,255,.4)"
+    }
+  }, t("cpuT"))));
 };
 
 /* ═══════════════════════════════════════════════════════════ */
 /*  タイトル画面                                               */
 /* ═══════════════════════════════════════════════════════════ */
 function Title({
-onStart,
-onStartCpu,
-onTest,
-lang,
-setLang,
-premium,
-setPremium
+  onStart,
+  onStartCpu,
+  onTest,
+  lang,
+  setLang,
+  premium,
+  setPremium
 }) {
-const t = useT();
-const [mode, setMode] = useState(null);
-const [pc, setPc] = useState(2);
-const [names, setNames] = useState([””, “”, “”, “”]);
-const [cn, setCn] = useState(””);
-const [cc, setCc] = useState(1);
-const [cd, setCd] = useState(“normal”);
-const [hl, setHL] = useState(7);
-const Stg = () => /*#**PURE***/React.createElement(“div”, {
-style: {
-marginTop: 18,
-padding: 16,
-borderRadius: 16,
-background: “rgba(255,255,255,.04)”,
-border: “1px solid rgba(255,255,255,.08)”,
-maxWidth: 300,
-width: “100%”
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 14,
-fontWeight: 900,
-color: “#ffcc00”,
-marginBottom: 10
-}
-}, “\u2699\uFE0F “, t(“settings”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 13,
-color: “rgba(255,255,255,.5)”,
-fontWeight: 700,
-marginBottom: 6
-}
-}, “\uD83C\uDCCF “, t(“hlLabel”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-gap: 6,
-flexWrap: “wrap”,
-justifyContent: “center”,
-marginBottom: 12
-}
-}, [7, 8, 9, 10].map(n => /*#**PURE***/React.createElement(SBtn, {
-key: n,
-l: `${n}${t("mai")}${n === 7 ? `（${t(“basic”)}）` : ""}`,
-a: hl === n,
-onClick: () => setHL(n)
-}))), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 13,
-color: “rgba(255,255,255,.5)”,
-fontWeight: 700,
-marginBottom: 6
-}
-}, “\uD83D\uDD24 “, t(“langLabel”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-gap: 6,
-justifyContent: “center”
-}
-}, /*#**PURE***/React.createElement(SBtn, {
-l: t(“langH”),
-a: lang === “hiragana”,
-co: “#b388ff”,
-onClick: () => setLang(“hiragana”)
-}), /*#**PURE***/React.createElement(SBtn, {
-l: t(“langK”),
-a: lang === “kanji”,
-co: “#b388ff”,
-onClick: () => setLang(“kanji”)
-})));
-const PremPanel = () => /*#**PURE***/React.createElement(“div”, {
-style: {
-marginTop: 12,
-padding: 16,
-borderRadius: 16,
-background: premium ? “rgba(102,255,102,.04)” : “linear-gradient(135deg,rgba(255,204,0,.06),rgba(255,112,67,.06))”,
-border: premium ? “1px solid rgba(102,255,102,.2)” : “2px solid rgba(255,204,0,.2)”,
-maxWidth: 300,
-width: “100%”
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 15,
-fontWeight: 900,
-color: premium ? “#66ff66” : “#ffcc00”,
-marginBottom: 6
-}
-}, t(“premTitle”)), premium ? /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 13,
-color: “#66ff66”,
-fontWeight: 700
-}
-}, t(“premDone”)) : /*#**PURE***/React.createElement(React.Fragment, null, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 13,
-color: “rgba(255,255,255,.5)”,
-marginBottom: 10,
-lineHeight: 1.6
-}
-}, t(“premMsg”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-flexWrap: “wrap”,
-gap: 4,
-marginBottom: 10
-}
-}, COMPS.filter(c => !c.free).map(c => /*#**PURE***/React.createElement(“span”, {
-key: c.k,
-style: {
-fontSize: 11,
-padding: “2px 8px”,
-borderRadius: 8,
-background: “rgba(255,255,255,.06)”,
-border: “1px solid rgba(255,204,0,.2)”,
-color: “rgba(255,255,255,.5)”
-}
-}, t(“locked”), “ “, t(c.k)))), /*#**PURE***/React.createElement(“button”, {
-onClick: () => {
-SE.gStart();
-setPremium(true);
-},
-style: {
-width: “100%”,
-padding: “12px”,
-borderRadius: 14,
-border: “none”,
-background: “linear-gradient(135deg,#ff9800,#ffcc00)”,
-color: “#111”,
-fontSize: 15,
-fontWeight: 900,
-cursor: “pointer”,
-boxShadow: “0 4px 16px rgba(255,152,0,.3)”
-}
-}, t(“premBtn”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 10,
-color: “rgba(255,255,255,.25)”,
-marginTop: 6,
-textAlign: “center”
-}
-}, “\u203B App Store\u516C\u958B\u6642\u306B\u5B9F\u969B\u306E\u8AB2\u91D1\u306B\u5207\u308A\u66FF\u308F\u308A\u307E\u3059”)));
-const wrap = ch => /*#**PURE***/React.createElement(“div”, {
-style: {
-minHeight: “100dvh”,
-display: “flex”,
-flexDirection: “column”,
-alignItems: “center”,
-justifyContent: “center”,
-padding: 24,
-background: BG,
-position: “relative”
-}
-}, /*#**PURE***/React.createElement(Orbs, null), /*#**PURE***/React.createElement(BgmBtn, null), /*#**PURE***/React.createElement(“div”, {
-style: {
-position: “relative”,
-zIndex: 1,
-display: “flex”,
-flexDirection: “column”,
-alignItems: “center”,
-width: “100%”
-}
-}, ch));
-if (mode === null) return wrap(/*#**PURE***/React.createElement(React.Fragment, null, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 64,
-marginBottom: 4,
-animation: “fl 3s ease-in-out infinite”,
-filter: “drop-shadow(0 4px 20px rgba(124,77,255,.4))”
-}
-}, “\uD83E\uDDEA”), /*#**PURE***/React.createElement(“h1”, {
-style: {
-fontSize: 30,
-fontWeight: 900,
-color: “#fff”,
-textAlign: “center”,
-margin: “0 0 2px”
-}
-}, t(“title1”)), /*#**PURE***/React.createElement(“h2”, {
-style: {
-fontSize: 22,
-fontWeight: 700,
-color: “#b388ff”,
-margin: “0 0 36px”
-}
-}, t(“title2”)), /*#**PURE***/React.createElement(“button”, {
-onClick: () => {
-setMode(“cpu”);
-SE.tap();
-},
-style: {
-width: “100%”,
-maxWidth: 280,
-padding: 20,
-borderRadius: 20,
-border: “none”,
-background: “linear-gradient(135deg,#ff5722,#ff9800)”,
-color: “#fff”,
-fontSize: 18,
-fontWeight: 900,
-cursor: “pointer”,
-boxShadow: “0 4px 30px rgba(255,87,34,.4)”,
-marginBottom: 14,
-display: “flex”,
-alignItems: “center”,
-justifyContent: “center”,
-gap: 10
-}
-}, /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 28
-}
-}, “\uD83E\uDD16”), /*#**PURE***/React.createElement(“span”, null, t(“solo”), /*#**PURE***/React.createElement(“br”, null), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 12,
-fontWeight: 600,
-opacity: .9
-}
-}, t(“soloSub”)))), /*#**PURE***/React.createElement(“button”, {
-onClick: () => {
-setMode(“multi”);
-SE.tap();
-},
-style: {
-width: “100%”,
-maxWidth: 280,
-padding: 20,
-borderRadius: 20,
-border: “none”,
-background: “linear-gradient(135deg,#651fff,#b388ff)”,
-color: “#fff”,
-fontSize: 18,
-fontWeight: 900,
-cursor: “pointer”,
-boxShadow: “0 4px 30px rgba(101,31,255,.4)”,
-display: “flex”,
-alignItems: “center”,
-justifyContent: “center”,
-gap: 10
-}
-}, /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 28
-}
-}, “\uD83D\uDC6B”), /*#**PURE***/React.createElement(“span”, null, t(“multi”), /*#**PURE***/React.createElement(“br”, null), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 12,
-fontWeight: 600,
-opacity: .9
-}
-}, t(“multiSub”)))), /*#**PURE***/React.createElement(Stg, null), /*#**PURE***/React.createElement(“div”, {
-style: {
-marginTop: 12,
-padding: 16,
-borderRadius: 16,
-background: “rgba(255,255,255,.04)”,
-border: “1px solid rgba(255,255,255,.08)”,
-maxWidth: 300,
-width: “100%”
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 14,
-fontWeight: 900,
-color: “#b388ff”,
-marginBottom: 8
-}
-}, “\uD83C\uDFB4 “, t(“rules”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 13,
-color: “rgba(255,255,255,.6)”,
-lineHeight: 2
-}
-}, “\u2460 “, t(“r1”), /*#**PURE***/React.createElement(“br”, null), “\u2461 “, t(“r2”), /*#**PURE***/React.createElement(“br”, null), “\u2462 “, t(“r3”), /*#**PURE***/React.createElement(“br”, null), “\u2463 “, t(“hand”), hl, t(“r4”), /*#**PURE***/React.createElement(“br”, null), “\u2464 “, t(“r5”), /*#**PURE***/React.createElement(“br”, null), t(“r6”), /*#**PURE***/React.createElement(“br”, null), t(“r7”)))));
-if (mode === “cpu”) return wrap(/*#**PURE***/React.createElement(React.Fragment, null, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 48,
-marginBottom: 8
-}
-}, “\uD83E\uDD16”), /*#**PURE***/React.createElement(“h2”, {
-style: {
-fontSize: 22,
-fontWeight: 900,
-color: “#fff”,
-margin: “0 0 20px”
-}
-}, t(“solo”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-width: “100%”,
-maxWidth: 280,
-marginBottom: 16
-}
-}, /*#**PURE***/React.createElement(“input”, {
-value: cn,
-onChange: e => setCn(e.target.value),
-placeholder: t(“name”),
-style: {
-width: “100%”,
-padding: “12px 16px”,
-borderRadius: 14,
-border: “2px solid rgba(255,255,255,.12)”,
-background: “rgba(255,255,255,.06)”,
-color: “#fff”,
-fontSize: 16,
-outline: “none”,
-boxSizing: “border-box”,
-fontWeight: 600
-}
-})), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 14,
-color: “rgba(255,255,255,.5)”,
-fontWeight: 700,
-marginBottom: 8
-}
-}, t(“opp”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-gap: 8,
-marginBottom: 16
-}
-}, [1, 2, 3].map(n => /*#**PURE***/React.createElement(SBtn, {
-key: n,
-l: `${n}${t("unit")}`,
-a: cc === n,
-co: “#ff7043”,
-onClick: () => setCc(n)
-}))), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 14,
-color: “rgba(255,255,255,.5)”,
-fontWeight: 700,
-marginBottom: 8
-}
-}, t(“str”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-gap: 8,
-marginBottom: 16
-}
-}, [“easy”, “normal”, “hard”].map(d => /*#**PURE***/React.createElement(SBtn, {
-key: d,
-l: t(d),
-a: cd === d,
-co: “#ff7043”,
-onClick: () => setCd(d)
-}))), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 14,
-color: “rgba(255,255,255,.5)”,
-fontWeight: 700,
-marginBottom: 8
-}
-}, “\uD83C\uDCCF “, t(“hlLabel”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-gap: 6,
-marginBottom: 24,
-flexWrap: “wrap”,
-justifyContent: “center”
-}
-}, [7, 8, 9, 10].map(n => /*#**PURE***/React.createElement(SBtn, {
-key: n,
-l: `${n}${t("mai")}${n === 7 ? `（${t(“basic”)}）` : ""}`,
-a: hl === n,
-onClick: () => setHL(n)
-}))), /*#**PURE***/React.createElement(“button”, {
-onClick: () => {
-SE.gStart();
-onStartCpu(cn.trim() || “あなた”, Array.from({
-length: cc
-}, (_, i) => CPUN[i % 3]), cd, hl);
-},
-style: {
-padding: “16px 48px”,
-borderRadius: 20,
-border: “none”,
-background: “linear-gradient(135deg,#ff5722,#ff9800)”,
-color: “#fff”,
-fontSize: 20,
-fontWeight: 900,
-cursor: “pointer”,
-boxShadow: “0 4px 30px rgba(255,87,34,.4)”
-}
-}, “\uD83C\uDFAE “, t(“start”)), /*#**PURE***/React.createElement(“button”, {
-onClick: () => setMode(null),
-style: {
-marginTop: 14,
-padding: “10px 24px”,
-borderRadius: 12,
-border: “1px solid rgba(255,255,255,.1)”,
-background: “transparent”,
-color: “rgba(255,255,255,.4)”,
-fontSize: 14,
-fontWeight: 700,
-cursor: “pointer”
-}
-}, t(“back”))));
+  const t = useT();
+  const [mode, setMode] = useState(null);
+  const [pc, setPc] = useState(2);
+  const [names, setNames] = useState(["", "", "", ""]);
+  const [cn, setCn] = useState("");
+  const [cc, setCc] = useState(1);
+  const [cd, setCd] = useState("normal");
+  const [hl, setHL] = useState(7);
+  const Stg = () => /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 18,
+      padding: 16,
+      borderRadius: 16,
+      background: "rgba(255,255,255,.04)",
+      border: "1px solid rgba(255,255,255,.08)",
+      maxWidth: 300,
+      width: "100%"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      fontWeight: 900,
+      color: "#ffcc00",
+      marginBottom: 10
+    }
+  }, "\u2699\uFE0F ", t("settings")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: "rgba(255,255,255,.5)",
+      fontWeight: 700,
+      marginBottom: 6
+    }
+  }, "\uD83C\uDCCF ", t("hlLabel")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 6,
+      flexWrap: "wrap",
+      justifyContent: "center",
+      marginBottom: 12
+    }
+  }, [7, 8, 9, 10].map(n => /*#__PURE__*/React.createElement(SBtn, {
+    key: n,
+    l: `${n}${t("mai")}${n === 7 ? `（${t("basic")}）` : ""}`,
+    a: hl === n,
+    onClick: () => setHL(n)
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: "rgba(255,255,255,.5)",
+      fontWeight: 700,
+      marginBottom: 6
+    }
+  }, "\uD83D\uDD24 ", t("langLabel")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 6,
+      justifyContent: "center"
+    }
+  }, /*#__PURE__*/React.createElement(SBtn, {
+    l: t("langH"),
+    a: lang === "hiragana",
+    co: "#b388ff",
+    onClick: () => setLang("hiragana")
+  }), /*#__PURE__*/React.createElement(SBtn, {
+    l: t("langK"),
+    a: lang === "kanji",
+    co: "#b388ff",
+    onClick: () => setLang("kanji")
+  })));
+  const PremPanel = () => /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 12,
+      padding: 16,
+      borderRadius: 16,
+      background: premium ? "rgba(102,255,102,.04)" : "linear-gradient(135deg,rgba(255,204,0,.06),rgba(255,112,67,.06))",
+      border: premium ? "1px solid rgba(102,255,102,.2)" : "2px solid rgba(255,204,0,.2)",
+      maxWidth: 300,
+      width: "100%"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 15,
+      fontWeight: 900,
+      color: premium ? "#66ff66" : "#ffcc00",
+      marginBottom: 6
+    }
+  }, t("premTitle")), premium ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: "#66ff66",
+      fontWeight: 700
+    }
+  }, t("premDone")) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: "rgba(255,255,255,.5)",
+      marginBottom: 10,
+      lineHeight: 1.6
+    }
+  }, t("premMsg")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexWrap: "wrap",
+      gap: 4,
+      marginBottom: 10
+    }
+  }, COMPS.filter(c => !c.free).map(c => /*#__PURE__*/React.createElement("span", {
+    key: c.k,
+    style: {
+      fontSize: 11,
+      padding: "2px 8px",
+      borderRadius: 8,
+      background: "rgba(255,255,255,.06)",
+      border: "1px solid rgba(255,204,0,.2)",
+      color: "rgba(255,255,255,.5)"
+    }
+  }, t("locked"), " ", t(c.k)))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      SE.gStart();
+      setPremium(true);
+    },
+    style: {
+      width: "100%",
+      padding: "12px",
+      borderRadius: 14,
+      border: "none",
+      background: "linear-gradient(135deg,#ff9800,#ffcc00)",
+      color: "#111",
+      fontSize: 15,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: "0 4px 16px rgba(255,152,0,.3)"
+    }
+  }, t("premBtn")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: "rgba(255,255,255,.25)",
+      marginTop: 6,
+      textAlign: "center"
+    }
+  }, "\u203B App Store\u516C\u958B\u6642\u306B\u5B9F\u969B\u306E\u8AB2\u91D1\u306B\u5207\u308A\u66FF\u308F\u308A\u307E\u3059")));
+  const wrap = ch => /*#__PURE__*/React.createElement("div", {
+    style: {
+      minHeight: "100dvh",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: 24,
+      background: BG,
+      position: "relative"
+    }
+  }, /*#__PURE__*/React.createElement(Orbs, null), /*#__PURE__*/React.createElement(BgmBtn, null), /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "relative",
+      zIndex: 1,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      width: "100%"
+    }
+  }, ch));
+  if (mode === null) return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 64,
+      marginBottom: 4,
+      animation: "fl 3s ease-in-out infinite",
+      filter: "drop-shadow(0 4px 20px rgba(124,77,255,.4))"
+    }
+  }, "\uD83E\uDDEA"), /*#__PURE__*/React.createElement("h1", {
+    style: {
+      fontSize: 30,
+      fontWeight: 900,
+      color: "#fff",
+      textAlign: "center",
+      margin: "0 0 2px"
+    }
+  }, t("title1")), /*#__PURE__*/React.createElement("h2", {
+    style: {
+      fontSize: 22,
+      fontWeight: 700,
+      color: "#b388ff",
+      margin: "0 0 36px"
+    }
+  }, t("title2")), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setMode("cpu");
+      SE.tap();
+    },
+    style: {
+      width: "100%",
+      maxWidth: 280,
+      padding: 20,
+      borderRadius: 20,
+      border: "none",
+      background: "linear-gradient(135deg,#ff5722,#ff9800)",
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: "0 4px 30px rgba(255,87,34,.4)",
+      marginBottom: 14,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 28
+    }
+  }, "\uD83E\uDD16"), /*#__PURE__*/React.createElement("span", null, t("solo"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12,
+      fontWeight: 600,
+      opacity: .9
+    }
+  }, t("soloSub")))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setMode("multi");
+      SE.tap();
+    },
+    style: {
+      width: "100%",
+      maxWidth: 280,
+      padding: 20,
+      borderRadius: 20,
+      border: "none",
+      background: "linear-gradient(135deg,#651fff,#b388ff)",
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: "0 4px 30px rgba(101,31,255,.4)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 28
+    }
+  }, "\uD83D\uDC6B"), /*#__PURE__*/React.createElement("span", null, t("multi"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12,
+      fontWeight: 600,
+      opacity: .9
+    }
+  }, t("multiSub")))), /*#__PURE__*/React.createElement(Stg, null), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 12,
+      padding: 16,
+      borderRadius: 16,
+      background: "rgba(255,255,255,.04)",
+      border: "1px solid rgba(255,255,255,.08)",
+      maxWidth: 300,
+      width: "100%"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      fontWeight: 900,
+      color: "#b388ff",
+      marginBottom: 8
+    }
+  }, "\uD83C\uDFB4 ", t("rules")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: "rgba(255,255,255,.6)",
+      lineHeight: 2
+    }
+  }, "\u2460 ", t("r1"), /*#__PURE__*/React.createElement("br", null), "\u2461 ", t("r2"), /*#__PURE__*/React.createElement("br", null), "\u2462 ", t("r3"), /*#__PURE__*/React.createElement("br", null), "\u2463 ", t("hand"), hl, t("r4"), /*#__PURE__*/React.createElement("br", null), "\u2464 ", t("r5"), /*#__PURE__*/React.createElement("br", null), t("r6"), /*#__PURE__*/React.createElement("br", null), t("r7")))));
+  if (mode === "cpu") return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 48,
+      marginBottom: 8
+    }
+  }, "\uD83E\uDD16"), /*#__PURE__*/React.createElement("h2", {
+    style: {
+      fontSize: 22,
+      fontWeight: 900,
+      color: "#fff",
+      margin: "0 0 20px"
+    }
+  }, t("solo")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: "100%",
+      maxWidth: 280,
+      marginBottom: 16
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    value: cn,
+    onChange: e => setCn(e.target.value),
+    placeholder: t("name"),
+    style: {
+      width: "100%",
+      padding: "12px 16px",
+      borderRadius: 14,
+      border: "2px solid rgba(255,255,255,.12)",
+      background: "rgba(255,255,255,.06)",
+      color: "#fff",
+      fontSize: 16,
+      outline: "none",
+      boxSizing: "border-box",
+      fontWeight: 600
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      color: "rgba(255,255,255,.5)",
+      fontWeight: 700,
+      marginBottom: 8
+    }
+  }, t("opp")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8,
+      marginBottom: 16
+    }
+  }, [1, 2, 3].map(n => /*#__PURE__*/React.createElement(SBtn, {
+    key: n,
+    l: `${n}${t("unit")}`,
+    a: cc === n,
+    co: "#ff7043",
+    onClick: () => setCc(n)
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      color: "rgba(255,255,255,.5)",
+      fontWeight: 700,
+      marginBottom: 8
+    }
+  }, t("str")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8,
+      marginBottom: 16
+    }
+  }, ["easy", "normal", "hard"].map(d => /*#__PURE__*/React.createElement(SBtn, {
+    key: d,
+    l: t(d),
+    a: cd === d,
+    co: "#ff7043",
+    onClick: () => setCd(d)
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      color: "rgba(255,255,255,.5)",
+      fontWeight: 700,
+      marginBottom: 8
+    }
+  }, "\uD83C\uDCCF ", t("hlLabel")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 6,
+      marginBottom: 24,
+      flexWrap: "wrap",
+      justifyContent: "center"
+    }
+  }, [7, 8, 9, 10].map(n => /*#__PURE__*/React.createElement(SBtn, {
+    key: n,
+    l: `${n}${t("mai")}${n === 7 ? `（${t("basic")}）` : ""}`,
+    a: hl === n,
+    onClick: () => setHL(n)
+  }))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      SE.gStart();
+      onStartCpu(cn.trim() || "あなた", Array.from({
+        length: cc
+      }, (_, i) => CPUN[i % 3]), cd, hl);
+    },
+    style: {
+      padding: "16px 48px",
+      borderRadius: 20,
+      border: "none",
+      background: "linear-gradient(135deg,#ff5722,#ff9800)",
+      color: "#fff",
+      fontSize: 20,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: "0 4px 30px rgba(255,87,34,.4)"
+    }
+  }, "\uD83C\uDFAE ", t("start")), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setMode(null),
+    style: {
+      marginTop: 14,
+      padding: "10px 24px",
+      borderRadius: 12,
+      border: "1px solid rgba(255,255,255,.1)",
+      background: "transparent",
+      color: "rgba(255,255,255,.4)",
+      fontSize: 14,
+      fontWeight: 700,
+      cursor: "pointer"
+    }
+  }, t("back"))));
 
-// multi
-return wrap(/*#**PURE***/React.createElement(React.Fragment, null, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 48,
-marginBottom: 8
-}
-}, “\uD83D\uDC6B”), /*#**PURE***/React.createElement(“h2”, {
-style: {
-fontSize: 22,
-fontWeight: 900,
-color: “#fff”,
-margin: “0 0 20px”
-}
-}, t(“multi”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 14,
-color: “rgba(255,255,255,.5)”,
-fontWeight: 700,
-marginBottom: 8
-}
-}, t(“howMany”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-gap: 8,
-marginBottom: 20
-}
-}, [2, 3, 4].map(n => /*#**PURE***/React.createElement(SBtn, {
-key: n,
-l: `${n}${t("unitP")}`,
-a: pc === n,
-co: “#b388ff”,
-onClick: () => setPc(n)
-}))), /*#**PURE***/React.createElement(“div”, {
-style: {
-width: “100%”,
-maxWidth: 280,
-display: “flex”,
-flexDirection: “column”,
-gap: 10,
-marginBottom: 16
-}
-}, Array.from({
-length: pc
-}).map((_, i) => /*#**PURE***/React.createElement(“input”, {
-key: i,
-value: names[i],
-onChange: e => {
-const n = […names];
-n[i] = e.target.value;
-setNames(n);
-},
-placeholder: `${i + 1}${t("pn")}`,
-style: {
-width: “100%”,
-padding: “12px 16px”,
-borderRadius: 14,
-border: “2px solid rgba(255,255,255,.12)”,
-background: “rgba(255,255,255,.06)”,
-color: “#fff”,
-fontSize: 16,
-outline: “none”,
-boxSizing: “border-box”,
-fontWeight: 600
-}
-}))), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 14,
-color: “rgba(255,255,255,.5)”,
-fontWeight: 700,
-marginBottom: 8
-}
-}, “\uD83C\uDCCF “, t(“hlLabel”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-gap: 6,
-marginBottom: 24,
-flexWrap: “wrap”,
-justifyContent: “center”
-}
-}, [7, 8, 9, 10].map(n => /*#**PURE***/React.createElement(SBtn, {
-key: n,
-l: `${n}${t("mai")}${n === 7 ? `（${t(“basic”)}）` : ""}`,
-a: hl === n,
-onClick: () => setHL(n)
-}))), /*#**PURE***/React.createElement(“button”, {
-onClick: () => {
-SE.gStart();
-onStart(names.slice(0, pc).map((n, i) => n.trim() || `${i + 1}ばん`), hl);
-},
-style: {
-padding: “16px 48px”,
-borderRadius: 20,
-border: “none”,
-background: “linear-gradient(135deg,#651fff,#b388ff)”,
-color: “#fff”,
-fontSize: 20,
-fontWeight: 900,
-cursor: “pointer”,
-boxShadow: “0 4px 30px rgba(101,31,255,.4)”
-}
-}, “\uD83C\uDFAE “, t(“gstart”)), /*#**PURE***/React.createElement(“button”, {
-onClick: () => setMode(null),
-style: {
-marginTop: 14,
-padding: “10px 24px”,
-borderRadius: 12,
-border: “1px solid rgba(255,255,255,.1)”,
-background: “transparent”,
-color: “rgba(255,255,255,.4)”,
-fontSize: 14,
-fontWeight: 700,
-cursor: “pointer”
-}
-}, t(“back”))));
+  // multi
+  return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 48,
+      marginBottom: 8
+    }
+  }, "\uD83D\uDC6B"), /*#__PURE__*/React.createElement("h2", {
+    style: {
+      fontSize: 22,
+      fontWeight: 900,
+      color: "#fff",
+      margin: "0 0 20px"
+    }
+  }, t("multi")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      color: "rgba(255,255,255,.5)",
+      fontWeight: 700,
+      marginBottom: 8
+    }
+  }, t("howMany")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8,
+      marginBottom: 20
+    }
+  }, [2, 3, 4].map(n => /*#__PURE__*/React.createElement(SBtn, {
+    key: n,
+    l: `${n}${t("unitP")}`,
+    a: pc === n,
+    co: "#b388ff",
+    onClick: () => setPc(n)
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: "100%",
+      maxWidth: 280,
+      display: "flex",
+      flexDirection: "column",
+      gap: 10,
+      marginBottom: 16
+    }
+  }, Array.from({
+    length: pc
+  }).map((_, i) => /*#__PURE__*/React.createElement("input", {
+    key: i,
+    value: names[i],
+    onChange: e => {
+      const n = [...names];
+      n[i] = e.target.value;
+      setNames(n);
+    },
+    placeholder: `${i + 1}${t("pn")}`,
+    style: {
+      width: "100%",
+      padding: "12px 16px",
+      borderRadius: 14,
+      border: "2px solid rgba(255,255,255,.12)",
+      background: "rgba(255,255,255,.06)",
+      color: "#fff",
+      fontSize: 16,
+      outline: "none",
+      boxSizing: "border-box",
+      fontWeight: 600
+    }
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      color: "rgba(255,255,255,.5)",
+      fontWeight: 700,
+      marginBottom: 8
+    }
+  }, "\uD83C\uDCCF ", t("hlLabel")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 6,
+      marginBottom: 24,
+      flexWrap: "wrap",
+      justifyContent: "center"
+    }
+  }, [7, 8, 9, 10].map(n => /*#__PURE__*/React.createElement(SBtn, {
+    key: n,
+    l: `${n}${t("mai")}${n === 7 ? `（${t("basic")}）` : ""}`,
+    a: hl === n,
+    onClick: () => setHL(n)
+  }))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      SE.gStart();
+      onStart(names.slice(0, pc).map((n, i) => n.trim() || `${i + 1}ばん`), hl);
+    },
+    style: {
+      padding: "16px 48px",
+      borderRadius: 20,
+      border: "none",
+      background: "linear-gradient(135deg,#651fff,#b388ff)",
+      color: "#fff",
+      fontSize: 20,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: "0 4px 30px rgba(101,31,255,.4)"
+    }
+  }, "\uD83C\uDFAE ", t("gstart")), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setMode(null),
+    style: {
+      marginTop: 14,
+      padding: "10px 24px",
+      borderRadius: 12,
+      border: "1px solid rgba(255,255,255,.1)",
+      background: "transparent",
+      color: "rgba(255,255,255,.4)",
+      fontSize: 14,
+      fontWeight: 700,
+      cursor: "pointer"
+    }
+  }, t("back"))));
 }
 
 /* ═══════════════════════════════════════════════════════════ */
 /*  パス画面                                                   */
 /* ═══════════════════════════════════════════════════════════ */
 const Pass = ({
-pn,
-onReady,
-info
+  pn,
+  onReady,
+  info
 }) => {
-const t = useT();
-return /*#**PURE***/React.createElement(“div”, {
-style: {
-minHeight: “100dvh”,
-display: “flex”,
-flexDirection: “column”,
-alignItems: “center”,
-justifyContent: “center”,
-padding: 24,
-background: “radial-gradient(ellipse at 50% 50%,rgba(124,77,255,.1) 0%,transparent 60%),linear-gradient(180deg,#0a0a1a,#0f1628)”
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 56,
-marginBottom: 16,
-animation: “fl 2s ease-in-out infinite”
-}
-}, “\uD83D\uDCF1”), /*#**PURE***/React.createElement(“h2”, {
-style: {
-fontSize: 22,
-fontWeight: 900,
-color: “#fff”,
-margin: “0 0 8px”,
-textAlign: “center”
-}
-}, t(“passD”)), /*#**PURE***/React.createElement(“p”, {
-style: {
-fontSize: 18,
-color: “rgba(255,255,255,.6)”,
-margin: “0 0 4px”
-}
-}, t(“next”), “ “, /*#**PURE***/React.createElement(“strong”, {
-style: {
-color: “#b388ff”,
-fontSize: 22
-}
-}, pn), “ “, t(“trn”)), /*#**PURE***/React.createElement(“p”, {
-style: {
-fontSize: 13,
-color: “rgba(255,255,255,.3)”,
-margin: “0 0 28px”
-}
-}, info), /*#**PURE***/React.createElement(“button”, {
-onClick: () => {
-SE.tap();
-onReady();
-},
-style: {
-padding: “18px 48px”,
-borderRadius: 20,
-border: “none”,
-background: “linear-gradient(135deg,#651fff,#b388ff)”,
-color: “#fff”,
-fontSize: 20,
-fontWeight: 900,
-cursor: “pointer”,
-boxShadow: “0 4px 30px rgba(101,31,255,.4)”
-}
-}, t(“ready”)));
+  const t = useT();
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      minHeight: "100dvh",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: 24,
+      background: "radial-gradient(ellipse at 50% 50%,rgba(124,77,255,.1) 0%,transparent 60%),linear-gradient(180deg,#0a0a1a,#0f1628)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 56,
+      marginBottom: 16,
+      animation: "fl 2s ease-in-out infinite"
+    }
+  }, "\uD83D\uDCF1"), /*#__PURE__*/React.createElement("h2", {
+    style: {
+      fontSize: 22,
+      fontWeight: 900,
+      color: "#fff",
+      margin: "0 0 8px",
+      textAlign: "center"
+    }
+  }, t("passD")), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 18,
+      color: "rgba(255,255,255,.6)",
+      margin: "0 0 4px"
+    }
+  }, t("next"), " ", /*#__PURE__*/React.createElement("strong", {
+    style: {
+      color: "#b388ff",
+      fontSize: 22
+    }
+  }, pn), " ", t("trn")), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 13,
+      color: "rgba(255,255,255,.3)",
+      margin: "0 0 28px"
+    }
+  }, info), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      SE.tap();
+      onReady();
+    },
+    style: {
+      padding: "18px 48px",
+      borderRadius: 20,
+      border: "none",
+      background: "linear-gradient(135deg,#651fff,#b388ff)",
+      color: "#fff",
+      fontSize: 20,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: "0 4px 30px rgba(101,31,255,.4)"
+    }
+  }, t("ready")));
 };
 
 /* ═══════════════════════════════════════════════════════════ */
 /*  ゲーム画面                                                 */
 /* ═══════════════════════════════════════════════════════════ */
 function Game({
-state,
-pi,
-onDraw,
-onBond,
-onPass,
-onDiscard,
-hl,
-onFinish,
-premium
+  state,
+  pi,
+  onDraw,
+  onBond,
+  onPass,
+  onDiscard,
+  hl,
+  onFinish,
+  premium
 }) {
-const t = useT();
-const pl = state.pl[pi],
-hand = pl.hand;
-const [sel, setSel] = useState(new Set());
-const [showC, setSC] = useState(false);
-const [drew, setDrew] = useState(false);
-const [drawnC, setDrC] = useState(null);
-const [bonded, setBon] = useState(false);
-const [cel, setCel] = useState(null);
-const selC = hand.filter(c => sel.has(c.id));
-const selCnt = cntA(selC);
-const match = COMPS.find(c => (premium || c.free) && Object.entries(c.a).every(([s, n]) => (selCnt[s] || 0) === n) && Object.entries(selCnt).every(([s, n]) => (c.a[s] || 0) === n));
-const hc = cntA(hand);
-const poss = findP(hc, premium);
-const psc = pl.bonds.reduce((s, b) => s + b.p, 0);
-const overLimit = hand.length > hl;
-const toggle = card => {
-if (cel) return;
-setSel(p => {
-const n = new Set(p);
-if (n.has(card.id)) {
-n.delete(card.id);
-SE.cardDesel();
-} else {
-n.add(card.id);
-SE.cardSel();
-}
-return n;
-});
-};
-const doDiscard = cardId => {
-if (cel) return;
-SE.discard();
-onDiscard(cardId);
-};
-const doDraw = () => {
-if (cel) return;
-const d = onDraw();
-if (d) {
-SE.cardDraw();
-setDrew(true);
-setDrC(d);
-}
-};
-const doBond = () => {
-if (match && !cel) {
-setCel(match);
-onBond([…sel], match);
-setSel(new Set());
-setBon(true);
-}
-};
-const doPass = () => {
-if (cel) return;
-SE.pass();
-onPass();
-};
-return /*#**PURE***/React.createElement(“div”, {
-style: {
-minHeight: “100dvh”,
-display: “flex”,
-flexDirection: “column”,
-background: “linear-gradient(180deg,#0a0a1a,#0f1628)”
-}
-}, cel && /*#**PURE***/React.createElement(Celeb, {
-comp: cel,
-onDone: () => setCel(null)
-}), /*#**PURE***/React.createElement(BgmBtn, null), /*#**PURE***/React.createElement(“div”, {
-style: {
-padding: “14px 16px”,
-display: “flex”,
-alignItems: “center”,
-justifyContent: “space-between”,
-background: “rgba(255,255,255,.03)”,
-borderBottom: “1px solid rgba(255,255,255,.06)”
-}
-}, /*#**PURE***/React.createElement(“div”, null, /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 18,
-fontWeight: 900,
-color: “#b388ff”
-}
-}, pl.name), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 13,
-color: “rgba(255,255,255,.3)”,
-marginLeft: 6
-}
-}, t(“tl”))), /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-gap: 14
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-textAlign: “center”
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 10,
-color: “rgba(255,255,255,.3)”,
-fontWeight: 700
-}
-}, t(“sc”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 22,
-fontWeight: 900,
-color: “#ffcc00”
-}
-}, psc)), /*#**PURE***/React.createElement(“div”, {
-style: {
-textAlign: “center”
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 10,
-color: “rgba(255,255,255,.3)”,
-fontWeight: 700
-}
-}, t(“dk”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 22,
-fontWeight: 900,
-color: state.deck.length > 20 ? “#b388ff” : “#ff4444”
-}
-}, state.deck.length)))), pl.bonds.length > 0 && /*#**PURE***/React.createElement(“div”, {
-style: {
-padding: “8px 16px”,
-display: “flex”,
-flexWrap: “wrap”,
-gap: 6,
-background: “rgba(255,255,255,.02)”
-}
-}, pl.bonds.map((b, i) => /*#**PURE***/React.createElement(Badge, {
-key: i,
-comp: b
-}))), drawnC && /*#**PURE***/React.createElement(“div”, {
-style: {
-padding: “10px 16px”,
-display: “flex”,
-alignItems: “center”,
-gap: 10,
-background: “rgba(124,77,255,.08)”,
-animation: “su .3s ease”
-}
-}, /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 13,
-color: “#b388ff”,
-fontWeight: 700
-}
-}, t(“drawn”)), /*#**PURE***/React.createElement(Card, {
-card: drawnC
-})), bonded && !cel && /*#**PURE***/React.createElement(“div”, {
-style: {
-padding: “12px 16px”,
-textAlign: “center”,
-background: “rgba(102,255,102,.08)”
-}
-}, /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 14,
-color: “#66ff66”,
-fontWeight: 800
-}
-}, t(“bondOk”))), overLimit && /*#**PURE***/React.createElement(“div”, {
-style: {
-padding: “12px 16px”,
-textAlign: “center”,
-background: “rgba(255,68,68,.08)”
-}
-}, /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 14,
-color: “#ff4444”,
-fontWeight: 800
-}
-}, “\u26A0\uFE0F “, t(“hand”), hl, t(“discW”))), /*#**PURE***/React.createElement(“div”, {
-style: {
-flex: 1,
-padding: “14px 10px”,
-overflowY: “auto”
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 13,
-color: “rgba(255,255,255,.35)”,
-marginBottom: 8,
-paddingLeft: 4,
-fontWeight: 700
-}
-}, “\uD83C\uDCCF “, t(“hand”), “ (”, hand.length, t(“mai”), “) “, t(“tapS”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-flexWrap: “wrap”,
-gap: 8,
-justifyContent: “center”
-}
-}, hand.map((c, i) => /*#**PURE***/React.createElement(“div”, {
-key: c.id,
-style: {
-position: “relative”
-}
-}, /*#**PURE***/React.createElement(Card, {
-card: c,
-sel: sel.has(c.id),
-onTap: toggle,
-dl: i * .03
-}), overLimit && /*#**PURE***/React.createElement(“button”, {
-onClick: () => doDiscard(c.id),
-style: {
-position: “absolute”,
-top: -6,
-right: -6,
-width: 24,
-height: 24,
-borderRadius: 12,
-border: “none”,
-background: “#ff4444”,
-color: “#fff”,
-fontSize: 14,
-fontWeight: 900,
-cursor: “pointer”,
-display: “flex”,
-alignItems: “center”,
-justifyContent: “center”,
-boxShadow: “0 2px 8px rgba(255,68,68,.5)”,
-lineHeight: 1,
-zIndex: 2
-}
-}, “\xD7”)))), match && !cel && /*#**PURE***/React.createElement(“div”, {
-style: {
-marginTop: 16,
-padding: 16,
-borderRadius: 16,
-background: “rgba(102,255,102,.06)”,
-border: “2px solid rgba(102,255,102,.2)”,
-textAlign: “center”,
-animation: “su .3s ease”
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 14,
-color: “#66ff66”,
-fontWeight: 700,
-marginBottom: 2
-}
-}, t(“canB”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 32
-}
-}, match.e), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 20,
-fontWeight: 900,
-color: “#fff”
-}
-}, t(match.k)), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 14,
-color: “rgba(255,255,255,.5)”
-}
-}, match.f, “\uFF08+”, match.p, t(“pt”), “\uFF09”), match.sp && /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 12,
-color: “#CE93D8”,
-fontWeight: 800,
-marginTop: 2
-}
-}, “\uD83D\uDC8E “, t(“sp”)), /*#**PURE***/React.createElement(“button”, {
-onClick: doBond,
-style: {
-marginTop: 10,
-padding: “12px 36px”,
-borderRadius: 16,
-border: “none”,
-background: “linear-gradient(135deg,#00c853,#69f0ae)”,
-color: “#003d00”,
-fontSize: 18,
-fontWeight: 900,
-cursor: “pointer”,
-boxShadow: “0 4px 20px rgba(0,200,83,.4)”
-}
-}, t(“bBtn”))), /*#**PURE***/React.createElement(Inv, {
-state: state,
-myHand: hand
-}), /*#**PURE***/React.createElement(“div”, {
-style: {
-marginTop: 8
-}
-}, /*#**PURE***/React.createElement(“button”, {
-onClick: () => {
-setSC(!showC);
-SE.tap();
-},
-style: {
-width: “100%”,
-padding: 12,
-borderRadius: 14,
-border: “1px solid rgba(255,255,255,.1)”,
-background: “rgba(255,255,255,.05)”,
-color: “rgba(255,255,255,.5)”,
-fontSize: 14,
-fontWeight: 700,
-cursor: “pointer”
-}
-}, “\uD83D\uDCCB “, showC ? t(“cpC”) : t(“cpO”)), showC && /*#**PURE***/React.createElement(“div”, {
-style: {
-marginTop: 6,
-padding: 12,
-borderRadius: 14,
-background: “rgba(255,255,255,.03)”,
-border: “1px solid rgba(255,255,255,.06)”,
-maxHeight: 350,
-overflowY: “auto”,
-animation: “su .3s ease”
-}
-}, poss.length > 0 && /*#**PURE***/React.createElement(“div”, {
-style: {
-marginBottom: 12
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 13,
-color: “#66ff66”,
-fontWeight: 900,
-marginBottom: 6
-}
-}, t(“now”)), poss.map((c, i) => /*#**PURE***/React.createElement(“div”, {
-key: i,
-style: {
-padding: “8px 6px”,
-marginBottom: 6,
-borderRadius: 10,
-background: “rgba(102,255,102,.05)”,
-border: c.sp ? “2px solid #CE93D8” : “1px solid rgba(102,255,102,.15)”
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-justifyContent: “space-between”,
-marginBottom: 4
-}
-}, /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 14,
-color: “#66ff66”,
-fontWeight: 800
-}
-}, c.e, “ “, t(c.k)), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 14,
-fontWeight: 900,
-color: “#111”,
-background: c.sp ? “#CE93D8” : “#66ff66”,
-borderRadius: 8,
-padding: “2px 8px”
-}
-}, c.p, t(“pt”))), /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-gap: 3,
-flexWrap: “wrap”,
-alignItems: “center”
-}
-}, Object.entries(c.a).map(([s, n]) => {
-const inf = getAI(s);
-return Array.from({
-length: n
-}).map((_, j) => /*#**PURE***/React.createElement(“div”, {
-key: `${s}${j}`,
-style: {
-width: 32,
-height: 38,
-borderRadius: 7,
-background: “rgba(255,255,255,.06)”,
-border: `2px solid ${inf.g}44`,
-display: “flex”,
-flexDirection: “column”,
-alignItems: “center”,
-justifyContent: “center”
-}
-}, /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 10
-}
-}, inf.e), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 11,
-fontWeight: 900,
-color: inf.g
-}
-}, s)));
-}), /*#**PURE***/React.createElement(“span”, {
-style: {
-color: “rgba(102,255,102,.4)”
-}
-}, “\u2192”), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 12,
-color: “#66ff66”,
-fontWeight: 600
-}
-}, c.f))))), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 13,
-color: “rgba(255,255,255,.3)”,
-fontWeight: 900,
-marginBottom: 6
-}
-}, t(“all”)), […COMPS].sort((a, b) => a.p - b.p).map((c, i) => {
-const isLocked = !premium && !c.free;
-return /*#**PURE***/React.createElement(“div”, {
-key: i,
-style: {
-padding: “8px 6px”,
-marginBottom: 6,
-borderRadius: 10,
-background: isLocked ? “rgba(255,255,255,.01)” : “rgba(255,255,255,.02)”,
-border: c.sp ? “2px solid #CE93D8” : isLocked ? “1px solid rgba(255,255,255,.03)” : “1px solid rgba(255,255,255,.05)”,
-opacity: isLocked ? .5 : 1
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-justifyContent: “space-between”,
-marginBottom: 4
-}
-}, /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 13,
-color: isLocked ? “rgba(255,255,255,.3)” : “rgba(255,255,255,.6)”,
-fontWeight: 700
-}
-}, isLocked ? “🔒 “ : “”, c.e, “ “, t(c.k), c.sp && /*#**PURE***/React.createElement(“span”, {
-style: {
-marginLeft: 4,
-fontSize: 10,
-color: “#CE93D8”
-}
-}, t(“sp”))), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 14,
-fontWeight: 900,
-color: isLocked ? “rgba(255,255,255,.3)” : “#111”,
-background: isLocked ? “rgba(255,255,255,.08)” : c.sp ? “#CE93D8” : c.p >= 15 ? “#ff6633” : c.p >= 9 ? “#ffcc00” : c.p >= 5 ? “#ff9800” : “#66ff66”,
-borderRadius: 8,
-padding: “2px 8px”,
-minWidth: 40,
-textAlign: “center”
-}
-}, c.p, t(“pt”))), /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-gap: 3,
-flexWrap: “wrap”,
-alignItems: “center”
-}
-}, Object.entries(c.a).map(([s, n]) => {
-const inf = getAI(s);
-return Array.from({
-length: n
-}).map((_, j) => /*#**PURE***/React.createElement(“div”, {
-key: `${s}${j}`,
-style: {
-width: 32,
-height: 38,
-borderRadius: 7,
-background: isLocked ? “rgba(255,255,255,.02)” : “rgba(255,255,255,.04)”,
-border: `2px solid ${isLocked ? 'rgba(255,255,255,.06)' : inf.g + '33'}`,
-display: “flex”,
-flexDirection: “column”,
-alignItems: “center”,
-justifyContent: “center”
-}
-}, /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 10,
-opacity: isLocked ? .3 : 1
-}
-}, inf.e), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 11,
-fontWeight: 900,
-color: isLocked ? “rgba(255,255,255,.2)” : inf.g
-}
-}, s)));
-}), /*#**PURE***/React.createElement(“span”, {
-style: {
-color: “rgba(255,255,255,.15)”
-}
-}, “\u2192”), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 12,
-color: isLocked ? “rgba(255,255,255,.2)” : “rgba(255,255,255,.4)”,
-fontWeight: 600
-}
-}, c.f)));
-}))), /*#**PURE***/React.createElement(“div”, {
-style: {
-marginTop: 12
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 13,
-color: “rgba(255,255,255,.35)”,
-marginBottom: 4,
-paddingLeft: 4,
-fontWeight: 700
-}
-}, t(“scL”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-gap: 8,
-flexWrap: “wrap”
-}
-}, state.pl.map((p, i) => /*#**PURE***/React.createElement(“div”, {
-key: i,
-style: {
-padding: “8px 14px”,
-borderRadius: 12,
-background: i === pi ? “rgba(124,77,255,.12)” : “rgba(255,255,255,.03)”,
-border: i === pi ? “2px solid rgba(179,136,255,.4)” : “1px solid rgba(255,255,255,.06)”
-}
-}, /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 13,
-color: i === pi ? “#b388ff” : “rgba(255,255,255,.4)”,
-fontWeight: 700
-}
-}, p.name), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 15,
-color: “#ffcc00”,
-fontWeight: 900,
-marginLeft: 6
-}
-}, p.bonds.reduce((s, b) => s + b.p, 0), t(“pt”))))))), /*#**PURE***/React.createElement(“div”, {
-style: {
-padding: “12px 16px 28px”,
-borderTop: “1px solid rgba(255,255,255,.06)”,
-display: “flex”,
-gap: 10,
-background: “rgba(10,10,26,.95)”
-}
-}, !drew && !bonded ? state.deck.length > 0 ? /*#**PURE***/React.createElement(“button”, {
-onClick: doDraw,
-disabled: !!cel,
-style: {
-flex: 1,
-padding: 16,
-borderRadius: 18,
-border: “none”,
-background: “linear-gradient(135deg,#651fff,#b388ff)”,
-color: “#fff”,
-fontSize: 18,
-fontWeight: 900,
-cursor: cel ? “default” : “pointer”,
-boxShadow: “0 4px 20px rgba(101,31,255,.4)”
-}
-}, t(“drB”)) : /*#**PURE***/React.createElement(“button”, {
-onClick: onFinish,
-style: {
-flex: 1,
-padding: 16,
-borderRadius: 18,
-border: “none”,
-background: “linear-gradient(135deg,#ff5722,#ff9800)”,
-color: “#fff”,
-fontSize: 18,
-fontWeight: 900,
-cursor: “pointer”,
-boxShadow: “0 4px 20px rgba(255,87,34,.4)”,
-animation: “pg 1.5s ease-in-out infinite”,
-“–g”: “rgba(255,87,34,.5)”
-}
-}, t(“fin”)) : !overLimit && !cel && /*#**PURE***/React.createElement(“button”, {
-onClick: doPass,
-style: {
-flex: 1,
-padding: 16,
-borderRadius: 18,
-border: “none”,
-background: “linear-gradient(135deg,#37474f,#546e7a)”,
-color: “#fff”,
-fontSize: 18,
-fontWeight: 900,
-cursor: “pointer”
-}
-}, bonded ? t(“tEnd”) : poss.length > 0 ? t(“exp”) : t(“tEnd”))));
+  const t = useT();
+  const pl = state.pl[pi],
+    hand = pl.hand;
+  const [sel, setSel] = useState(new Set());
+  const [showC, setSC] = useState(false);
+  const [drew, setDrew] = useState(false);
+  const [drawnC, setDrC] = useState(null);
+  const [bonded, setBon] = useState(false);
+  const [cel, setCel] = useState(null);
+  const selC = hand.filter(c => sel.has(c.id));
+  const selCnt = cntA(selC);
+  const match = COMPS.find(c => (premium || c.free) && Object.entries(c.a).every(([s, n]) => (selCnt[s] || 0) === n) && Object.entries(selCnt).every(([s, n]) => (c.a[s] || 0) === n));
+  const hc = cntA(hand);
+  const poss = findP(hc, premium);
+  const psc = pl.bonds.reduce((s, b) => s + b.p, 0);
+  const overLimit = hand.length > hl;
+  const toggle = card => {
+    if (cel) return;
+    setSel(p => {
+      const n = new Set(p);
+      if (n.has(card.id)) {
+        n.delete(card.id);
+        SE.cardDesel();
+      } else {
+        n.add(card.id);
+        SE.cardSel();
+      }
+      return n;
+    });
+  };
+  const doDiscard = cardId => {
+    if (cel) return;
+    SE.discard();
+    onDiscard(cardId);
+  };
+  const doDraw = () => {
+    if (cel) return;
+    const d = onDraw();
+    if (d) {
+      SE.cardDraw();
+      setDrew(true);
+      setDrC(d);
+    }
+  };
+  const doBond = () => {
+    if (match && !cel) {
+      setCel(match);
+      onBond([...sel], match);
+      setSel(new Set());
+      setBon(true);
+    }
+  };
+  const doPass = () => {
+    if (cel) return;
+    SE.pass();
+    onPass();
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      minHeight: "100dvh",
+      display: "flex",
+      flexDirection: "column",
+      background: "linear-gradient(180deg,#0a0a1a,#0f1628)"
+    }
+  }, cel && /*#__PURE__*/React.createElement(Celeb, {
+    comp: cel,
+    onDone: () => setCel(null)
+  }), /*#__PURE__*/React.createElement(BgmBtn, null), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "14px 16px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      background: "rgba(255,255,255,.03)",
+      borderBottom: "1px solid rgba(255,255,255,.06)"
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 18,
+      fontWeight: 900,
+      color: "#b388ff"
+    }
+  }, pl.name), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 13,
+      color: "rgba(255,255,255,.3)",
+      marginLeft: 6
+    }
+  }, t("tl"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: "rgba(255,255,255,.3)",
+      fontWeight: 700
+    }
+  }, t("sc")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 22,
+      fontWeight: 900,
+      color: "#ffcc00"
+    }
+  }, psc)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: "rgba(255,255,255,.3)",
+      fontWeight: 700
+    }
+  }, t("dk")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 22,
+      fontWeight: 900,
+      color: state.deck.length > 20 ? "#b388ff" : "#ff4444"
+    }
+  }, state.deck.length)))), pl.bonds.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "8px 16px",
+      display: "flex",
+      flexWrap: "wrap",
+      gap: 6,
+      background: "rgba(255,255,255,.02)"
+    }
+  }, pl.bonds.map((b, i) => /*#__PURE__*/React.createElement(Badge, {
+    key: i,
+    comp: b
+  }))), drawnC && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "10px 16px",
+      display: "flex",
+      alignItems: "center",
+      gap: 10,
+      background: "rgba(124,77,255,.08)",
+      animation: "su .3s ease"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 13,
+      color: "#b388ff",
+      fontWeight: 700
+    }
+  }, t("drawn")), /*#__PURE__*/React.createElement(Card, {
+    card: drawnC
+  })), bonded && !cel && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "12px 16px",
+      textAlign: "center",
+      background: "rgba(102,255,102,.08)"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 14,
+      color: "#66ff66",
+      fontWeight: 800
+    }
+  }, t("bondOk"))), overLimit && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "12px 16px",
+      textAlign: "center",
+      background: "rgba(255,68,68,.08)"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 14,
+      color: "#ff4444",
+      fontWeight: 800
+    }
+  }, "\u26A0\uFE0F ", t("hand"), hl, t("discW"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      padding: "14px 10px",
+      overflowY: "auto"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: "rgba(255,255,255,.35)",
+      marginBottom: 8,
+      paddingLeft: 4,
+      fontWeight: 700
+    }
+  }, "\uD83C\uDCCF ", t("hand"), " (", hand.length, t("mai"), ") ", t("tapS")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexWrap: "wrap",
+      gap: 8,
+      justifyContent: "center"
+    }
+  }, hand.map((c, i) => /*#__PURE__*/React.createElement("div", {
+    key: c.id,
+    style: {
+      position: "relative"
+    }
+  }, /*#__PURE__*/React.createElement(Card, {
+    card: c,
+    sel: sel.has(c.id),
+    onTap: toggle,
+    dl: i * .03
+  }), overLimit && /*#__PURE__*/React.createElement("button", {
+    onClick: () => doDiscard(c.id),
+    style: {
+      position: "absolute",
+      top: -6,
+      right: -6,
+      width: 24,
+      height: 24,
+      borderRadius: 12,
+      border: "none",
+      background: "#ff4444",
+      color: "#fff",
+      fontSize: 14,
+      fontWeight: 900,
+      cursor: "pointer",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      boxShadow: "0 2px 8px rgba(255,68,68,.5)",
+      lineHeight: 1,
+      zIndex: 2
+    }
+  }, "\xD7")))), match && !cel && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 16,
+      padding: 16,
+      borderRadius: 16,
+      background: "rgba(102,255,102,.06)",
+      border: "2px solid rgba(102,255,102,.2)",
+      textAlign: "center",
+      animation: "su .3s ease"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      color: "#66ff66",
+      fontWeight: 700,
+      marginBottom: 2
+    }
+  }, t("canB")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 32
+    }
+  }, match.e), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 20,
+      fontWeight: 900,
+      color: "#fff"
+    }
+  }, t(match.k)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      color: "rgba(255,255,255,.5)"
+    }
+  }, match.f, "\uFF08+", match.p, t("pt"), "\uFF09"), match.sp && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: "#CE93D8",
+      fontWeight: 800,
+      marginTop: 2
+    }
+  }, "\uD83D\uDC8E ", t("sp")), /*#__PURE__*/React.createElement("button", {
+    onClick: doBond,
+    style: {
+      marginTop: 10,
+      padding: "12px 36px",
+      borderRadius: 16,
+      border: "none",
+      background: "linear-gradient(135deg,#00c853,#69f0ae)",
+      color: "#003d00",
+      fontSize: 18,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: "0 4px 20px rgba(0,200,83,.4)"
+    }
+  }, t("bBtn"))), /*#__PURE__*/React.createElement(Inv, {
+    state: state,
+    myHand: hand
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 8
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setSC(!showC);
+      SE.tap();
+    },
+    style: {
+      width: "100%",
+      padding: 12,
+      borderRadius: 14,
+      border: "1px solid rgba(255,255,255,.1)",
+      background: "rgba(255,255,255,.05)",
+      color: "rgba(255,255,255,.5)",
+      fontSize: 14,
+      fontWeight: 700,
+      cursor: "pointer"
+    }
+  }, "\uD83D\uDCCB ", showC ? t("cpC") : t("cpO")), showC && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 6,
+      padding: 12,
+      borderRadius: 14,
+      background: "rgba(255,255,255,.03)",
+      border: "1px solid rgba(255,255,255,.06)",
+      maxHeight: 350,
+      overflowY: "auto",
+      animation: "su .3s ease"
+    }
+  }, poss.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: "#66ff66",
+      fontWeight: 900,
+      marginBottom: 6
+    }
+  }, t("now")), poss.map((c, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      padding: "8px 6px",
+      marginBottom: 6,
+      borderRadius: 10,
+      background: "rgba(102,255,102,.05)",
+      border: c.sp ? "2px solid #CE93D8" : "1px solid rgba(102,255,102,.15)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      marginBottom: 4
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 14,
+      color: "#66ff66",
+      fontWeight: 800
+    }
+  }, c.e, " ", t(c.k)), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 14,
+      fontWeight: 900,
+      color: "#111",
+      background: c.sp ? "#CE93D8" : "#66ff66",
+      borderRadius: 8,
+      padding: "2px 8px"
+    }
+  }, c.p, t("pt"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 3,
+      flexWrap: "wrap",
+      alignItems: "center"
+    }
+  }, Object.entries(c.a).map(([s, n]) => {
+    const inf = getAI(s);
+    return Array.from({
+      length: n
+    }).map((_, j) => /*#__PURE__*/React.createElement("div", {
+      key: `${s}${j}`,
+      style: {
+        width: 32,
+        height: 38,
+        borderRadius: 7,
+        background: "rgba(255,255,255,.06)",
+        border: `2px solid ${inf.g}44`,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 10
+      }
+    }, inf.e), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 11,
+        fontWeight: 900,
+        color: inf.g
+      }
+    }, s)));
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "rgba(102,255,102,.4)"
+    }
+  }, "\u2192"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12,
+      color: "#66ff66",
+      fontWeight: 600
+    }
+  }, c.f))))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: "rgba(255,255,255,.3)",
+      fontWeight: 900,
+      marginBottom: 6
+    }
+  }, t("all")), [...COMPS].sort((a, b) => a.p - b.p).map((c, i) => {
+    const isLocked = !premium && !c.free;
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        padding: "8px 6px",
+        marginBottom: 6,
+        borderRadius: 10,
+        background: isLocked ? "rgba(255,255,255,.01)" : "rgba(255,255,255,.02)",
+        border: c.sp ? "2px solid #CE93D8" : isLocked ? "1px solid rgba(255,255,255,.03)" : "1px solid rgba(255,255,255,.05)",
+        opacity: isLocked ? .5 : 1
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        justifyContent: "space-between",
+        marginBottom: 4
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 13,
+        color: isLocked ? "rgba(255,255,255,.3)" : "rgba(255,255,255,.6)",
+        fontWeight: 700
+      }
+    }, isLocked ? "🔒 " : "", c.e, " ", t(c.k), c.sp && /*#__PURE__*/React.createElement("span", {
+      style: {
+        marginLeft: 4,
+        fontSize: 10,
+        color: "#CE93D8"
+      }
+    }, t("sp"))), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 14,
+        fontWeight: 900,
+        color: isLocked ? "rgba(255,255,255,.3)" : "#111",
+        background: isLocked ? "rgba(255,255,255,.08)" : c.sp ? "#CE93D8" : c.p >= 15 ? "#ff6633" : c.p >= 9 ? "#ffcc00" : c.p >= 5 ? "#ff9800" : "#66ff66",
+        borderRadius: 8,
+        padding: "2px 8px",
+        minWidth: 40,
+        textAlign: "center"
+      }
+    }, c.p, t("pt"))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        gap: 3,
+        flexWrap: "wrap",
+        alignItems: "center"
+      }
+    }, Object.entries(c.a).map(([s, n]) => {
+      const inf = getAI(s);
+      return Array.from({
+        length: n
+      }).map((_, j) => /*#__PURE__*/React.createElement("div", {
+        key: `${s}${j}`,
+        style: {
+          width: 32,
+          height: 38,
+          borderRadius: 7,
+          background: isLocked ? "rgba(255,255,255,.02)" : "rgba(255,255,255,.04)",
+          border: `2px solid ${isLocked ? 'rgba(255,255,255,.06)' : inf.g + '33'}`,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center"
+        }
+      }, /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontSize: 10,
+          opacity: isLocked ? .3 : 1
+        }
+      }, inf.e), /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontSize: 11,
+          fontWeight: 900,
+          color: isLocked ? "rgba(255,255,255,.2)" : inf.g
+        }
+      }, s)));
+    }), /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: "rgba(255,255,255,.15)"
+      }
+    }, "\u2192"), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 12,
+        color: isLocked ? "rgba(255,255,255,.2)" : "rgba(255,255,255,.4)",
+        fontWeight: 600
+      }
+    }, c.f)));
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: "rgba(255,255,255,.35)",
+      marginBottom: 4,
+      paddingLeft: 4,
+      fontWeight: 700
+    }
+  }, t("scL")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8,
+      flexWrap: "wrap"
+    }
+  }, state.pl.map((p, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      padding: "8px 14px",
+      borderRadius: 12,
+      background: i === pi ? "rgba(124,77,255,.12)" : "rgba(255,255,255,.03)",
+      border: i === pi ? "2px solid rgba(179,136,255,.4)" : "1px solid rgba(255,255,255,.06)"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 13,
+      color: i === pi ? "#b388ff" : "rgba(255,255,255,.4)",
+      fontWeight: 700
+    }
+  }, p.name), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 15,
+      color: "#ffcc00",
+      fontWeight: 900,
+      marginLeft: 6
+    }
+  }, p.bonds.reduce((s, b) => s + b.p, 0), t("pt"))))))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "12px 16px 28px",
+      borderTop: "1px solid rgba(255,255,255,.06)",
+      display: "flex",
+      gap: 10,
+      background: "rgba(10,10,26,.95)"
+    }
+  }, !drew && !bonded ? state.deck.length > 0 ? /*#__PURE__*/React.createElement("button", {
+    onClick: doDraw,
+    disabled: !!cel,
+    style: {
+      flex: 1,
+      padding: 16,
+      borderRadius: 18,
+      border: "none",
+      background: "linear-gradient(135deg,#651fff,#b388ff)",
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: 900,
+      cursor: cel ? "default" : "pointer",
+      boxShadow: "0 4px 20px rgba(101,31,255,.4)"
+    }
+  }, t("drB")) : /*#__PURE__*/React.createElement("button", {
+    onClick: onFinish,
+    style: {
+      flex: 1,
+      padding: 16,
+      borderRadius: 18,
+      border: "none",
+      background: "linear-gradient(135deg,#ff5722,#ff9800)",
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: "0 4px 20px rgba(255,87,34,.4)",
+      animation: "pg 1.5s ease-in-out infinite",
+      "--g": "rgba(255,87,34,.5)"
+    }
+  }, t("fin")) : !overLimit && !cel && /*#__PURE__*/React.createElement("button", {
+    onClick: doPass,
+    style: {
+      flex: 1,
+      padding: 16,
+      borderRadius: 18,
+      border: "none",
+      background: "linear-gradient(135deg,#37474f,#546e7a)",
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: 900,
+      cursor: "pointer"
+    }
+  }, bonded ? t("tEnd") : poss.length > 0 ? t("exp") : t("tEnd"))));
 }
 
 /* ═══════════════════════════════════════════════════════════ */
 /*  🏆 派手な結果画面                                          */
 /* ═══════════════════════════════════════════════════════════ */
 function Result({
-state,
-onRestart,
-isCpu
+  state,
+  onRestart,
+  isCpu
 }) {
-const t = useT();
-const [ph, setPh] = useState(0);
-const ranks = state.pl.map((p, i) => ({
-…p,
-idx: i,
-sc: p.bonds.reduce((s, b) => s + b.p, 0)
-})).sort((a, b) => b.sc - a.sc);
-const win = ranks[0];
-const isDraw = ranks.length > 1 && ranks[0].sc === ranks[1].sc;
-const diff = ranks.length > 1 ? ranks[0].sc - ranks[1].sc : 0;
-const med = [“🥇”, “🥈”, “🥉”, “4️⃣”];
-// player 0 is always the human in CPU mode
-const playerLost = isCpu && !isDraw && ranks[0].idx !== 0;
-const playerWon = !isDraw && (!isCpu || ranks[0].idx === 0);
-useEffect(() => {
-BGM.stop();
-SE.drum();
-const t1 = setTimeout(() => {
-setPh(1);
-playerLost ? SE.lose() : SE.victory();
-}, 1500);
-const t2 = setTimeout(() => setPh(2), 2800);
-const t3 = setTimeout(() => setPh(3), 3600);
-const t4 = setTimeout(() => setPh(4), 4200);
-return () => {
-[t1, t2, t3, t4].forEach(clearTimeout);
-};
-}, []);
-const conf = useRef(Array.from({
-length: 40
-}, (*, i) => ({
-id: i,
-x: Math.random() * 100,
-dl: Math.random() * 3,
-dur: 2 + Math.random() * 3,
-co: [”#ff4444”, “#ffcc00”, “#66ff66”, “#448aff”, “#b388ff”, “#ff9800”, “#00e5ff”, “#CE93D8”][i % 8],
-sz: 6 + Math.random() * 8
-}))).current;
-const fws = useRef(Array.from({
-length: 12
-}, (*, i) => ({
-id: i,
-x: 15 + Math.random() * 70,
-y: 10 + Math.random() * 40,
-dl: .5 + Math.random() * 2.5,
-sz: 40 + Math.random() * 60,
-co: [”#ff4444”, “#ffcc00”, “#66ff66”, “#b388ff”, “#00e5ff”, “#ff9800”][i % 6]
-}))).current;
-const raindrops = useRef(Array.from({
-length: 30
-}, (_, i) => ({
-id: i,
-x: Math.random() * 100,
-dl: Math.random() * 4,
-dur: 1.5 + Math.random() * 2,
-sz: 2 + Math.random() * 3
-}))).current;
-const bgWin = “radial-gradient(ellipse at 50% 30%,rgba(255,204,0,.1) 0%,transparent 50%),linear-gradient(180deg,#0a0a1a,#0f1628)”;
-const bgLose = “radial-gradient(ellipse at 50% 30%,rgba(100,100,180,.08) 0%,transparent 50%),linear-gradient(180deg,#08081a,#0a0e20)”;
-const bgTie = “radial-gradient(ellipse at 50% 30%,rgba(180,180,180,.08) 0%,transparent 50%),linear-gradient(180deg,#0a0a1a,#0f1628)”;
-return /*#**PURE***/React.createElement(“div”, {
-style: {
-minHeight: “100dvh”,
-display: “flex”,
-flexDirection: “column”,
-alignItems: “center”,
-padding: 24,
-paddingTop: 20,
-background: playerLost ? bgLose : isDraw ? bgTie : bgWin,
-position: “relative”,
-overflow: “hidden”
-}
-}, /*#**PURE***/React.createElement(Orbs, {
-n: 10,
-co: playerLost ? “rgba(100,130,200,.04)” : “rgba(255,204,0,.04)”
-}), ph >= 1 && playerWon && conf.map(c => /*#**PURE***/React.createElement(“div”, {
-key: c.id,
-style: {
-position: “fixed”,
-left: `${c.x}%`,
-top: -20,
-width: c.sz,
-height: c.sz * 1.4,
-background: c.co,
-borderRadius: 2,
-opacity: 0,
-animation: `cf ${c.dur}s ${c.dl}s linear infinite`,
-zIndex: 5
-}
-})), ph >= 1 && playerWon && fws.map(f => /*#**PURE***/React.createElement(“div”, {
-key: f.id,
-style: {
-position: “fixed”,
-left: `${f.x}%`,
-top: `${f.y}%`,
-width: f.sz,
-height: f.sz,
-borderRadius: “50%”,
-border: `3px solid ${f.co}`,
-opacity: 0,
-animation: `fw 1.2s ${f.dl}s ease-out infinite`,
-boxShadow: `0 0 20px ${f.co}`,
-zIndex: 4
-}
-})), ph >= 1 && playerLost && raindrops.map(r => /*#**PURE***/React.createElement(“div”, {
-key: r.id,
-style: {
-position: “fixed”,
-left: `${r.x}%`,
-top: 0,
-width: r.sz,
-height: r.sz * 8,
-background: “linear-gradient(180deg,transparent,rgba(150,180,220,.4))”,
-borderRadius: “0 0 2px 2px”,
-opacity: 0,
-animation: `rain ${r.dur}s ${r.dl}s linear infinite`,
-zIndex: 5
-}
-})), /*#**PURE***/React.createElement(“div”, {
-style: {
-position: “relative”,
-zIndex: 10,
-display: “flex”,
-flexDirection: “column”,
-alignItems: “center”,
-width: “100%”,
-maxWidth: 380
-}
-}, ph === 0 && /*#**PURE***/React.createElement(“div”, {
-style: {
-textAlign: “center”,
-marginTop: “30vh”
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 48,
-animation: “fl .5s ease-in-out infinite”
-}
-}, “\uD83E\uDD41”), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 20,
-fontWeight: 900,
-color: “rgba(255,255,255,.6)”,
-marginTop: 12,
-animation: “kt .5s ease-in-out infinite”
-}
-}, t(“res”))), ph >= 1 && playerWon && /*#**PURE***/React.createElement(React.Fragment, null, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 80,
-animation: “crb .8s cubic-bezier(.34,1.56,.64,1) both”,
-filter: “drop-shadow(0 8px 30px rgba(255,204,0,.5))”,
-marginBottom: 8
-}
-}, “\uD83D\uDC51”), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 36,
-fontWeight: 900,
-color: “#fff”,
-“–gc”: “rgba(255,204,0,.6)”,
-animation: “gp 2s ease-in-out infinite”,
-textAlign: “center”
-}
-}, win.name, /*#**PURE***/React.createElement(“br”, null), /*#**PURE***/React.createElement(“span”, {
-style: {
-color: “#ffcc00”
-}
-}, t(“win”)))), ph >= 1 && playerLost && /*#**PURE***/React.createElement(React.Fragment, null, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 80,
-animation: “sadBounce .8s ease both”,
-filter: “drop-shadow(0 4px 15px rgba(100,130,200,.3))”,
-marginBottom: 8
-}
-}, “\uD83D\uDE22”), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 30,
-fontWeight: 900,
-color: “rgba(150,180,220,.9)”,
-textAlign: “center”,
-animation: “su .5s ease both”
-}
-}, t(“loseMsg”)), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 16,
-color: “rgba(150,180,220,.5)”,
-marginTop: 6,
-animation: “su .5s .2s ease both”,
-opacity: 0
-}
-}, win.name, t(“win”))), ph >= 1 && isDraw && /*#**PURE***/React.createElement(React.Fragment, null, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 80,
-animation: “crb .8s cubic-bezier(.34,1.56,.64,1) both”,
-marginBottom: 8
-}
-}, “\uD83E\uDD1D”), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 36,
-fontWeight: 900,
-color: “rgba(200,200,200,.9)”,
-textAlign: “center”
-}
-}, t(“tie”))), ph >= 2 && /*#**PURE***/React.createElement(“div”, {
-style: {
-marginTop: 16,
-animation: “sp .5s cubic-bezier(.34,1.56,.64,1) both”
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 64,
-fontWeight: 900,
-color: playerLost ? “rgba(150,180,220,.7)” : “#ffcc00”,
-textShadow: playerLost ? “none” : “0 0 40px rgba(255,204,0,.5),0 0 80px rgba(255,204,0,.3)”,
-textAlign: “center”
-}
-}, win.sc, /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 28
-}
-}, t(“pt”))), !isDraw && diff > 0 && /*#**PURE***/React.createElement(“div”, {
-style: {
-textAlign: “center”,
-marginTop: 4,
-fontSize: 16,
-color: playerLost ? “rgba(150,180,220,.5)” : “#ff9800”,
-fontWeight: 800,
-animation: “su .4s .3s ease both”,
-opacity: 0
-}
-}, playerLost ? `📉 ${diff}${t("pdif")}` : `🔥 ${diff}${t("more")}`)), ph >= 3 && /*#**PURE***/React.createElement(“div”, {
-style: {
-width: “100%”,
-display: “flex”,
-flexDirection: “column”,
-gap: 12,
-marginTop: 20
-}
-}, ranks.map((p, r) => /*#**PURE***/React.createElement(“div”, {
-key: p.idx,
-style: {
-padding: 16,
-borderRadius: 18,
-background: r === 0 ? playerLost ? “rgba(100,130,200,.06)” : “rgba(255,204,0,.08)” : “rgba(255,255,255,.03)”,
-border: r === 0 ? playerLost ? “2px solid rgba(100,130,200,.2)” : “2px solid rgba(255,204,0,.3)” : “1px solid rgba(255,255,255,.06)”,
-boxShadow: r === 0 ? playerLost ? “0 4px 20px rgba(100,130,200,.1)” : “0 4px 30px rgba(255,204,0,.2)” : “none”,
-animation: `su .4s ${r * .15}s ease both`,
-opacity: 0
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-alignItems: “center”,
-justifyContent: “space-between”,
-marginBottom: 8
-}
-}, /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-alignItems: “center”,
-gap: 10
-}
-}, /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 28
-}
-}, med[r] || “”), /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 20,
-fontWeight: 900,
-color: “#fff”
-}
-}, p.name)), /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 26,
-fontWeight: 900,
-color: r === 0 ? playerLost ? “rgba(150,180,220,.7)” : “#ffcc00” : “rgba(255,255,255,.6)”,
-textShadow: r === 0 && !playerLost ? “0 0 16px rgba(255,204,0,.5)” : “none”
-}
-}, p.sc, /*#**PURE***/React.createElement(“span”, {
-style: {
-fontSize: 14
-}
-}, t(“pt”)))), r > 0 && !isDraw && /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 12,
-color: playerLost ? “rgba(150,180,220,.4)” : “#ff6633”,
-fontWeight: 700,
-marginBottom: 6
-}
-}, “\uD83D\uDCCA “, t(“pdif”), “: “, ranks[0].sc - p.sc, t(“pt”)), p.bonds.length > 0 ? /*#**PURE***/React.createElement(“div”, {
-style: {
-display: “flex”,
-flexWrap: “wrap”,
-gap: 4
-}
-}, p.bonds.map((b, i) => /*#**PURE***/React.createElement(Badge, {
-key: i,
-comp: b
-}))) : /*#**PURE***/React.createElement(“div”, {
-style: {
-fontSize: 13,
-color: “rgba(255,255,255,.2)”
-}
-}, t(“noB”))))), ph >= 4 && /*#**PURE***/React.createElement(React.Fragment, null, playerLost && /*#**PURE***/React.createElement(“div”, {
-style: {
-marginTop: 16,
-fontSize: 16,
-color: “rgba(150,180,220,.6)”,
-fontWeight: 700,
-animation: “su .4s ease both”,
-textAlign: “center”
-}
-}, t(“retry”)), /*#**PURE***/React.createElement(“button”, {
-onClick: onRestart,
-style: {
-marginTop: playerLost ? 12 : 28,
-padding: “16px 48px”,
-borderRadius: 20,
-border: “none”,
-background: playerLost ? “linear-gradient(135deg,#37474f,#546e7a)” : “linear-gradient(135deg,#651fff,#b388ff)”,
-color: “#fff”,
-fontSize: 20,
-fontWeight: 900,
-cursor: “pointer”,
-boxShadow: playerLost ? “0 4px 20px rgba(55,71,79,.4)” : “0 4px 30px rgba(101,31,255,.4)”,
-animation: “su .4s ease both”
-}
-}, t(“again”)))));
+  const t = useT();
+  const [ph, setPh] = useState(0);
+  const ranks = state.pl.map((p, i) => ({
+    ...p,
+    idx: i,
+    sc: p.bonds.reduce((s, b) => s + b.p, 0)
+  })).sort((a, b) => b.sc - a.sc);
+  const win = ranks[0];
+  const isDraw = ranks.length > 1 && ranks[0].sc === ranks[1].sc;
+  const diff = ranks.length > 1 ? ranks[0].sc - ranks[1].sc : 0;
+  const med = ["🥇", "🥈", "🥉", "4️⃣"];
+  // player 0 is always the human in CPU mode
+  const playerLost = isCpu && !isDraw && ranks[0].idx !== 0;
+  const playerWon = !isDraw && (!isCpu || ranks[0].idx === 0);
+  useEffect(() => {
+    BGM.stop();
+    SE.drum();
+    const t1 = setTimeout(() => {
+      setPh(1);
+      playerLost ? SE.lose() : SE.victory();
+    }, 1500);
+    const t2 = setTimeout(() => setPh(2), 2800);
+    const t3 = setTimeout(() => setPh(3), 3600);
+    const t4 = setTimeout(() => setPh(4), 4200);
+    return () => {
+      [t1, t2, t3, t4].forEach(clearTimeout);
+    };
+  }, []);
+  const conf = useRef(Array.from({
+    length: 40
+  }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    dl: Math.random() * 3,
+    dur: 2 + Math.random() * 3,
+    co: ["#ff4444", "#ffcc00", "#66ff66", "#448aff", "#b388ff", "#ff9800", "#00e5ff", "#CE93D8"][i % 8],
+    sz: 6 + Math.random() * 8
+  }))).current;
+  const fws = useRef(Array.from({
+    length: 12
+  }, (_, i) => ({
+    id: i,
+    x: 15 + Math.random() * 70,
+    y: 10 + Math.random() * 40,
+    dl: .5 + Math.random() * 2.5,
+    sz: 40 + Math.random() * 60,
+    co: ["#ff4444", "#ffcc00", "#66ff66", "#b388ff", "#00e5ff", "#ff9800"][i % 6]
+  }))).current;
+  const raindrops = useRef(Array.from({
+    length: 30
+  }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    dl: Math.random() * 4,
+    dur: 1.5 + Math.random() * 2,
+    sz: 2 + Math.random() * 3
+  }))).current;
+  const bgWin = "radial-gradient(ellipse at 50% 30%,rgba(255,204,0,.1) 0%,transparent 50%),linear-gradient(180deg,#0a0a1a,#0f1628)";
+  const bgLose = "radial-gradient(ellipse at 50% 30%,rgba(100,100,180,.08) 0%,transparent 50%),linear-gradient(180deg,#08081a,#0a0e20)";
+  const bgTie = "radial-gradient(ellipse at 50% 30%,rgba(180,180,180,.08) 0%,transparent 50%),linear-gradient(180deg,#0a0a1a,#0f1628)";
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      minHeight: "100dvh",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      padding: 24,
+      paddingTop: 20,
+      background: playerLost ? bgLose : isDraw ? bgTie : bgWin,
+      position: "relative",
+      overflow: "hidden"
+    }
+  }, /*#__PURE__*/React.createElement(Orbs, {
+    n: 10,
+    co: playerLost ? "rgba(100,130,200,.04)" : "rgba(255,204,0,.04)"
+  }), ph >= 1 && playerWon && conf.map(c => /*#__PURE__*/React.createElement("div", {
+    key: c.id,
+    style: {
+      position: "fixed",
+      left: `${c.x}%`,
+      top: -20,
+      width: c.sz,
+      height: c.sz * 1.4,
+      background: c.co,
+      borderRadius: 2,
+      opacity: 0,
+      animation: `cf ${c.dur}s ${c.dl}s linear infinite`,
+      zIndex: 5
+    }
+  })), ph >= 1 && playerWon && fws.map(f => /*#__PURE__*/React.createElement("div", {
+    key: f.id,
+    style: {
+      position: "fixed",
+      left: `${f.x}%`,
+      top: `${f.y}%`,
+      width: f.sz,
+      height: f.sz,
+      borderRadius: "50%",
+      border: `3px solid ${f.co}`,
+      opacity: 0,
+      animation: `fw 1.2s ${f.dl}s ease-out infinite`,
+      boxShadow: `0 0 20px ${f.co}`,
+      zIndex: 4
+    }
+  })), ph >= 1 && playerLost && raindrops.map(r => /*#__PURE__*/React.createElement("div", {
+    key: r.id,
+    style: {
+      position: "fixed",
+      left: `${r.x}%`,
+      top: 0,
+      width: r.sz,
+      height: r.sz * 8,
+      background: "linear-gradient(180deg,transparent,rgba(150,180,220,.4))",
+      borderRadius: "0 0 2px 2px",
+      opacity: 0,
+      animation: `rain ${r.dur}s ${r.dl}s linear infinite`,
+      zIndex: 5
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "relative",
+      zIndex: 10,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      width: "100%",
+      maxWidth: 380
+    }
+  }, ph === 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      marginTop: "30vh"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 48,
+      animation: "fl .5s ease-in-out infinite"
+    }
+  }, "\uD83E\uDD41"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 20,
+      fontWeight: 900,
+      color: "rgba(255,255,255,.6)",
+      marginTop: 12,
+      animation: "kt .5s ease-in-out infinite"
+    }
+  }, t("res"))), ph >= 1 && playerWon && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 80,
+      animation: "crb .8s cubic-bezier(.34,1.56,.64,1) both",
+      filter: "drop-shadow(0 8px 30px rgba(255,204,0,.5))",
+      marginBottom: 8
+    }
+  }, "\uD83D\uDC51"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 36,
+      fontWeight: 900,
+      color: "#fff",
+      "--gc": "rgba(255,204,0,.6)",
+      animation: "gp 2s ease-in-out infinite",
+      textAlign: "center"
+    }
+  }, win.name, /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "#ffcc00"
+    }
+  }, t("win")))), ph >= 1 && playerLost && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 80,
+      animation: "sadBounce .8s ease both",
+      filter: "drop-shadow(0 4px 15px rgba(100,130,200,.3))",
+      marginBottom: 8
+    }
+  }, "\uD83D\uDE22"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 30,
+      fontWeight: 900,
+      color: "rgba(150,180,220,.9)",
+      textAlign: "center",
+      animation: "su .5s ease both"
+    }
+  }, t("loseMsg")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 16,
+      color: "rgba(150,180,220,.5)",
+      marginTop: 6,
+      animation: "su .5s .2s ease both",
+      opacity: 0
+    }
+  }, win.name, t("win"))), ph >= 1 && isDraw && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 80,
+      animation: "crb .8s cubic-bezier(.34,1.56,.64,1) both",
+      marginBottom: 8
+    }
+  }, "\uD83E\uDD1D"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 36,
+      fontWeight: 900,
+      color: "rgba(200,200,200,.9)",
+      textAlign: "center"
+    }
+  }, t("tie"))), ph >= 2 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 16,
+      animation: "sp .5s cubic-bezier(.34,1.56,.64,1) both"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 64,
+      fontWeight: 900,
+      color: playerLost ? "rgba(150,180,220,.7)" : "#ffcc00",
+      textShadow: playerLost ? "none" : "0 0 40px rgba(255,204,0,.5),0 0 80px rgba(255,204,0,.3)",
+      textAlign: "center"
+    }
+  }, win.sc, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 28
+    }
+  }, t("pt"))), !isDraw && diff > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      marginTop: 4,
+      fontSize: 16,
+      color: playerLost ? "rgba(150,180,220,.5)" : "#ff9800",
+      fontWeight: 800,
+      animation: "su .4s .3s ease both",
+      opacity: 0
+    }
+  }, playerLost ? `📉 ${diff}${t("pdif")}` : `🔥 ${diff}${t("more")}`)), ph >= 3 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      gap: 12,
+      marginTop: 20
+    }
+  }, ranks.map((p, r) => /*#__PURE__*/React.createElement("div", {
+    key: p.idx,
+    style: {
+      padding: 16,
+      borderRadius: 18,
+      background: r === 0 ? playerLost ? "rgba(100,130,200,.06)" : "rgba(255,204,0,.08)" : "rgba(255,255,255,.03)",
+      border: r === 0 ? playerLost ? "2px solid rgba(100,130,200,.2)" : "2px solid rgba(255,204,0,.3)" : "1px solid rgba(255,255,255,.06)",
+      boxShadow: r === 0 ? playerLost ? "0 4px 20px rgba(100,130,200,.1)" : "0 4px 30px rgba(255,204,0,.2)" : "none",
+      animation: `su .4s ${r * .15}s ease both`,
+      opacity: 0
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginBottom: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 28
+    }
+  }, med[r] || ""), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 20,
+      fontWeight: 900,
+      color: "#fff"
+    }
+  }, p.name)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 26,
+      fontWeight: 900,
+      color: r === 0 ? playerLost ? "rgba(150,180,220,.7)" : "#ffcc00" : "rgba(255,255,255,.6)",
+      textShadow: r === 0 && !playerLost ? "0 0 16px rgba(255,204,0,.5)" : "none"
+    }
+  }, p.sc, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 14
+    }
+  }, t("pt")))), r > 0 && !isDraw && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: playerLost ? "rgba(150,180,220,.4)" : "#ff6633",
+      fontWeight: 700,
+      marginBottom: 6
+    }
+  }, "\uD83D\uDCCA ", t("pdif"), ": ", ranks[0].sc - p.sc, t("pt")), p.bonds.length > 0 ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexWrap: "wrap",
+      gap: 4
+    }
+  }, p.bonds.map((b, i) => /*#__PURE__*/React.createElement(Badge, {
+    key: i,
+    comp: b
+  }))) : /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: "rgba(255,255,255,.2)"
+    }
+  }, t("noB"))))), ph >= 4 && /*#__PURE__*/React.createElement(React.Fragment, null, playerLost && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 16,
+      fontSize: 16,
+      color: "rgba(150,180,220,.6)",
+      fontWeight: 700,
+      animation: "su .4s ease both",
+      textAlign: "center"
+    }
+  }, t("retry")), /*#__PURE__*/React.createElement("button", {
+    onClick: onRestart,
+    style: {
+      marginTop: playerLost ? 12 : 28,
+      padding: "16px 48px",
+      borderRadius: 20,
+      border: "none",
+      background: playerLost ? "linear-gradient(135deg,#37474f,#546e7a)" : "linear-gradient(135deg,#651fff,#b388ff)",
+      color: "#fff",
+      fontSize: 20,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: playerLost ? "0 4px 20px rgba(55,71,79,.4)" : "0 4px 30px rgba(101,31,255,.4)",
+      animation: "su .4s ease both"
+    }
+  }, t("again")))));
 }
 
 /* ═══════════════════════════════════════════════════════════ */
 /*  メインアプリ                                               */
 /* ═══════════════════════════════════════════════════════════ */
 window.__App = function App() {
-const [scr, setScr] = useState(“title”);
-const [gs, setGS] = useState(null);
-const [cp, setCP] = useState(0);
-const [sp, setSP] = useState(false);
-const [tc, setTC] = useState(0);
-const [lrs, setLRS] = useState(false);
-const [lrsp, setLRSP] = useState(-1);
-const [isCpu, setIC] = useState(false);
-const [cpuP, setCpuP] = useState(new Set());
-const [cpuD, setCpuD] = useState(“normal”);
-const [cpuOv, setCpuOv] = useState(null);
-const [hl, setHL] = useState(7);
-const [lang, setLang] = useState(“kanji”);
-const [premium, setPremium] = useState(true); // App Store公開時にfalseに戻す
+  const [scr, setScr] = useState("title");
+  const [gs, setGS] = useState(null);
+  const [cp, setCP] = useState(0);
+  const [sp, setSP] = useState(false);
+  const [tc, setTC] = useState(0);
+  const [lrs, setLRS] = useState(false);
+  const [lrsp, setLRSP] = useState(-1);
+  const [isCpu, setIC] = useState(false);
+  const [cpuP, setCpuP] = useState(new Set());
+  const [cpuD, setCpuD] = useState("normal");
+  const [cpuOv, setCpuOv] = useState(null);
+  const [hl, setHL] = useState(7);
+  const [lang, setLang] = useState("kanji");
+  const [premium, setPremium] = useState(true); // App Store公開時にfalseに戻す
 
-const init = (pn, cs, d, lim, testCards) => {
-let deck = buildDeck();
-if (testCards) deck = deck.slice(0, testCards);
-const pl = pn.map(name => ({
-name,
-hand: [],
-bonds: []
-}));
-const h = lim || 7;
-setHL(h);
-setGS({
-deck,
-pl,
-dp: [],
-hl: h
-});
-setCP(0);
-setSP(!cs || !cs.has(0));
-setScr(“game”);
-setTC(0);
-setLRS(false);
-setLRSP(-1);
-setCpuP(cs || new Set());
-setIC(!!cs);
-setCpuD(d || “normal”);
-setCpuOv(null);
+  const init = (pn, cs, d, lim, testCards) => {
+    let deck = buildDeck();
+    if (testCards) deck = deck.slice(0, testCards);
+    const pl = pn.map(name => ({
+      name,
+      hand: [],
+      bonds: []
+    }));
+    const h = lim || 7;
+    setHL(h);
+    setGS({
+      deck,
+      pl,
+      dp: [],
+      hl: h
+    });
+    setCP(0);
+    setSP(!cs || !cs.has(0));
+    setScr("game");
+    setTC(0);
+    setLRS(false);
+    setLRSP(-1);
+    setCpuP(cs || new Set());
+    setIC(!!cs);
+    setCpuD(d || "normal");
+    setCpuOv(null);
+  };
+  const draw = useCallback(() => {
+    if (!gs || gs.deck.length === 0) return null;
+    const nd = [...gs.deck],
+      dr = nd.pop();
+    const np = gs.pl.map((p, i) => i === cp ? {
+      ...p,
+      hand: [...p.hand, dr]
+    } : p);
+    setGS({
+      ...gs,
+      deck: nd,
+      pl: np
+    });
+    if (nd.length === 0 && !lrs) {
+      setLRS(true);
+      setLRSP(cp);
+    }
+    return dr;
+  }, [gs, cp, lrs]);
+  const bond = useCallback((ids, comp) => {
+    const s = new Set(ids);
+    setGS(prev => ({
+      ...prev,
+      pl: prev.pl.map((p, i) => i === cp ? {
+        ...p,
+        hand: p.hand.filter(c => !s.has(c.id)),
+        bonds: [...p.bonds, comp]
+      } : p)
+    }));
+  }, [cp]);
+  const disc = useCallback(cid => {
+    setGS(prev => {
+      let d = null;
+      const np = prev.pl.map((p, i) => {
+        if (i === cp) {
+          d = p.hand.find(c => c.id === cid);
+          return {
+            ...p,
+            hand: p.hand.filter(c => c.id !== cid)
+          };
+        }
+        return p;
+      });
+      return {
+        ...prev,
+        pl: np,
+        dp: [...(prev.dp || []), ...(d ? [d] : [])]
+      };
+    });
+  }, [cp]);
+  const goNext = useCallback((g, fi) => {
+    const n = g.pl.length,
+      nx = (fi + 1) % n;
+    setTC(t => t + 1);
+    if (lrs && nx === (lrsp + 1) % n) {
+      setScr("result");
+      return;
+    }
+    setCP(nx);
+    if (cpuP.has(nx)) {
+      setSP(false);
+      setTimeout(() => runCpu(g, nx), 600);
+    } else if (isCpu) {
+      setSP(false);
+    } else {
+      setSP(true);
+    }
+  }, [lrs, lrsp, cpuP, isCpu]);
+  const advance = useCallback(() => {
+    setGS(g => {
+      if (g) goNext(g, cp);
+      return g;
+    });
+  }, [cp, goNext]);
+  const runCpu = useCallback((ps, ci) => {
+    setGS(cs => {
+      const g = cs || ps;
+      const cn = g.pl[ci].name;
+      if (g.deck.length > 0) {
+        const nd = [...g.deck],
+          dr = nd.pop();
+        const np = g.pl.map((p, i) => i === ci ? {
+          ...p,
+          hand: [...p.hand, dr]
+        } : p);
+        let ns = {
+          ...g,
+          deck: nd,
+          pl: np
+        };
+        if (nd.length === 0 && !lrs) {
+          setLRS(true);
+          setLRSP(ci);
+        }
+        const uh = np[ci].hand;
+        if (uh.length > (g.hl || 7)) {
+          const di = cpuDiscard(uh, cpuD),
+            dc = uh.find(c => c.id === di);
+          ns = {
+            ...ns,
+            pl: ns.pl.map((p, i) => i === ci ? {
+              ...p,
+              hand: uh.filter(c => c.id !== di)
+            } : p),
+            dp: [...(ns.dp || []), ...(dc ? [dc] : [])]
+          };
+        }
+        const fh = ns.pl[ci].hand,
+          bc = cpuBond(fh, cpuD, premium);
+        if (bc) {
+          const ids = cpuCards(fh, bc),
+            idS = new Set(ids);
+          ns = {
+            ...ns,
+            pl: ns.pl.map((p, i) => i === ci ? {
+              ...p,
+              hand: p.hand.filter(c => !idS.has(c.id)),
+              bonds: [...p.bonds, bc]
+            } : p)
+          };
+          setCpuOv({
+            name: cn,
+            action: "bond",
+            comp: bc
+          });
+          const fs = ns;
+          setTimeout(() => {
+            setCpuOv(null);
+            setCP(ci);
+            setTimeout(() => {
+              setGS(fs);
+              goNext(fs, ci);
+            }, 100);
+          }, 2200);
+          return ns;
+        } else {
+          setCpuOv({
+            name: cn,
+            action: "pass"
+          });
+          const fs = ns;
+          setTimeout(() => {
+            setCpuOv(null);
+            setCP(ci);
+            setTimeout(() => {
+              setGS(fs);
+              goNext(fs, ci);
+            }, 100);
+          }, 1400);
+          return ns;
+        }
+      } else {
+        setCpuOv({
+          name: cn,
+          action: "pass"
+        });
+        setTimeout(() => {
+          setCpuOv(null);
+          setScr("result");
+        }, 1200);
+      }
+      return g;
+    });
+  }, [cpuD, lrs, lrsp, goNext]);
+  const restart = () => {
+    setScr("title");
+    setGS(null);
+    setCP(0);
+    setIC(false);
+    setCpuP(new Set());
+    setCpuOv(null);
+  };
+  const finishGame = () => {
+    setScr("result");
+  };
+  const tx = TX[lang];
+  return /*#__PURE__*/React.createElement(LangCtx.Provider, {
+    value: lang
+  }, /*#__PURE__*/React.createElement("style", null, CSS), scr === "title" && /*#__PURE__*/React.createElement(Title, {
+    onStart: (n, l) => init(n, null, null, l),
+    onStartCpu: (m, c, d, l) => init([m, ...c], new Set(c.map((_, i) => i + 1)), d, l),
+    onTest: l => init(["あなた", "コンピュータ🤖"], new Set([1]), "normal", l, 6),
+    lang: lang,
+    setLang: setLang,
+    premium: premium,
+    setPremium: setPremium
+  }), scr === "result" && gs && /*#__PURE__*/React.createElement(Result, {
+    state: gs,
+    onRestart: restart,
+    isCpu: isCpu
+  }), scr === "game" && cpuOv && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(BgmBtn, null), /*#__PURE__*/React.createElement(CpuOv, {
+    name: cpuOv.name,
+    action: cpuOv.action,
+    comp: cpuOv.comp
+  })), scr === "game" && !cpuOv && sp && !isCpu && gs && /*#__PURE__*/React.createElement(Pass, {
+    pn: gs.pl[cp].name,
+    onReady: () => setSP(false),
+    info: gs.deck.length > 0 ? `${tx.dkRem} ${gs.deck.length} ${tx.mai}` : tx.lastR
+  }), scr === "game" && !cpuOv && !(sp && !isCpu) && gs && /*#__PURE__*/React.createElement(Game, {
+    key: `${cp}-${tc}`,
+    state: gs,
+    pi: cp,
+    onDraw: draw,
+    onBond: bond,
+    onPass: advance,
+    onDiscard: disc,
+    hl: hl,
+    onFinish: finishGame,
+    premium: premium
+  }));
 };
-const draw = useCallback(() => {
-if (!gs || gs.deck.length === 0) return null;
-const nd = […gs.deck],
-dr = nd.pop();
-const np = gs.pl.map((p, i) => i === cp ? {
-…p,
-hand: […p.hand, dr]
-} : p);
-setGS({
-…gs,
-deck: nd,
-pl: np
-});
-if (nd.length === 0 && !lrs) {
-setLRS(true);
-setLRSP(cp);
-}
-return dr;
-}, [gs, cp, lrs]);
-const bond = useCallback((ids, comp) => {
-const s = new Set(ids);
-setGS(prev => ({
-…prev,
-pl: prev.pl.map((p, i) => i === cp ? {
-…p,
-hand: p.hand.filter(c => !s.has(c.id)),
-bonds: […p.bonds, comp]
-} : p)
-}));
-}, [cp]);
-const disc = useCallback(cid => {
-setGS(prev => {
-let d = null;
-const np = prev.pl.map((p, i) => {
-if (i === cp) {
-d = p.hand.find(c => c.id === cid);
-return {
-…p,
-hand: p.hand.filter(c => c.id !== cid)
-};
-}
-return p;
-});
-return {
-…prev,
-pl: np,
-dp: […(prev.dp || []), …(d ? [d] : [])]
-};
-});
-}, [cp]);
-const goNext = useCallback((g, fi) => {
-const n = g.pl.length,
-nx = (fi + 1) % n;
-setTC(t => t + 1);
-if (lrs && nx === (lrsp + 1) % n) {
-setScr(“result”);
-return;
-}
-setCP(nx);
-if (cpuP.has(nx)) {
-setSP(false);
-setTimeout(() => runCpu(g, nx), 600);
-} else if (isCpu) {
-setSP(false);
-} else {
-setSP(true);
-}
-}, [lrs, lrsp, cpuP, isCpu]);
-const advance = useCallback(() => {
-setGS(g => {
-if (g) goNext(g, cp);
-return g;
-});
-}, [cp, goNext]);
-const runCpu = useCallback((ps, ci) => {
-setGS(cs => {
-const g = cs || ps;
-const cn = g.pl[ci].name;
-if (g.deck.length > 0) {
-const nd = […g.deck],
-dr = nd.pop();
-const np = g.pl.map((p, i) => i === ci ? {
-…p,
-hand: […p.hand, dr]
-} : p);
-let ns = {
-…g,
-deck: nd,
-pl: np
-};
-if (nd.length === 0 && !lrs) {
-setLRS(true);
-setLRSP(ci);
-}
-const uh = np[ci].hand;
-if (uh.length > (g.hl || 7)) {
-const di = cpuDiscard(uh, cpuD),
-dc = uh.find(c => c.id === di);
-ns = {
-…ns,
-pl: ns.pl.map((p, i) => i === ci ? {
-…p,
-hand: uh.filter(c => c.id !== di)
-} : p),
-dp: […(ns.dp || []), …(dc ? [dc] : [])]
-};
-}
-const fh = ns.pl[ci].hand,
-bc = cpuBond(fh, cpuD, premium);
-if (bc) {
-const ids = cpuCards(fh, bc),
-idS = new Set(ids);
-ns = {
-…ns,
-pl: ns.pl.map((p, i) => i === ci ? {
-…p,
-hand: p.hand.filter(c => !idS.has(c.id)),
-bonds: […p.bonds, bc]
-} : p)
-};
-setCpuOv({
-name: cn,
-action: “bond”,
-comp: bc
-});
-const fs = ns;
-setTimeout(() => {
-setCpuOv(null);
-setCP(ci);
-setTimeout(() => {
-setGS(fs);
-goNext(fs, ci);
-}, 100);
-}, 2200);
-return ns;
-} else {
-setCpuOv({
-name: cn,
-action: “pass”
-});
-const fs = ns;
-setTimeout(() => {
-setCpuOv(null);
-setCP(ci);
-setTimeout(() => {
-setGS(fs);
-goNext(fs, ci);
-}, 100);
-}, 1400);
-return ns;
-}
-} else {
-setCpuOv({
-name: cn,
-action: “pass”
-});
-setTimeout(() => {
-setCpuOv(null);
-setScr(“result”);
-}, 1200);
-}
-return g;
-});
-}, [cpuD, lrs, lrsp, goNext]);
-const restart = () => {
-setScr(“title”);
-setGS(null);
-setCP(0);
-setIC(false);
-setCpuP(new Set());
-setCpuOv(null);
-};
-const finishGame = () => {
-setScr(“result”);
-};
-const tx = TX[lang];
-return /*#**PURE***/React.createElement(LangCtx.Provider, {
-value: lang
-}, /*#**PURE***/React.createElement(“style”, null, CSS), scr === “title” && /*#**PURE***/React.createElement(Title, {
-onStart: (n, l) => init(n, null, null, l),
-onStartCpu: (m, c, d, l) => init([m, …c], new Set(c.map((_, i) => i + 1)), d, l),
-onTest: l => init([“あなた”, “コンピュータ🤖”], new Set([1]), “normal”, l, 6),
-lang: lang,
-setLang: setLang,
-premium: premium,
-setPremium: setPremium
-}), scr === “result” && gs && /*#**PURE***/React.createElement(Result, {
-state: gs,
-onRestart: restart,
-isCpu: isCpu
-}), scr === “game” && cpuOv && /*#**PURE***/React.createElement(React.Fragment, null, /*#**PURE***/React.createElement(BgmBtn, null), /*#**PURE***/React.createElement(CpuOv, {
-name: cpuOv.name,
-action: cpuOv.action,
-comp: cpuOv.comp
-})), scr === “game” && !cpuOv && sp && !isCpu && gs && /*#**PURE***/React.createElement(Pass, {
-pn: gs.pl[cp].name,
-onReady: () => setSP(false),
-info: gs.deck.length > 0 ? `${tx.dkRem} ${gs.deck.length} ${tx.mai}` : tx.lastR
-}), scr === “game” && !cpuOv && !(sp && !isCpu) && gs && /*#**PURE***/React.createElement(Game, {
-key: `${cp}-${tc}`,
-state: gs,
-pi: cp,
-onDraw: draw,
-onBond: bond,
-onPass: advance,
-onDiscard: disc,
-hl: hl,
-onFinish: finishGame,
-premium: premium
-}));
-};
-var root = ReactDOM.createRoot(document.getElementById(“root”));
-root.render(React.createElement(window.__App));
-} catch(e) {
-document.getElementById(“root”).innerHTML = “<div style='color:#ff4444;padding:24px;font-size:16px'><h2>Error</h2><pre>” + e.message + “\n” + e.stack + “</pre></div>”;
+
+try{
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(window.__App));
+}catch(e){
+document.getElementById("root").innerHTML="<div style=color:red;padding:24px><h2>Error</h2><pre>"+e.message+"</pre></div>";
 }
 </script>
-
 </body>
 </html>
