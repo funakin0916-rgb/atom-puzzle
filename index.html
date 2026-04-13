@@ -1060,39 +1060,7 @@ const cpuCards = (hand, comp) => {
 };
 
 /* ── CSS ─── */
-const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap');
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
-body{font-family:'Zen Maru Gothic',sans-serif;overflow-x:hidden;background:#0a0a1a}
-input::placeholder{color:#888}input{user-select:text;font-family:inherit}button{font-family:inherit;transition:transform .1s}button:active{transform:scale(.96)!important}
-@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-@keyframes pg{0%,100%{box-shadow:0 0 8px var(--g)}50%{box-shadow:0 0 20px var(--g),0 0 40px var(--g)}}
-@keyframes su{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes ca{0%{opacity:0;transform:scale(.5) rotateY(90deg)}60%{transform:scale(1.08) rotateY(-5deg)}100%{opacity:1;transform:scale(1) rotateY(0)}}
-@keyframes bo{0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.1)}66%{transform:translate(-20px,15px) scale(.95)}100%{transform:translate(0,0) scale(1)}}
-@keyframes ke{0%{opacity:0;transform:translate(0,0) scale(.3)}30%{opacity:1;transform:translate(calc(var(--dx)*.4),calc(var(--dy)*.4)) scale(1.2)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2)}}
-@keyframes kb{0%{transform:scale(.3);opacity:0}50%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
-@keyframes ku{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes kt{0%,100%{opacity:.2;transform:scale(.5)}50%{opacity:1;transform:scale(1.2)}}
-@keyframes ks{0%,100%{transform:translate(0,0)}25%{transform:translate(-4px,2px)}50%{transform:translate(4px,-2px)}75%{transform:translate(-2px,4px)}}
-@keyframes cb{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
-@keyframes cf{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
-@keyframes crb{0%{transform:scale(0) rotate(-20deg)}40%{transform:scale(1.3) rotate(10deg)}70%{transform:scale(.9) rotate(-5deg)}100%{transform:scale(1) rotate(0)}}
-@keyframes sp{0%{transform:scale(0);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
-@keyframes gp{0%,100%{text-shadow:0 0 20px var(--gc),0 0 40px var(--gc)}50%{text-shadow:0 0 40px var(--gc),0 0 80px var(--gc),0 0 120px var(--gc)}}
-@keyframes fw{0%{transform:scale(0);opacity:1}50%{opacity:1}100%{transform:scale(1);opacity:0}}
-@keyframes rain{0%{transform:translateY(-20px);opacity:0}10%{opacity:.6}90%{opacity:.6}100%{transform:translateY(100vh);opacity:0}}
-@keyframes sadBounce{0%{transform:scale(0) rotate(10deg)}50%{transform:scale(1.1) rotate(-5deg)}100%{transform:scale(1) rotate(0)}}
-@keyframes charge{0%{transform:scale(.5);opacity:.3;filter:blur(8px)}60%{transform:scale(.8);opacity:.8;filter:blur(4px)}80%{transform:scale(.9);opacity:1;filter:blur(2px)}100%{transform:scale(1);opacity:1;filter:blur(0)}}
-@keyframes chargeGlow{0%{box-shadow:0 0 20px var(--cg)}50%{box-shadow:0 0 60px var(--cg),0 0 120px var(--cg)}100%{box-shadow:0 0 20px var(--cg)}}
-@keyframes flash{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(3)}}
-@keyframes ringBurst{0%{transform:scale(0);opacity:1;border-width:8px}100%{transform:scale(3);opacity:0;border-width:1px}}
-@keyframes megaBounce{0%{transform:scale(0) rotate(-10deg)}30%{transform:scale(1.4) rotate(5deg)}50%{transform:scale(.85) rotate(-3deg)}70%{transform:scale(1.15) rotate(2deg)}100%{transform:scale(1) rotate(0)}}
-@keyframes textReveal{0%{transform:scale(3);opacity:0;filter:blur(12px)}100%{transform:scale(1);opacity:1;filter:blur(0)}}
-@keyframes starSpin{0%{transform:rotate(0) scale(0);opacity:0}50%{opacity:1}100%{transform:rotate(360deg) scale(1);opacity:0}}
-@keyframes bgFlash{0%{opacity:.8}100%{opacity:0}}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
-`;
+const CSS = "\n@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap');\n*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}\nbody{font-family:'Zen Maru Gothic',sans-serif;overflow-x:hidden;background:#0a0a1a}\ninput::placeholder{color:#888}input{user-select:text;font-family:inherit}button{font-family:inherit;transition:transform .1s}button:active{transform:scale(.96)!important}\n@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}\n@keyframes pg{0%,100%{box-shadow:0 0 8px var(--g)}50%{box-shadow:0 0 20px var(--g),0 0 40px var(--g)}}\n@keyframes su{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}\n@keyframes ca{0%{opacity:0;transform:scale(.5) rotateY(90deg)}60%{transform:scale(1.08) rotateY(-5deg)}100%{opacity:1;transform:scale(1) rotateY(0)}}\n@keyframes bo{0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.1)}66%{transform:translate(-20px,15px) scale(.95)}100%{transform:translate(0,0) scale(1)}}\n@keyframes ke{0%{opacity:0;transform:translate(0,0) scale(.3)}30%{opacity:1;transform:translate(calc(var(--dx)*.4),calc(var(--dy)*.4)) scale(1.2)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2)}}\n@keyframes kb{0%{transform:scale(.3);opacity:0}50%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}\n@keyframes ku{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}\n@keyframes kt{0%,100%{opacity:.2;transform:scale(.5)}50%{opacity:1;transform:scale(1.2)}}\n@keyframes ks{0%,100%{transform:translate(0,0)}25%{transform:translate(-4px,2px)}50%{transform:translate(4px,-2px)}75%{transform:translate(-2px,4px)}}\n@keyframes cb{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}\n@keyframes cf{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}\n@keyframes crb{0%{transform:scale(0) rotate(-20deg)}40%{transform:scale(1.3) rotate(10deg)}70%{transform:scale(.9) rotate(-5deg)}100%{transform:scale(1) rotate(0)}}\n@keyframes sp{0%{transform:scale(0);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}\n@keyframes gp{0%,100%{text-shadow:0 0 20px var(--gc),0 0 40px var(--gc)}50%{text-shadow:0 0 40px var(--gc),0 0 80px var(--gc),0 0 120px var(--gc)}}\n@keyframes fw{0%{transform:scale(0);opacity:1}50%{opacity:1}100%{transform:scale(1);opacity:0}}\n@keyframes rain{0%{transform:translateY(-20px);opacity:0}10%{opacity:.6}90%{opacity:.6}100%{transform:translateY(100vh);opacity:0}}\n@keyframes sadBounce{0%{transform:scale(0) rotate(10deg)}50%{transform:scale(1.1) rotate(-5deg)}100%{transform:scale(1) rotate(0)}}\n@keyframes charge{0%{transform:scale(.5);opacity:.3;filter:blur(8px)}60%{transform:scale(.8);opacity:.8;filter:blur(4px)}80%{transform:scale(.9);opacity:1;filter:blur(2px)}100%{transform:scale(1);opacity:1;filter:blur(0)}}\n@keyframes chargeGlow{0%{box-shadow:0 0 20px var(--cg)}50%{box-shadow:0 0 60px var(--cg),0 0 120px var(--cg)}100%{box-shadow:0 0 20px var(--cg)}}\n@keyframes flash{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(3)}}\n@keyframes ringBurst{0%{transform:scale(0);opacity:1;border-width:8px}100%{transform:scale(3);opacity:0;border-width:1px}}\n@keyframes megaBounce{0%{transform:scale(0) rotate(-10deg)}30%{transform:scale(1.4) rotate(5deg)}50%{transform:scale(.85) rotate(-3deg)}70%{transform:scale(1.15) rotate(2deg)}100%{transform:scale(1) rotate(0)}}\n@keyframes textReveal{0%{transform:scale(3);opacity:0;filter:blur(12px)}100%{transform:scale(1);opacity:1;filter:blur(0)}}\n@keyframes starSpin{0%{transform:rotate(0) scale(0);opacity:0}50%{opacity:1}100%{transform:rotate(360deg) scale(1);opacity:0}}\n@keyframes bgFlash{0%{opacity:.8}100%{opacity:0}}\n::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}\n";
 const BG = "radial-gradient(ellipse at 30% 20%,rgba(124,77,255,.15) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(255,112,67,.12) 0%,transparent 50%),linear-gradient(180deg,#0a0a1a,#0f1628)";
 
 /* ── 共通小パーツ ─── */
@@ -1122,14 +1090,14 @@ const Orbs = ({
     key: v.id,
     style: {
       position: "absolute",
-      left: `${v.x}%`,
-      top: `${v.y}%`,
+      left: "".concat(v.x, "%"),
+      top: "".concat(v.y, "%"),
       width: v.sz,
       height: v.sz,
       borderRadius: "50%",
       background: co,
       filter: "blur(40px)",
-      animation: `bo ${v.d}s ${v.dl}s ease-in-out infinite`
+      animation: "bo ".concat(v.d, "s ").concat(v.dl, "s ease-in-out infinite")
     }
   })));
 };
@@ -1172,8 +1140,8 @@ const SBtn = ({
   style: {
     padding: "8px 12px",
     borderRadius: 12,
-    border: `2px solid ${a ? co : "rgba(255,255,255,.1)"}`,
-    background: a ? `${co}18` : "rgba(255,255,255,.04)",
+    border: "2px solid ".concat(a ? co : "rgba(255,255,255,.1)"),
+    background: a ? "".concat(co, "18") : "rgba(255,255,255,.04)",
     color: a ? co : "rgba(255,255,255,.4)",
     fontSize: 13,
     fontWeight: 900,
@@ -1197,20 +1165,20 @@ const Card = ({
       minWidth: 70,
       height: 92,
       borderRadius: 16,
-      background: sel ? `linear-gradient(145deg,${i.c},${i.tc}22)` : "linear-gradient(145deg,#1a1a2e,#16213e)",
-      border: sel ? `3px solid ${i.g}` : "2px solid rgba(255,255,255,.08)",
+      background: sel ? "linear-gradient(145deg,".concat(i.c, ",").concat(i.tc, "22)") : "linear-gradient(145deg,#1a1a2e,#16213e)",
+      border: sel ? "3px solid ".concat(i.g) : "2px solid rgba(255,255,255,.08)",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      boxShadow: sel ? `0 0 16px ${i.g}66` : "0 2px 8px rgba(0,0,0,.3)",
+      boxShadow: sel ? "0 0 16px ".concat(i.g, "66") : "0 2px 8px rgba(0,0,0,.3)",
       cursor: onTap ? "pointer" : "default",
       transition: "all .2s cubic-bezier(.34,1.56,.64,1)",
       flexShrink: 0,
       transform: sel ? "translateY(-8px) scale(1.08)" : "none",
       gap: 1,
       "--g": i.g,
-      animation: sel ? `pg 1.5s ease-in-out infinite` : `ca .3s ${dl}s ease both`
+      animation: sel ? "pg 1.5s ease-in-out infinite" : "ca .3s ".concat(dl, "s ease both")
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
@@ -1340,8 +1308,8 @@ const Inv = ({
         position: "absolute",
         bottom: 0,
         width: "100%",
-        height: `${Math.max(0, rem / at.n * 100)}%`,
-        background: `linear-gradient(180deg,${at.g}88,${at.g}33)`,
+        height: "".concat(Math.max(0, rem / at.n * 100), "%"),
+        background: "linear-gradient(180deg,".concat(at.g, "88,").concat(at.g, "33)"),
         borderRadius: 3,
         transition: "height .3s"
       }
@@ -1446,7 +1414,7 @@ const Celeb = ({
       alignItems: "center",
       justifyContent: "center",
       background: ph >= 1 ? bg : "rgba(0,0,0,0)",
-      transition: `background ${tier >= 2 ? '.5s' : '.3s'}`,
+      transition: "background ".concat(tier >= 2 ? '.5s' : '.3s'),
       overflow: "hidden"
     }
   }, ph >= 2 && tier >= 2 && /*#__PURE__*/React.createElement("div", {
@@ -1463,9 +1431,9 @@ const Celeb = ({
       width: tier >= 3 ? 160 : 120,
       height: tier >= 3 ? 160 : 120,
       borderRadius: "50%",
-      background: `radial-gradient(circle,${mc}44,${mc}11,transparent)`,
-      "--cg": `${mc}66`,
-      animation: `charge ${tier >= 3 ? '1.8s' : '1s'} ease both, chargeGlow .4s ease-in-out infinite`,
+      background: "radial-gradient(circle,".concat(mc, "44,").concat(mc, "11,transparent)"),
+      "--cg": "".concat(mc, "66"),
+      animation: "charge ".concat(tier >= 3 ? '1.8s' : '1s', " ease both, chargeGlow .4s ease-in-out infinite"),
       zIndex: 2
     }
   }), ph === 1 && tier >= 3 && Array.from({
@@ -1473,28 +1441,28 @@ const Celeb = ({
   }).map((_, i) => {
     const a = i / 20 * 360 * Math.PI / 180;
     return /*#__PURE__*/React.createElement("div", {
-      key: `ch${i}`,
+      key: "ch".concat(i),
       style: {
         position: "absolute",
         width: 6,
         height: 6,
         borderRadius: "50%",
         background: mc,
-        left: `calc(50% + ${Math.cos(a) * 150}px)`,
-        top: `calc(50% + ${Math.sin(a) * 150}px)`,
-        animation: `charge 1.5s ${i * .08}s ease both`,
+        left: "calc(50% + ".concat(Math.cos(a) * 150, "px)"),
+        top: "calc(50% + ".concat(Math.sin(a) * 150, "px)"),
+        animation: "charge 1.5s ".concat(i * .08, "s ease both"),
         zIndex: 3
       }
     });
   }), ph >= 2 && rings.map((dl, i) => /*#__PURE__*/React.createElement("div", {
-    key: `r${i}`,
+    key: "r".concat(i),
     style: {
       position: "absolute",
       width: 100,
       height: 100,
       borderRadius: "50%",
-      border: `4px solid ${mc}`,
-      animation: `ringBurst .8s ${dl}s ease-out forwards`,
+      border: "4px solid ".concat(mc),
+      animation: "ringBurst .8s ".concat(dl, "s ease-out forwards"),
       opacity: 0,
       zIndex: 4
     }
@@ -1503,26 +1471,26 @@ const Celeb = ({
     style: {
       position: "absolute",
       fontSize: p.sz,
-      "--dx": `${p.x}px`,
-      "--dy": `${p.y}px`,
-      animation: `ke ${.6 + tier * .3}s ${p.dl}s cubic-bezier(.2,.6,.3,1) forwards`,
+      "--dx": "".concat(p.x, "px"),
+      "--dy": "".concat(p.y, "px"),
+      animation: "ke ".concat(.6 + tier * .3, "s ").concat(p.dl, "s cubic-bezier(.2,.6,.3,1) forwards"),
       opacity: 0,
       zIndex: 5
     }
   }, p.em)), ph >= 2 && spinS.map(s => /*#__PURE__*/React.createElement("div", {
-    key: `ss${s.id}`,
+    key: "ss".concat(s.id),
     style: {
       position: "absolute",
       width: s.sz,
       height: s.sz,
       borderRadius: "50%",
       background: s.co,
-      boxShadow: `0 0 ${s.sz}px ${s.co}`,
-      animation: `starSpin 1s ${s.dl}s ease-out forwards`,
+      boxShadow: "0 0 ".concat(s.sz, "px ").concat(s.co),
+      animation: "starSpin 1s ".concat(s.dl, "s ease-out forwards"),
       opacity: 0,
       zIndex: 5,
-      left: `calc(50% + ${Math.cos(s.ang * Math.PI / 180) * s.dist}px)`,
-      top: `calc(50% + ${Math.sin(s.ang * Math.PI / 180) * s.dist}px)`
+      left: "calc(50% + ".concat(Math.cos(s.ang * Math.PI / 180) * s.dist, "px)"),
+      top: "calc(50% + ".concat(Math.sin(s.ang * Math.PI / 180) * s.dist, "px)")
     }
   })), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -1543,7 +1511,7 @@ const Celeb = ({
       fontSize: tier >= 3 ? 90 : tier >= 2 ? 72 : tier >= 1 ? 56 : 48,
       animation: tier >= 2 ? "megaBounce .6s cubic-bezier(.34,1.56,.64,1) both" : "kb .5s .1s cubic-bezier(.34,1.56,.64,1) both",
       opacity: 0,
-      filter: tier >= 2 ? `drop-shadow(0 0 30px ${mc}88)` : "none"
+      filter: tier >= 2 ? "drop-shadow(0 0 30px ".concat(mc, "88)") : "none"
     }
   }, comp.e), ph >= 2 && /*#__PURE__*/React.createElement("div", {
     style: {
@@ -1551,7 +1519,7 @@ const Celeb = ({
       fontWeight: 900,
       lineHeight: 1.1,
       color: mc,
-      textShadow: tier >= 2 ? `0 0 40px ${mc}88,0 0 80px ${mc}44` : `0 0 20px ${mc}66`,
+      textShadow: tier >= 2 ? "0 0 40px ".concat(mc, "88,0 0 80px ").concat(mc, "44") : "0 0 20px ".concat(mc, "66"),
       animation: tier >= 2 ? "textReveal .5s .15s ease both" : "kb .5s .2s cubic-bezier(.34,1.56,.64,1) both",
       opacity: 0
     }
@@ -1567,7 +1535,7 @@ const Celeb = ({
       marginTop: 8,
       opacity: 0,
       animation: "ku .3s ease forwards",
-      textShadow: tier >= 2 ? `0 0 16px ${mc}44` : "none"
+      textShadow: tier >= 2 ? "0 0 16px ".concat(mc, "44") : "none"
     }
   }, t(comp.k)), ph >= 3 && /*#__PURE__*/React.createElement("div", {
     style: {
@@ -1722,7 +1690,7 @@ function Title({
     }
   }, [7, 8, 9, 10].map(n => /*#__PURE__*/React.createElement(SBtn, {
     key: n,
-    l: `${n}${t("mai")}${n === 7 ? `（${t("basic")}）` : ""}`,
+    l: "".concat(n).concat(t("mai")).concat(n === 7 ? "\uFF08".concat(t("basic"), "\uFF09") : ""),
     a: hl === n,
     onClick: () => setHL(n)
   }))), /*#__PURE__*/React.createElement("div", {
@@ -2103,7 +2071,7 @@ function Title({
     }
   }, [1, 2, 3].map(n => /*#__PURE__*/React.createElement(SBtn, {
     key: n,
-    l: `${n}${t("unit")}`,
+    l: "".concat(n).concat(t("unit")),
     a: cc === n,
     co: "#ff7043",
     onClick: () => setCc(n)
@@ -2143,7 +2111,7 @@ function Title({
     }
   }, [7, 8, 9, 10].map(n => /*#__PURE__*/React.createElement(SBtn, {
     key: n,
-    l: `${n}${t("mai")}${n === 7 ? `（${t("basic")}）` : ""}`,
+    l: "".concat(n).concat(t("mai")).concat(n === 7 ? "\uFF08".concat(t("basic"), "\uFF09") : ""),
     a: hl === n,
     onClick: () => setHL(n)
   }))), /*#__PURE__*/React.createElement("button", {
@@ -2216,8 +2184,8 @@ function Title({
           style: {
             padding: "16px",
             borderRadius: 18,
-            border: `2px solid ${unlocked ? s.color + '66' : 'rgba(255,255,255,.08)'}`,
-            background: unlocked ? `${s.color}0a` : 'rgba(255,255,255,.02)',
+            border: "2px solid ".concat(unlocked ? s.color + '66' : 'rgba(255,255,255,.08)'),
+            background: unlocked ? "".concat(s.color, "0a") : 'rgba(255,255,255,.02)',
             color: "#fff",
             cursor: unlocked ? "pointer" : "default",
             opacity: unlocked ? 1 : .4,
@@ -2287,8 +2255,8 @@ function Title({
           style: {
             padding: "16px",
             borderRadius: 18,
-            border: `2px solid ${unlocked ? s.color + '66' : 'rgba(255,255,255,.08)'}`,
-            background: unlocked ? `${s.color}0a` : 'rgba(255,255,255,.02)',
+            border: "2px solid ".concat(unlocked ? s.color + '66' : 'rgba(255,255,255,.08)'),
+            background: unlocked ? "".concat(s.color, "0a") : 'rgba(255,255,255,.02)',
             color: "#fff",
             cursor: unlocked ? "pointer" : "default",
             opacity: unlocked ? 1 : .4,
@@ -2369,7 +2337,7 @@ function Title({
           fontSize: 80,
           marginBottom: 12,
           animation: "fl 2s ease-in-out infinite",
-          filter: `drop-shadow(0 8px 30px ${s.color}66)`
+          filter: "drop-shadow(0 8px 30px ".concat(s.color, "66)")
         }
       }, s.emoji), /*#__PURE__*/React.createElement("div", {
         style: {
@@ -2404,12 +2372,12 @@ function Title({
           padding: "18px 48px",
           borderRadius: 20,
           border: "none",
-          background: `linear-gradient(135deg,${s.color},${s.color}88)`,
+          background: "linear-gradient(135deg,".concat(s.color, ",").concat(s.color, "88)"),
           color: "#fff",
           fontSize: 20,
           fontWeight: 900,
           cursor: "pointer",
-          boxShadow: `0 4px 30px ${s.color}44`
+          boxShadow: "0 4px 30px ".concat(s.color, "44")
         }
       }, "\u2694\uFE0F ", t("storyFight")), /*#__PURE__*/React.createElement("button", {
         onClick: () => setStorySt(null),
@@ -2456,7 +2424,7 @@ function Title({
     }
   }, [2, 3, 4].map(n => /*#__PURE__*/React.createElement(SBtn, {
     key: n,
-    l: `${n}${t("unitP")}`,
+    l: "".concat(n).concat(t("unitP")),
     a: pc === n,
     co: "#b388ff",
     onClick: () => setPc(n)
@@ -2479,7 +2447,7 @@ function Title({
       n[i] = e.target.value;
       setNames(n);
     },
-    placeholder: `${i + 1}${t("pn")}`,
+    placeholder: "".concat(i + 1).concat(t("pn")),
     style: {
       width: "100%",
       padding: "12px 16px",
@@ -2509,13 +2477,13 @@ function Title({
     }
   }, [7, 8, 9, 10].map(n => /*#__PURE__*/React.createElement(SBtn, {
     key: n,
-    l: `${n}${t("mai")}${n === 7 ? `（${t("basic")}）` : ""}`,
+    l: "".concat(n).concat(t("mai")).concat(n === 7 ? "\uFF08".concat(t("basic"), "\uFF09") : ""),
     a: hl === n,
     onClick: () => setHL(n)
   }))), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       SE.gStart();
-      onStart(names.slice(0, pc).map((n, i) => n.trim() || `${i + 1}ばん`), hl);
+      onStart(names.slice(0, pc).map((n, i) => n.trim() || "".concat(i + 1, "\u3070\u3093")), hl);
     },
     style: {
       padding: "16px 48px",
@@ -2726,7 +2694,7 @@ function Game({
       alignItems: "center",
       justifyContent: "space-between",
       background: pco.headerBg,
-      borderBottom: `1px solid ${pco.border}`
+      borderBottom: "1px solid ".concat(pco.border)
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -3056,13 +3024,13 @@ function Game({
     return Array.from({
       length: n
     }).map((_, j) => /*#__PURE__*/React.createElement("div", {
-      key: `${s}${j}`,
+      key: "".concat(s).concat(j),
       style: {
         width: 32,
         height: 38,
         borderRadius: 7,
         background: "rgba(255,255,255,.06)",
-        border: `2px solid ${inf.g}44`,
+        border: "2px solid ".concat(inf.g, "44"),
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -3149,13 +3117,13 @@ function Game({
       return Array.from({
         length: n
       }).map((_, j) => /*#__PURE__*/React.createElement("div", {
-        key: `${s}${j}`,
+        key: "".concat(s).concat(j),
         style: {
           width: 32,
           height: 38,
           borderRadius: 7,
           background: isLocked ? "rgba(255,255,255,.02)" : "rgba(255,255,255,.04)",
-          border: `2px solid ${isLocked ? 'rgba(255,255,255,.06)' : inf.g + '33'}`,
+          border: "2px solid ".concat(isLocked ? 'rgba(255,255,255,.06)' : inf.g + '33'),
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -3370,43 +3338,43 @@ function Result({
     key: c.id,
     style: {
       position: "fixed",
-      left: `${c.x}%`,
+      left: "".concat(c.x, "%"),
       top: -20,
       width: c.sz,
       height: c.sz * 1.4,
       background: c.co,
       borderRadius: 2,
       opacity: 0,
-      animation: `cf ${c.dur}s ${c.dl}s linear infinite`,
+      animation: "cf ".concat(c.dur, "s ").concat(c.dl, "s linear infinite"),
       zIndex: 5
     }
   })), ph >= 1 && playerWon && fws.map(f => /*#__PURE__*/React.createElement("div", {
     key: f.id,
     style: {
       position: "fixed",
-      left: `${f.x}%`,
-      top: `${f.y}%`,
+      left: "".concat(f.x, "%"),
+      top: "".concat(f.y, "%"),
       width: f.sz,
       height: f.sz,
       borderRadius: "50%",
-      border: `3px solid ${f.co}`,
+      border: "3px solid ".concat(f.co),
       opacity: 0,
-      animation: `fw 1.2s ${f.dl}s ease-out infinite`,
-      boxShadow: `0 0 20px ${f.co}`,
+      animation: "fw 1.2s ".concat(f.dl, "s ease-out infinite"),
+      boxShadow: "0 0 20px ".concat(f.co),
       zIndex: 4
     }
   })), ph >= 1 && playerLost && raindrops.map(r => /*#__PURE__*/React.createElement("div", {
     key: r.id,
     style: {
       position: "fixed",
-      left: `${r.x}%`,
+      left: "".concat(r.x, "%"),
       top: 0,
       width: r.sz,
       height: r.sz * 8,
       background: "linear-gradient(180deg,transparent,rgba(150,180,220,.4))",
       borderRadius: "0 0 2px 2px",
       opacity: 0,
-      animation: `rain ${r.dur}s ${r.dl}s linear infinite`,
+      animation: "rain ".concat(r.dur, "s ").concat(r.dl, "s linear infinite"),
       zIndex: 5
     }
   })), /*#__PURE__*/React.createElement("div", {
@@ -3520,7 +3488,7 @@ function Result({
       animation: "su .4s .3s ease both",
       opacity: 0
     }
-  }, playerLost ? `📉 ${diff}${t("pdif")}` : `🔥 ${diff}${t("more")}`)), ph >= 3 && /*#__PURE__*/React.createElement("div", {
+  }, playerLost ? "\uD83D\uDCC9 ".concat(diff).concat(t("pdif")) : "\uD83D\uDD25 ".concat(diff).concat(t("more")))), ph >= 3 && /*#__PURE__*/React.createElement("div", {
     style: {
       width: "100%",
       display: "flex",
@@ -3536,7 +3504,7 @@ function Result({
       background: r === 0 ? playerLost ? "rgba(100,130,200,.06)" : "rgba(255,204,0,.08)" : "rgba(255,255,255,.03)",
       border: r === 0 ? playerLost ? "2px solid rgba(100,130,200,.2)" : "2px solid rgba(255,204,0,.3)" : "1px solid rgba(255,255,255,.06)",
       boxShadow: r === 0 ? playerLost ? "0 4px 20px rgba(100,130,200,.1)" : "0 4px 30px rgba(255,204,0,.2)" : "none",
-      animation: `su .4s ${r * .15}s ease both`,
+      animation: "su .4s ".concat(r * .15, "s ease both"),
       opacity: 0
     }
   }, /*#__PURE__*/React.createElement("div", {
@@ -3599,8 +3567,8 @@ function Result({
       marginTop: 16,
       padding: 16,
       borderRadius: 16,
-      background: `${storyStage.color}11`,
-      border: `2px solid ${storyStage.color}33`,
+      background: "".concat(storyStage.color, "11"),
+      border: "2px solid ".concat(storyStage.color, "33"),
       maxWidth: 320,
       textAlign: "center",
       animation: "su .4s ease both"
@@ -3955,9 +3923,9 @@ window.__App = function App() {
   })), scr === "game" && !cpuOv && sp && !isCpu && gs && /*#__PURE__*/React.createElement(Pass, {
     pn: gs.pl[cp].name,
     onReady: () => setSP(false),
-    info: gs.deck.length > 0 ? `${tx.dkRem} ${gs.deck.length} ${tx.mai}` : tx.lastR
+    info: gs.deck.length > 0 ? "".concat(tx.dkRem, " ").concat(gs.deck.length, " ").concat(tx.mai) : tx.lastR
   }), scr === "game" && !cpuOv && !(sp && !isCpu) && gs && /*#__PURE__*/React.createElement(Game, {
-    key: `${cp}-${tc}`,
+    key: "".concat(cp, "-").concat(tc),
     state: gs,
     pi: cp,
     onDraw: draw,
@@ -3975,7 +3943,7 @@ window.__App = function App() {
 };
 
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+var root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(React.createElement(window.__App));
 </script>
 </body>
