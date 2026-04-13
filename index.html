@@ -343,6 +343,11 @@ const TX = {
     langLabel: "もじのせってい",
     langH: "ひらがな",
     langK: "かんじ",
+    soundLabel: "おとのせってい",
+    bgmLabel: "BGM",
+    seLabel: "こうかおん",
+    onLabel: "ON",
+    offLabel: "OFF",
     r1: "カードを1まいひく",
     r2: "てふだのげんしをくみあわせて ものをつくる →「できた！」🎉",
     r3: "つくれない →「パス」でつぎへ",
@@ -467,6 +472,11 @@ const TX = {
     langLabel: "文字の設定",
     langH: "ひらがな",
     langK: "漢字",
+    soundLabel: "音の設定",
+    bgmLabel: "BGM",
+    seLabel: "効果音",
+    onLabel: "ON",
+    offLabel: "OFF",
     r1: "カードを1枚引く",
     r2: "手札の原子を組み合わせて物質を作る →「できた！」🎉",
     r3: "作れない →「パス」で次へ",
@@ -580,6 +590,7 @@ const TX = {
 };
 
 /* ── サウンドエンジン ─── */
+let _seEnabled = true;
 const SE = (() => {
   let ctx = null;
   const gc = () => {
@@ -588,6 +599,7 @@ const SE = (() => {
     return ctx;
   };
   const p = fn => {
+    if (!_seEnabled) return;
     try {
       fn(gc());
     } catch (e) {}
@@ -605,6 +617,10 @@ const SE = (() => {
     o.stop(c.currentTime + dur);
   };
   return {
+    setEnabled: v => {
+      _seEnabled = v;
+    },
+    isEnabled: () => _seEnabled,
     cardDraw: () => p(c => tone(c, "sine", 800, 1200, 0.15, 0.15)),
     cardSel: () => p(c => tone(c, "triangle", 600, 900, 0.1, 0.1)),
     cardDesel: () => p(c => tone(c, "triangle", 700, 400, 0.1, 0.08)),
@@ -736,11 +752,19 @@ const BGM = (() => {
     start: () => {
       if (playing) return;
       playing = true;
+      nodes.forEach(n => {
+        try {
+          n.stop();
+        } catch (e) {}
+      });
+      nodes = [];
+      if (timer) clearTimeout(timer);
       loop();
     },
     stop: () => {
       playing = false;
       if (timer) clearTimeout(timer);
+      timer = null;
       nodes.forEach(n => {
         try {
           n.stop();
@@ -1792,6 +1816,8 @@ function Title({
   const [cc, setCc] = useState(1);
   const [cd, setCd] = useState("normal");
   const [hl, setHL] = useState(7);
+  const [bgmOn, setBgmOn] = useState(BGM.on());
+  const [seOn, setSeOn] = useState(SE.isEnabled());
   const Stg = () => /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 18,
@@ -1840,7 +1866,8 @@ function Title({
     style: {
       display: "flex",
       gap: 6,
-      justifyContent: "center"
+      justifyContent: "center",
+      marginBottom: 12
     }
   }, /*#__PURE__*/React.createElement(SBtn, {
     l: t("langH"),
@@ -1852,7 +1879,74 @@ function Title({
     a: lang === "kanji",
     co: "#b388ff",
     onClick: () => setLang("kanji")
-  })));
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: "rgba(255,255,255,.5)",
+      fontWeight: 700,
+      marginBottom: 6
+    }
+  }, "\uD83D\uDD0A ", t("soundLabel")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 12,
+      justifyContent: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 6
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12,
+      color: "rgba(255,255,255,.4)"
+    }
+  }, t("bgmLabel")), /*#__PURE__*/React.createElement(SBtn, {
+    l: t("onLabel"),
+    a: bgmOn,
+    co: "#66ff66",
+    onClick: () => {
+      BGM.start();
+      setBgmOn(true);
+    }
+  }), /*#__PURE__*/React.createElement(SBtn, {
+    l: t("offLabel"),
+    a: !bgmOn,
+    co: "#ff6666",
+    onClick: () => {
+      BGM.stop();
+      setBgmOn(false);
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 6
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12,
+      color: "rgba(255,255,255,.4)"
+    }
+  }, t("seLabel")), /*#__PURE__*/React.createElement(SBtn, {
+    l: t("onLabel"),
+    a: seOn,
+    co: "#66ff66",
+    onClick: () => {
+      SE.setEnabled(true);
+      setSeOn(true);
+    }
+  }), /*#__PURE__*/React.createElement(SBtn, {
+    l: t("offLabel"),
+    a: !seOn,
+    co: "#ff6666",
+    onClick: () => {
+      SE.setEnabled(false);
+      setSeOn(false);
+    }
+  }))));
   const PremPanel = () => /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 12,
@@ -2523,7 +2617,7 @@ function Game({
       gap: 10,
       alignItems: "center"
     }
-  }, /*#__PURE__*/React.createElement(BgmBtn, null), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", {
     style: {
       textAlign: "center"
     }
