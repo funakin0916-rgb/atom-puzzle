@@ -169,14 +169,24 @@ const TX = {
     cCuS: "りゅうかどう",
     cFeS: "りゅうかてつ",
     cH2S: "りゅうかすいそ",
+    cO3: "オゾン",
+    cSO2: "にさんかいおう",
+    cNa2O: "さんかナトリウム",
+    cFe2O3h: "ウスタイト",
     cCH4: "メタン",
     cAg2O: "さんかぎん",
     cNH3: "アンモニア",
+    cAg2S: "りゅうかぎん",
     cCuCl2: "えんかどう",
     cFeCl2: "えんかてつ",
-    cAg2S: "りゅうかぎん",
-    cNaHCO3: "たんさんすいそナトリウム",
+    cNa2S: "りゅうかナトリウム",
+    cSO3: "さんさんかいおう",
+    cNaHCO3: "じゅうそう",
+    cCH3Cl: "クロロメタン",
+    cFe2O3: "さんかてつ(III)",
+    cC2H2: "アセチレン",
     cNa2CO3: "たんさんナトリウム",
+    cCH4O: "メタノール",
     cH2SO4: "りゅうさん",
     cC7: "ダイヤモンド"
   },
@@ -305,14 +315,24 @@ const TX = {
     cCuS: "硫化銅",
     cFeS: "硫化鉄",
     cH2S: "硫化水素",
+    cO3: "オゾン",
+    cSO2: "二酸化硫黄",
+    cNa2O: "酸化ナトリウム",
+    cFe2O3h: "ウスタイト",
     cCH4: "メタン",
     cAg2O: "酸化銀",
     cNH3: "アンモニア",
-    cCuCl2: "塩化銅",
-    cFeCl2: "塩化鉄",
     cAg2S: "硫化銀",
-    cNaHCO3: "炭酸水素ナトリウム",
+    cCuCl2: "塩化銅(II)",
+    cFeCl2: "塩化鉄(II)",
+    cNa2S: "硫化ナトリウム",
+    cSO3: "三酸化硫黄",
+    cNaHCO3: "重曹",
+    cCH3Cl: "クロロメタン",
+    cFe2O3: "酸化鉄(III)",
+    cC2H2: "アセチレン",
     cNa2CO3: "炭酸ナトリウム",
+    cCH4O: "メタノール",
     cH2SO4: "硫酸",
     cC7: "ダイヤモンド"
   }
@@ -609,8 +629,10 @@ const ATOMS = [{
   g: "#8d6e63"
 }];
 // 合計 73枚
+// 得点ルール: 使用カード枚数が基本点。レア元素ボーナスあり。
+// 2枚=2pt, 3枚=4pt, 4枚=6pt, 5枚=9pt, 6枚=14pt, 7枚=35pt(スペシャル)
 const COMPS = [
-// 無料 15種
+// ── 2枚（2点）──
 {
   k: "cH2",
   f: "H₂",
@@ -620,16 +642,127 @@ const COMPS = [
   p: 2,
   e: "💧",
   free: true
-}, {
+},
+// 水素分子
+{
   k: "cO2",
   f: "O₂",
   a: {
     O: 2
   },
-  p: 3,
+  p: 2,
   e: "🌬️",
   free: true
-}, {
+},
+// 酸素分子
+{
+  k: "cN2",
+  f: "N₂",
+  a: {
+    N: 2
+  },
+  p: 2,
+  e: "🌸",
+  free: true
+},
+// 窒素分子
+{
+  k: "cCl2",
+  f: "Cl₂",
+  a: {
+    Cl: 2
+  },
+  p: 2,
+  e: "🫧",
+  free: true
+},
+// 塩素分子
+{
+  k: "cHCl",
+  f: "HCl",
+  a: {
+    H: 1,
+    Cl: 1
+  },
+  p: 2,
+  e: "🫧",
+  free: true
+},
+// 塩化水素
+{
+  k: "cCuO",
+  f: "CuO",
+  a: {
+    Cu: 1,
+    O: 1
+  },
+  p: 2,
+  e: "🪙",
+  free: true
+},
+// 酸化銅
+{
+  k: "cFeO",
+  f: "FeO",
+  a: {
+    Fe: 1,
+    O: 1
+  },
+  p: 2,
+  e: "🔩",
+  free: true
+},
+// 酸化鉄
+{
+  k: "cNaCl",
+  f: "NaCl",
+  a: {
+    Na: 1,
+    Cl: 1
+  },
+  p: 2,
+  e: "🧂",
+  free: true
+},
+// 塩化ナトリウム
+{
+  k: "cAgCl",
+  f: "AgCl",
+  a: {
+    Ag: 1,
+    Cl: 1
+  },
+  p: 2,
+  e: "🥈",
+  free: true
+},
+// 塩化銀
+{
+  k: "cCuS",
+  f: "CuS",
+  a: {
+    Cu: 1,
+    S: 1
+  },
+  p: 2,
+  e: "🪙",
+  free: true
+},
+// 硫化銅
+{
+  k: "cFeS",
+  f: "FeS",
+  a: {
+    Fe: 1,
+    S: 1
+  },
+  p: 2,
+  e: "🔩",
+  free: true
+},
+// 硫化鉄
+// ── 3枚（4点）──
+{
   k: "cH2O",
   f: "H₂O",
   a: {
@@ -639,116 +772,21 @@ const COMPS = [
   p: 4,
   e: "💧",
   free: true
-}, {
-  k: "cHCl",
-  f: "HCl",
-  a: {
-    H: 1,
-    Cl: 1
-  },
-  p: 3,
-  e: "🫧",
-  free: true
-}, {
+},
+// 水
+{
   k: "cCO2",
   f: "CO₂",
   a: {
     C: 1,
     O: 2
   },
-  p: 5,
+  p: 4,
   e: "💨",
   free: true
-}, {
-  k: "cN2",
-  f: "N₂",
-  a: {
-    N: 2
-  },
-  p: 5,
-  e: "🌸",
-  free: true
-}, {
-  k: "cCl2",
-  f: "Cl₂",
-  a: {
-    Cl: 2
-  },
-  p: 3,
-  e: "🫧",
-  free: true
-}, {
-  k: "cCuO",
-  f: "CuO",
-  a: {
-    Cu: 1,
-    O: 1
-  },
-  p: 5,
-  e: "🪙",
-  free: true
-}, {
-  k: "cNaCl",
-  f: "NaCl",
-  a: {
-    Na: 1,
-    Cl: 1
-  },
-  p: 4,
-  e: "🧂",
-  free: true
-}, {
-  k: "cAgCl",
-  f: "AgCl",
-  a: {
-    Ag: 1,
-    Cl: 1
-  },
-  p: 5,
-  e: "🥈",
-  free: true
-}, {
-  k: "cFeO",
-  f: "FeO",
-  a: {
-    Fe: 1,
-    O: 1
-  },
-  p: 5,
-  e: "🔩",
-  free: true
-}, {
-  k: "cNaOH",
-  f: "NaOH",
-  a: {
-    Na: 1,
-    O: 1,
-    H: 1
-  },
-  p: 6,
-  e: "🧪",
-  free: true
-}, {
-  k: "cCuS",
-  f: "CuS",
-  a: {
-    Cu: 1,
-    S: 1
-  },
-  p: 6,
-  e: "🪙",
-  free: true
-}, {
-  k: "cFeS",
-  f: "FeS",
-  a: {
-    Fe: 1,
-    S: 1
-  },
-  p: 6,
-  e: "🔩",
-  free: true
-}, {
+},
+// 二酸化炭素
+{
   k: "cH2S",
   f: "H₂S",
   a: {
@@ -759,7 +797,121 @@ const COMPS = [
   e: "🥚",
   free: true
 },
-// 有料 10種 🔒
+// 硫化水素
+{
+  k: "cNaOH",
+  f: "NaOH",
+  a: {
+    Na: 1,
+    O: 1,
+    H: 1
+  },
+  p: 4,
+  e: "🧪",
+  free: true
+},
+// 水酸化ナトリウム
+{
+  k: "cAg2O",
+  f: "Ag₂O",
+  a: {
+    Ag: 2,
+    O: 1
+  },
+  p: 4,
+  e: "🥈",
+  free: true
+},
+// 酸化銀
+{
+  k: "cAg2S",
+  f: "Ag₂S",
+  a: {
+    Ag: 2,
+    S: 1
+  },
+  p: 4,
+  e: "🥈",
+  free: true
+},
+// 硫化銀
+{
+  k: "cCuCl2",
+  f: "CuCl₂",
+  a: {
+    Cu: 1,
+    Cl: 2
+  },
+  p: 4,
+  e: "🪙"
+},
+// 塩化銅(II)
+{
+  k: "cFeCl2",
+  f: "FeCl₂",
+  a: {
+    Fe: 1,
+    Cl: 2
+  },
+  p: 4,
+  e: "🔩"
+},
+// 塩化鉄(II)
+{
+  k: "cO3",
+  f: "O₃",
+  a: {
+    O: 3
+  },
+  p: 4,
+  e: "🌀"
+},
+// オゾン
+{
+  k: "cSO2",
+  f: "SO₂",
+  a: {
+    S: 1,
+    O: 2
+  },
+  p: 4,
+  e: "🌋"
+},
+// 二酸化硫黄
+{
+  k: "cNa2O",
+  f: "Na₂O",
+  a: {
+    Na: 2,
+    O: 1
+  },
+  p: 4,
+  e: "🧂"
+},
+// 酸化ナトリウム
+{
+  k: "cFe2O3h",
+  f: "Fe₂O",
+  a: {
+    Fe: 2,
+    O: 1
+  },
+  p: 4,
+  e: "🔩"
+},
+// ウスタイト(簡易)
+// ── 4枚（6点）──
+{
+  k: "cNH3",
+  f: "NH₃",
+  a: {
+    N: 1,
+    H: 3
+  },
+  p: 6,
+  e: "💜"
+},
+// アンモニア
 {
   k: "cCH4",
   f: "CH₄",
@@ -767,54 +919,34 @@ const COMPS = [
     C: 1,
     H: 4
   },
-  p: 7,
+  p: 6,
   e: "🔥"
-}, {
-  k: "cAg2O",
-  f: "Ag₂O",
+},
+// メタン
+{
+  k: "cNa2S",
+  f: "Na₂S",
   a: {
-    Ag: 2,
-    O: 1
-  },
-  p: 8,
-  e: "🥈"
-}, {
-  k: "cNH3",
-  f: "NH₃",
-  a: {
-    N: 1,
-    H: 3
-  },
-  p: 8,
-  e: "💜"
-}, {
-  k: "cCuCl2",
-  f: "CuCl₂",
-  a: {
-    Cu: 1,
-    Cl: 2
-  },
-  p: 9,
-  e: "🪙"
-}, {
-  k: "cFeCl2",
-  f: "FeCl₂",
-  a: {
-    Fe: 1,
-    Cl: 2
-  },
-  p: 9,
-  e: "🔩"
-}, {
-  k: "cAg2S",
-  f: "Ag₂S",
-  a: {
-    Ag: 2,
+    Na: 2,
     S: 1
   },
-  p: 11,
-  e: "🥈"
-}, {
+  p: 6,
+  e: "🧂"
+},
+// 硫化ナトリウム(Na+Na+S=3枚→希少元素で4枚扱い)
+{
+  k: "cSO3",
+  f: "SO₃",
+  a: {
+    S: 1,
+    O: 3
+  },
+  p: 6,
+  e: "🌋"
+},
+// 三酸化硫黄
+// ── 5枚（9点）──
+{
   k: "cNaHCO3",
   f: "NaHCO₃",
   a: {
@@ -823,9 +955,46 @@ const COMPS = [
     C: 1,
     O: 3
   },
-  p: 15,
+  p: 9,
   e: "🧁"
-}, {
+},
+// 炭酸水素ナトリウム(重曹) Na+H+C+O+O+O=6枚
+{
+  k: "cCH3Cl",
+  f: "CH₃Cl",
+  a: {
+    C: 1,
+    H: 3,
+    Cl: 1
+  },
+  p: 9,
+  e: "🧪"
+},
+// クロロメタン C+H+H+H+Cl=5枚
+{
+  k: "cFe2O3",
+  f: "Fe₂O₃",
+  a: {
+    Fe: 2,
+    O: 3
+  },
+  p: 9,
+  e: "🔩"
+},
+// 酸化鉄(III) Fe+Fe+O+O+O=5枚
+{
+  k: "cC2H2",
+  f: "C₂H₂",
+  a: {
+    C: 2,
+    H: 2
+  },
+  p: 9,
+  e: "🔥"
+},
+// アセチレン C+C+H+H=4枚→希少で5枚扱い
+// ── 6枚（14点）──
+{
   k: "cNa2CO3",
   f: "Na₂CO₃",
   a: {
@@ -833,9 +1002,23 @@ const COMPS = [
     C: 1,
     O: 3
   },
-  p: 19,
+  p: 14,
   e: "🧪"
-}, {
+},
+// 炭酸ナトリウム Na+Na+C+O+O+O=6枚
+{
+  k: "cCH4O",
+  f: "CH₃OH",
+  a: {
+    C: 1,
+    H: 4,
+    O: 1
+  },
+  p: 14,
+  e: "🍶"
+},
+// メタノール C+H+H+H+H+O=6枚
+{
   k: "cH2SO4",
   f: "H₂SO₄",
   a: {
@@ -843,9 +1026,12 @@ const COMPS = [
     S: 1,
     O: 4
   },
-  p: 22,
+  p: 14,
   e: "⚗️"
-}, {
+},
+// 硫酸 H+H+S+O+O+O+O=7枚→6枚扱い
+// ── 7枚（35点スペシャル）──
+{
   k: "cC7",
   f: "C◆◆◆◆◆◆",
   a: {
@@ -854,7 +1040,8 @@ const COMPS = [
   p: 35,
   e: "💎",
   sp: true
-}];
+} // ダイヤモンド
+];
 
 /* ── ユーティリティ ─── */
 const shuffle = a => {
@@ -1906,7 +2093,7 @@ function Title({
       background: BG,
       position: "relative"
     }
-  }, /*#__PURE__*/React.createElement(Orbs, null), /*#__PURE__*/React.createElement(BgmBtn, null), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(Orbs, null), /*#__PURE__*/React.createElement("div", {
     style: {
       position: "relative",
       zIndex: 1,
@@ -2211,6 +2398,16 @@ function Title({
         }
       }, mainStages.map((s, i) => {
         const unlocked = i === 0 || cleared.has(STORY[i - 1].id);
+        const diffLabel = {
+          easy: "★☆☆",
+          normal: "★★☆",
+          hard: "★★★"
+        }[s.diff];
+        const diffColor = {
+          easy: "#66ff66",
+          normal: "#ffcc00",
+          hard: "#ff4444"
+        }[s.diff];
         return /*#__PURE__*/React.createElement("button", {
           key: s.id,
           onClick: () => {
@@ -2256,7 +2453,12 @@ function Title({
             fontSize: 16,
             fontWeight: 900
           }
-        }, s.name))), cleared.has(s.id) && /*#__PURE__*/React.createElement("span", {
+        }, s.name), unlocked && /*#__PURE__*/React.createElement("div", {
+          style: {
+            fontSize: 10,
+            color: diffColor
+          }
+        }, diffLabel))), cleared.has(s.id) && /*#__PURE__*/React.createElement("span", {
           style: {
             fontSize: 12,
             color: "#66ff66",
@@ -2370,6 +2572,16 @@ function Title({
       }, t("storyBack"))));
     } else {
       const s = storySt;
+      const diffLabel = {
+        easy: "★☆☆ やさしい",
+        normal: "★★☆ ふつう",
+        hard: "★★★ つよい"
+      }[s.diff];
+      const diffColor = {
+        easy: "#66ff66",
+        normal: "#ffcc00",
+        hard: "#ff4444"
+      }[s.diff];
       return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
         style: {
           fontSize: 80,
@@ -2384,7 +2596,7 @@ function Title({
           fontWeight: 700,
           marginBottom: 4
         }
-      }, t("storyStage"), " ", s.id), /*#__PURE__*/React.createElement("h2", {
+      }, s.ex ? "EX " + (s.id - 10) : t("storyStage") + " " + s.id), /*#__PURE__*/React.createElement("h2", {
         style: {
           fontSize: 26,
           fontWeight: 900,
@@ -2392,7 +2604,35 @@ function Title({
           margin: "0 0 8px",
           textAlign: "center"
         }
-      }, s.name), /*#__PURE__*/React.createElement("p", {
+      }, s.name), /*#__PURE__*/React.createElement("div", {
+        style: {
+          fontSize: 14,
+          color: diffColor,
+          fontWeight: 700,
+          marginBottom: 8
+        }
+      }, diffLabel), (s.hl || s.deckSize) && /*#__PURE__*/React.createElement("div", {
+        style: {
+          padding: "8px 16px",
+          borderRadius: 12,
+          background: "rgba(255,68,68,.08)",
+          border: "1px solid rgba(255,68,68,.2)",
+          marginBottom: 12,
+          textAlign: "center"
+        }
+      }, s.hl && /*#__PURE__*/React.createElement("div", {
+        style: {
+          fontSize: 13,
+          color: "#ff4444",
+          fontWeight: 700
+        }
+      }, "\u26A0\uFE0F \u624B\u672D\u4E0A\u9650 ", s.hl, "\u679A"), s.deckSize && /*#__PURE__*/React.createElement("div", {
+        style: {
+          fontSize: 13,
+          color: "#ff4444",
+          fontWeight: 700
+        }
+      }, "\u26A0\uFE0F \u5C71\u672D ", s.deckSize, "\u679A")), /*#__PURE__*/React.createElement("p", {
         style: {
           fontSize: 15,
           color: "rgba(255,255,255,.6)",
