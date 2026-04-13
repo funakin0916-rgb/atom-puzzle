@@ -39,7 +39,10 @@ const LangCtx = createContext("hiragana");
 const useLang = () => useContext(LangCtx);
 const useT = () => {
   const lang = useLang();
-  return k => TX[lang]?.[k] ?? TX.hiragana[k] ?? k;
+  return k => {
+    var _ref, _TX$lang$k, _TX$lang;
+    return (_ref = (_TX$lang$k = (_TX$lang = TX[lang]) === null || _TX$lang === void 0 ? void 0 : _TX$lang[k]) !== null && _TX$lang$k !== void 0 ? _TX$lang$k : TX.hiragana[k]) !== null && _ref !== void 0 ? _ref : k;
+  };
 };
 
 /* ── テキスト辞書 ─── */
@@ -1456,7 +1459,7 @@ const Card = ({
   const t = useT();
   const i = getAI(card.s);
   return /*#__PURE__*/React.createElement("div", {
-    onClick: () => onTap?.(card),
+    onClick: () => onTap === null || onTap === void 0 ? void 0 : onTap(card),
     style: {
       width: 70,
       minWidth: 70,
@@ -1867,9 +1870,8 @@ const CpuOv = ({
   useEffect(() => {
     requestAnimationFrame(() => setPh(1));
   }, []);
-  // name format: "🫧 バブリン" or "コンピュータ🤖" - extract emoji
-  const parts = name.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)/u);
-  const emoji = parts ? parts[0] : "🤖";
+  // name format: "🫧 バブリン" or "コンピュータ🤖" - extract first emoji
+  const emoji = (name.match(/[\u{1F300}-\u{1FAD6}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}]/u) || ["🤖"])[0];
   return /*#__PURE__*/React.createElement("div", {
     style: {
       position: "fixed",
