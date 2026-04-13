@@ -1,26 +1,3 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="原子パズル">
-<meta name="theme-color" content="#060612">
-<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjogIuWOn+WtkOODkeOCuuODq+OCsuODvOODoCIsICJzaG9ydF9uYW1lIjogIuWOn+WtkOODkeOCuuODqyIsICJzdGFydF91cmwiOiAiLiIsICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLCAib3JpZW50YXRpb24iOiAicG9ydHJhaXQiLCAiYmFja2dyb3VuZF9jb2xvciI6ICIjMDYwNjEyIiwgInRoZW1lX2NvbG9yIjogIiMwNjA2MTIiLCAiaWNvbnMiOiBbeyJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLDxzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgMTAwIDEwMCc+PHRleHQgeT0nLjllbScgZm9udC1zaXplPSc5MCc+8J+nqjwvdGV4dD48L3N2Zz4iLCAic2l6ZXMiOiAiYW55IiwgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
-<title>原子パズルゲーム</title>
-<style>html,body,#root{margin:0;padding:0;height:100%;background:#060612}#root{min-height:100dvh}#err{color:#ff4444;font-size:12px;padding:16px;white-space:pre-wrap;word-break:break-all;position:fixed;bottom:0;left:0;right:0;z-index:99999}</style>
-</head>
-<body>
-<div id="root"></div>
-<div id="err"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script>
-window.onerror = function(msg, url, line, col, err) {
-  document.getElementById("err").textContent = "ERR: " + msg + " L:" + line + " C:" + col;
-};
-try {
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 const {
   useState,
@@ -4372,12 +4349,3 @@ window.__App = function App() {
     }
   }));
 };
-
-var root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(React.createElement(window.__App));
-} catch(e) {
-  document.getElementById("err").textContent = "CATCH: " + e.message;
-}
-</script>
-</body>
-</html>
