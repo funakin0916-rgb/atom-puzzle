@@ -1354,22 +1354,37 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
       
       <Inv state={state} myHand={hand} />
       
-      {/* ── 化合物リスト ── */}
-      <div style={{marginTop:8}}>
+      {/* ── 化合物リスト（リーチ機能付き） ── */}
+      {(()=>{
+        // あと何枚で作れるか計算
+        const nearComps = COMPS.filter(c=>(premium||c.free)).map(c=>{
+          const need = {};
+          let total = 0;
+          Object.entries(c.a).forEach(([s,n])=>{
+            const have = hc[s]||0;
+            const diff = n - have;
+            if(diff > 0) { need[s] = diff; total += diff; }
+          });
+          return {...c, need, needTotal: total};
+        });
+        const reachComps = nearComps.filter(c=>c.needTotal>0 && c.needTotal<=2).sort((a,b)=>a.needTotal-b.needTotal||b.p-a.p);
+        
+        return <div style={{marginTop:8}}>
         <button onClick={()=>{setSC(!showC);SE.tap();}} style={{
-          width:"100%",padding:12,borderRadius:0,border:"2px solid #223",
+          width:"100%",padding:12,border:"2px solid #223",
           background:"#0e0e1e",color:"rgba(255,255,255,.4)",fontSize:13,fontWeight:700,cursor:"pointer"
         }}>📋 {showC?t("cpC"):t("cpO")}</button>
-        {showC && <div style={{marginTop:6,padding:12,borderRadius:0,background:"#0c0c1a",border:"2px solid #222",maxHeight:350,overflowY:"auto",animation:"su .3s ease"}}>
+        {showC && <div style={{marginTop:6,padding:12,background:"#0c0c1a",border:"2px solid #222",maxHeight:450,overflowY:"auto",animation:"su .3s ease"}}>
+          {/* ── 今作れるもの ── */}
           {poss.length>0 && <div style={{marginBottom:12}}>
             <div style={{fontSize:13,color:"#5f8",fontWeight:900,marginBottom:6}}>{t("now")}</div>
-            {poss.map((c,i)=><div key={i} style={{padding:"8px 6px",marginBottom:6,borderRadius:0,background:"rgba(80,255,128,.03)",border:c.sp?"1.5px solid #c9f":"1px solid rgba(80,255,128,.1)"}}>
+            {poss.map((c,i)=><div key={i} style={{padding:"8px 6px",marginBottom:6,background:"rgba(80,255,128,.03)",border:c.sp?"1.5px solid #c9f":"1px solid rgba(80,255,128,.1)"}}>
               <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
                 <span style={{fontSize:14,color:"#5f8",fontWeight:800}}>{c.e} {t(c.k)}</span>
-                <span style={{fontSize:14,fontWeight:900,color:"#000",background:c.sp?"#c9f":"#5f8",borderRadius:0,padding:"2px 8px"}}>{c.p}{t("pt")}</span>
+                <span style={{fontSize:14,fontWeight:900,color:"#000",background:c.sp?"#c9f":"#5f8",padding:"2px 8px"}}>{c.p}{t("pt")}</span>
               </div>
               <div style={{display:"flex",gap:3,flexWrap:"wrap",alignItems:"center"}}>
-                {Object.entries(c.a).map(([s,n])=>{const inf=getAI(s);return Array.from({length:n}).map((_,j)=><div key={`${s}${j}`} style={{width:32,height:38,borderRadius:0,background:"#111",border:`1.5px solid ${inf.g}33`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+                {Object.entries(c.a).map(([s,n])=>{const inf=getAI(s);return Array.from({length:n}).map((_,j)=><div key={`${s}${j}`} style={{width:32,height:38,background:"#111",border:`1.5px solid ${inf.g}33`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
                   <span style={{fontSize:10}}>{inf.e}</span><span style={{fontSize:11,fontWeight:900,color:inf.g}}>{s}</span>
                 </div>);})}
                 <span style={{color:"rgba(80,255,128,.3)"}}>→</span>
@@ -1377,25 +1392,69 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
               </div>
             </div>)}
           </div>}
+          
+          {/* ── リーチ！あと少しで作れるもの ── */}
+          {reachComps.length>0 && <div style={{marginBottom:12}}>
+            <div style={{fontSize:13,color:"#fc3",fontWeight:900,marginBottom:6}}>🎯 リーチ！あと少し</div>
+            {reachComps.map((c,i)=><div key={`r${i}`} style={{padding:"8px 6px",marginBottom:6,background:"rgba(255,200,50,.03)",border:c.needTotal===1?"2px solid rgba(255,200,50,.3)":"1px solid rgba(255,200,50,.12)"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+                <span style={{fontSize:13,color:"#fc3",fontWeight:800}}>{c.e} {t(c.k)}</span>
+                <div style={{display:"flex",alignItems:"center",gap:4}}>
+                  <span style={{fontSize:10,color:c.needTotal===1?"#f93":"#fc3",fontWeight:900,background:c.needTotal===1?"rgba(255,150,50,.15)":"rgba(255,200,50,.1)",padding:"1px 6px",border:c.needTotal===1?"1px solid #f93":"1px solid rgba(255,200,50,.2)"}}>あと{c.needTotal}枚</span>
+                  <span style={{fontSize:13,fontWeight:900,color:"#000",background:c.sp?"#c9f":c.p>=8?"#f93":c.p>=5?"#fc3":"#5f8",padding:"2px 8px"}}>{c.p}{t("pt")}</span>
+                </div>
+              </div>
+              <div style={{display:"flex",gap:3,flexWrap:"wrap",alignItems:"center"}}>
+                {Object.entries(c.a).map(([s,n])=>{const inf=getAI(s);const have=hc[s]||0;return Array.from({length:n}).map((_,j)=>{
+                  const isNeeded = j >= have;
+                  return <div key={`${s}${j}`} style={{width:32,height:38,background:isNeeded?"rgba(255,200,50,.08)":"#111",border:`2px solid ${isNeeded?"#fc3":inf.g+"33"}`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",position:"relative"}}>
+                    <span style={{fontSize:10}}>{inf.e}</span>
+                    <span style={{fontSize:11,fontWeight:900,color:isNeeded?"#fc3":inf.g}}>{s}</span>
+                    {isNeeded && <div style={{position:"absolute",top:-1,right:-1,width:8,height:8,background:"#fc3",display:"flex",alignItems:"center",justifyContent:"center",fontSize:6,color:"#000",fontWeight:900}}>!</div>}
+                  </div>;
+                });})}
+                <span style={{color:"rgba(255,200,50,.3)"}}>→</span>
+                <span style={{fontSize:12,color:"#fc3",fontWeight:600}}>{c.f}</span>
+              </div>
+              {/* 不足カード一覧 */}
+              <div style={{marginTop:4,display:"flex",gap:4,alignItems:"center",flexWrap:"wrap"}}>
+                <span style={{fontSize:10,color:"rgba(255,200,50,.5)"}}>ほしい:</span>
+                {Object.entries(c.need).map(([s,n])=>{const inf=getAI(s);return <span key={s} style={{fontSize:11,color:"#fc3",fontWeight:800}}>{inf.e}{s}×{n}</span>;})}
+              </div>
+            </div>)}
+          </div>}
+          
+          {/* ── 全化合物一覧 ── */}
           <div style={{fontSize:13,color:"rgba(255,255,255,.25)",fontWeight:900,marginBottom:6}}>{t("all")}</div>
           {[...COMPS].sort((a,b)=>a.p-b.p).map((c,i)=>{
             const isLocked=!premium&&!c.free;
-            return <div key={i} style={{padding:"8px 6px",marginBottom:6,borderRadius:0,background:isLocked?"rgba(255,255,255,.005)":"rgba(255,255,255,.015)",border:c.sp?"1.5px solid #c9f":isLocked?"1px solid rgba(255,255,255,.02)":"1px solid rgba(255,255,255,.04)",opacity:isLocked?.45:1}}>
-              <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-                <span style={{fontSize:13,color:isLocked?"rgba(255,255,255,.25)":"rgba(255,255,255,.55)",fontWeight:700}}>{isLocked?"🔒 ":""}{c.e} {t(c.k)}{c.sp&&<span style={{marginLeft:4,fontSize:10,color:"#c9f"}}>{t("sp")}</span>}</span>
-                <span style={{fontSize:14,fontWeight:900,color:isLocked?"rgba(255,255,255,.25)":"#000",background:isLocked?"rgba(255,255,255,.06)":c.sp?"#c9f":c.p>=8?"#f93":c.p>=5?"#fc3":c.p>=4?"#fb923c":"#5f8",borderRadius:0,padding:"2px 8px",minWidth:40,textAlign:"center"}}>{c.p}{t("pt")}</span>
+            // あと何枚必要か
+            const nc = nearComps.find(nc=>nc.k===c.k);
+            const nt = nc ? nc.needTotal : 0;
+            return <div key={i} style={{padding:"8px 6px",marginBottom:6,background:isLocked?"rgba(255,255,255,.005)":nt===0?"rgba(80,255,128,.02)":"rgba(255,255,255,.015)",border:c.sp?"1.5px solid #c9f":isLocked?"1px solid rgba(255,255,255,.02)":nt===0?"1px solid rgba(80,255,128,.1)":"1px solid rgba(255,255,255,.04)",opacity:isLocked?.45:1}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+                <span style={{fontSize:13,color:isLocked?"rgba(255,255,255,.25)":nt===0?"#5f8":"rgba(255,255,255,.55)",fontWeight:700}}>{isLocked?"🔒 ":""}{c.e} {t(c.k)}{c.sp&&<span style={{marginLeft:4,fontSize:10,color:"#c9f"}}>{t("sp")}</span>}</span>
+                <div style={{display:"flex",alignItems:"center",gap:4}}>
+                  {!isLocked && nt>0 && <span style={{fontSize:9,color:nt<=2?"#fc3":"#666",fontWeight:700,padding:"1px 4px",border:`1px solid ${nt<=2?"rgba(255,200,50,.3)":"#333"}`}}>あと{nt}</span>}
+                  {!isLocked && nt===0 && <span style={{fontSize:9,color:"#5f8",fontWeight:700}}>✓OK</span>}
+                  <span style={{fontSize:14,fontWeight:900,color:isLocked?"rgba(255,255,255,.25)":"#000",background:isLocked?"rgba(255,255,255,.06)":c.sp?"#c9f":c.p>=8?"#f93":c.p>=5?"#fc3":c.p>=4?"#fb923c":"#5f8",padding:"2px 8px",minWidth:40,textAlign:"center"}}>{c.p}{t("pt")}</span>
+                </div>
               </div>
               <div style={{display:"flex",gap:3,flexWrap:"wrap",alignItems:"center"}}>
-                {Object.entries(c.a).map(([s,n])=>{const inf=getAI(s);return Array.from({length:n}).map((_,j)=><div key={`${s}${j}`} style={{width:32,height:38,borderRadius:0,background:isLocked?"rgba(255,255,255,.015)":"rgba(255,255,255,.03)",border:`1.5px solid ${isLocked?'rgba(255,255,255,.04)':inf.g+'22'}`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
-                  <span style={{fontSize:10,opacity:isLocked?.3:1}}>{inf.e}</span><span style={{fontSize:11,fontWeight:900,color:isLocked?"rgba(255,255,255,.15)":inf.g}}>{s}</span>
-                </div>);})}
+                {Object.entries(c.a).map(([s,n])=>{const inf=getAI(s);const have=isLocked?0:(hc[s]||0);return Array.from({length:n}).map((_,j)=>{
+                  const isNeeded = !isLocked && j >= have;
+                  return <div key={`${s}${j}`} style={{width:32,height:38,background:isLocked?"rgba(255,255,255,.015)":isNeeded?"rgba(255,200,50,.05)":"rgba(255,255,255,.03)",border:`1.5px solid ${isLocked?'rgba(255,255,255,.04)':isNeeded?'rgba(255,200,50,.3)':inf.g+'22'}`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+                    <span style={{fontSize:10,opacity:isLocked?.3:1}}>{inf.e}</span><span style={{fontSize:11,fontWeight:900,color:isLocked?"rgba(255,255,255,.15)":isNeeded?"#fc3":inf.g}}>{s}</span>
+                  </div>;
+                });})}
                 <span style={{color:"rgba(255,255,255,.1)"}}>→</span>
                 <span style={{fontSize:12,color:isLocked?"rgba(255,255,255,.15)":"rgba(255,255,255,.35)",fontWeight:600}}>{c.f}</span>
               </div>
             </div>;
           })}
         </div>}
-      </div>
+      </div>;
+      })()}
       
       {/* ── スコアボード ── */}
       <div style={{marginTop:12}}>
