@@ -2513,7 +2513,9 @@ function Title({
   setLang,
   premium,
   setPremium,
-  cleared
+  cleared,
+  prologueDone,
+  setPrologueDone
 }) {
   const t = useT();
   const [mode, setMode] = useState(null);
@@ -2524,7 +2526,6 @@ function Title({
   const [cd, setCd] = useState("normal");
   const [hl, setHL] = useState(7);
   const [storySt, setStorySt] = useState(null);
-  const [prologueSeen, setPrologueSeen] = useState(false);
   const [bgmOn, setBgmOn] = useState(BGM.on());
   const [seOn, setSeOn] = useState(SE.isEnabled());
   const Stg = () => /*#__PURE__*/React.createElement("div", {
@@ -3015,9 +3016,9 @@ function Title({
   // ─ ストーリーモード ─
   if (mode === "story") {
     // プロローグ（初回のみ）
-    if (!prologueSeen) {
+    if (!prologueDone) {
       return /*#__PURE__*/React.createElement(Prologue, {
-        onDone: () => setPrologueSeen(true)
+        onDone: () => setPrologueDone(true)
       });
     }
     if (storySt === null) {
@@ -4839,6 +4840,7 @@ window.__App = function App() {
   const [lang, setLang] = useState("kanji");
   const [premium, setPremium] = useState(true);
   const [cleared, setCleared] = useState(new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]));
+  const [prologueDone, setPrologueDone] = useState(false);
   const [storyStage, setStoryStage] = useState(null);
   useEffect(() => {
     const handler = e => {
@@ -5119,7 +5121,9 @@ window.__App = function App() {
     setLang: setLang,
     premium: premium,
     setPremium: setPremium,
-    cleared: cleared
+    cleared: cleared,
+    prologueDone: prologueDone,
+    setPrologueDone: setPrologueDone
   }), scr === "result" && gs && /*#__PURE__*/React.createElement(Result, {
     state: gs,
     onRestart: restart,

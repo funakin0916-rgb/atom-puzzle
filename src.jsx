@@ -1018,7 +1018,7 @@ const Pass = ({pn,onReady,info}) => {
 /* ═══════════════════════════════════════════════════════════
    📱 タイトル画面 - PREMIUM
    ═══════════════════════════════════════════════════════════ */
-function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setPremium,cleared}) {
+function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setPremium,cleared,prologueDone,setPrologueDone}) {
   const t=useT();
   const [mode,setMode]=useState(null);
   const [pc,setPc]=useState(2);
@@ -1028,7 +1028,6 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
   const [cd,setCd]=useState("normal");
   const [hl,setHL]=useState(7);
   const [storySt,setStorySt]=useState(null);
-  const [prologueSeen,setPrologueSeen]=useState(false);
   const [bgmOn,setBgmOn]=useState(BGM.on());
   const [seOn,setSeOn]=useState(SE.isEnabled());
   
@@ -1132,8 +1131,8 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
   // ─ ストーリーモード ─
   if(mode==="story") {
     // プロローグ（初回のみ）
-    if(!prologueSeen) {
-      return <Prologue onDone={()=>setPrologueSeen(true)} />;
+    if(!prologueDone) {
+      return <Prologue onDone={()=>setPrologueDone(true)} />;
     }
     if(storySt===null) {
       const mainStages=STORY.filter(s=>!s.ex);
@@ -1627,6 +1626,7 @@ window.__App = function App() {
   const [lang,setLang]=useState("kanji");
   const [premium,setPremium]=useState(true);
   const [cleared,setCleared]=useState(new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]));
+  const [prologueDone,setPrologueDone]=useState(false);
   const [storyStage,setStoryStage]=useState(null);
 
   useEffect(()=>{const handler=e=>{if(scr==="game"){e.preventDefault();e.returnValue="";}};window.addEventListener("beforeunload",handler);return ()=>window.removeEventListener("beforeunload",handler);},[scr]);
@@ -1669,7 +1669,7 @@ window.__App = function App() {
   
   return <LangCtx.Provider value={lang}>
     <style>{CSS}</style>
-    {scr==="title" && <Title onStart={(n,l)=>init(n,null,null,l)} onStartCpu={(m,c,d,l)=>init([m,...c],new Set(c.map((_,i)=>i+1)),d,l)} onStartStory={startStory} onTest={l=>init(["あなた","コンピュータ🤖"],new Set([1]),"normal",l,6)} lang={lang} setLang={setLang} premium={premium} setPremium={setPremium} cleared={cleared} />}
+    {scr==="title" && <Title onStart={(n,l)=>init(n,null,null,l)} onStartCpu={(m,c,d,l)=>init([m,...c],new Set(c.map((_,i)=>i+1)),d,l)} onStartStory={startStory} onTest={l=>init(["あなた","コンピュータ🤖"],new Set([1]),"normal",l,6)} lang={lang} setLang={setLang} premium={premium} setPremium={setPremium} cleared={cleared} prologueDone={prologueDone} setPrologueDone={setPrologueDone} />}
     {scr==="result"&&gs && <Result state={gs} onRestart={restart} isCpu={isCpu} storyStage={storyStage} onStoryWin={storyWin} />}
     {scr==="game"&&cpuOv && <><BgmBtn /><CpuOv name={cpuOv.name} action={cpuOv.action} comp={cpuOv.comp} /></>}
     {scr==="game"&&!cpuOv&&sp&&!isCpu&&gs && <Pass pn={gs.pl[cp].name} onReady={()=>setSP(false)} info={gs.deck.length>0?`${tx.dkRem} ${gs.deck.length} ${tx.mai}`:tx.lastR} />}
