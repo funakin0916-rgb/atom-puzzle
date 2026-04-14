@@ -1246,10 +1246,10 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
           <div style={{fontSize:10,color:"rgba(255,255,255,.3)",fontWeight:700}}>手札上限</div>
           <div style={{fontSize:14,fontWeight:900,color:"#5cf"}}>{storySt.hl}枚</div>
         </div>
-        {storySt.deckSize && <div style={{padding:"8px 14px",borderRadius:0,background:"#0e0e1e",border:"2px solid #223",textAlign:"center"}}>
+        <div style={{padding:"8px 14px",borderRadius:0,background:"#0e0e1e",border:"2px solid #223",textAlign:"center"}}>
           <div style={{fontSize:10,color:"rgba(255,255,255,.3)",fontWeight:700}}>山札</div>
-          <div style={{fontSize:14,fontWeight:900,color:"#f44"}}>{storySt.deckSize}枚</div>
-        </div>}
+          <div style={{fontSize:14,fontWeight:900,color:storySt.deckSize?"#f44":"#fc3"}}>{storySt.deckSize||45}枚</div>
+        </div>
       </div>
       
       <PremBtn onClick={()=>{SE.gStart();onStartStory(storySt);}} gradient={`linear-gradient(135deg,${storySt.color}cc,${storySt.color})`} shadow={`${storySt.color}44`} style={{padding:"16px 48px",fontSize:20,borderRadius:0,animation:"slideUp .5s .5s ease both",opacity:0}}>⚔️ {t("storyFight")}</PremBtn>
@@ -1663,7 +1663,7 @@ window.__App = function App() {
   
   const restart=()=>{setScr("title");setGS(null);setCP(0);setIC(false);setCpuP(new Set());setCpuOv(null);setStoryStage(null);if(BGM.on())BGM.start("title");};
   const finishGame=()=>{setScr("result");};
-  const startStory=stage=>{const stageHl=stage.hl||7;let deck=buildDeck();if(stage.deckSize)deck=deck.slice(0,stage.deckSize);const pl=[{name:"あなた",hand:[],bonds:[]},{name:stage.emoji+" "+stage.name,hand:[],bonds:[]}];setHL(stageHl);setGS({deck,pl,dp:[],hl:stageHl});setCP(0);setSP(false);setScr("game");setTC(0);setLRS(false);setLRSP(-1);setCpuP(new Set([1]));setIC(true);setCpuD(stage.diff);setCpuOv(null);setStoryStage(stage);BGM.startForStage(stage.id);};
+  const startStory=stage=>{const stageHl=stage.hl||7;let deck=buildDeck();const storyDeckSize=stage.deckSize||45;deck=deck.slice(0,storyDeckSize);const pl=[{name:"あなた",hand:[],bonds:[]},{name:stage.emoji+" "+stage.name,hand:[],bonds:[]}];setHL(stageHl);setGS({deck,pl,dp:[],hl:stageHl});setCP(0);setSP(false);setScr("game");setTC(0);setLRS(false);setLRSP(-1);setCpuP(new Set([1]));setIC(true);setCpuD(stage.diff);setCpuOv(null);setStoryStage(stage);BGM.startForStage(stage.id);};
   const storyWin=()=>{if(storyStage){setCleared(prev=>new Set([...prev,storyStage.id]));}};
   const tx=TX[lang];
   

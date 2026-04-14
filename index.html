@@ -3433,7 +3433,7 @@ function Title({
         fontWeight: 900,
         color: "#5cf"
       }
-    }, storySt.hl, "\u679A")), storySt.deckSize && /*#__PURE__*/React.createElement("div", {
+    }, storySt.hl, "\u679A")), /*#__PURE__*/React.createElement("div", {
       style: {
         padding: "8px 14px",
         borderRadius: 0,
@@ -3451,9 +3451,9 @@ function Title({
       style: {
         fontSize: 14,
         fontWeight: 900,
-        color: "#f44"
+        color: storySt.deckSize ? "#f44" : "#fc3"
       }
-    }, storySt.deckSize, "\u679A"))), /*#__PURE__*/React.createElement(PremBtn, {
+    }, storySt.deckSize || 45, "\u679A"))), /*#__PURE__*/React.createElement(PremBtn, {
       onClick: () => {
         SE.gStart();
         onStartStory(storySt);
@@ -5079,7 +5079,8 @@ window.__App = function App() {
   const startStory = stage => {
     const stageHl = stage.hl || 7;
     let deck = buildDeck();
-    if (stage.deckSize) deck = deck.slice(0, stage.deckSize);
+    const storyDeckSize = stage.deckSize || 45;
+    deck = deck.slice(0, storyDeckSize);
     const pl = [{
       name: "あなた",
       hand: [],
