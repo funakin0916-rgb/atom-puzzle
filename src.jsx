@@ -681,20 +681,20 @@ const Prologue = ({onDone}) => {
   return <div onClick={goNext} style={{
     minHeight:"100dvh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",
     padding:"calc(24px + env(safe-area-inset-top)) 28px 24px",cursor:"pointer",position:"relative",overflow:"hidden",
-    background:"radial-gradient(ellipse at 50% 40%,rgba(167,139,250,.1),transparent 60%),linear-gradient(180deg,#060612,#0c0c24)"
+    background:"radial-gradient(ellipse at 50% 40%,rgba(80,180,255,.1),transparent 60%),linear-gradient(180deg,#080820,#0c0c30)"
   }}>
     <Orbs n={6} />
     <NoiseOverlay />
     {/* 博士イラスト */}
-    {showDr && <div style={{marginBottom:20,animation:"fadeScale .5s ease both",filter:"drop-shadow(0 8px 30px rgba(167,139,250,.3))"}}>
+    {showDr && <div style={{marginBottom:20,animation:"fadeScale .5s ease both",filter:"drop-shadow(0 8px 30px rgba(80,180,255,.3))"}}>
       <DrSVG size={page>=4?140:100} />
     </div>}
     {/* テキスト */}
     <div style={{
       position:"relative",zIndex:2,maxWidth:300,width:"100%",
-      padding:24,borderRadius:20,
-      background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.08)",
-      backdropFilter:"blur(8px)",
+      padding:16,borderRadius:0,
+      background:"rgba(8,8,32,.92)",border:"3px solid rgba(80,180,255,.25)",
+      boxShadow:"inset 0 0 0 1px rgba(80,180,255,.08), 0 4px 0 rgba(0,0,0,.4)",
       opacity:fade?1:0,transition:"opacity .3s",
       animation:fade?"slideUp .4s ease both":"none"
     }}>
@@ -702,7 +702,7 @@ const Prologue = ({onDone}) => {
     </div>
     {/* ページインジケーター */}
     <div style={{display:"flex",gap:6,marginTop:20,position:"relative",zIndex:2}}>
-      {PROLOGUE.map((_,i)=><div key={i} style={{width:i===page?20:6,height:6,borderRadius:3,background:i===page?"#a78bfa":"rgba(255,255,255,.15)",transition:"all .3s"}} />)}
+      {PROLOGUE.map((_,i)=><div key={i} style={{width:i===page?20:6,height:6,borderRadius:0,background:i===page?"#5cf":"rgba(255,255,255,.15)",transition:"all .3s"}} />)}
     </div>
     <div style={{marginTop:16,fontSize:13,color:"rgba(255,255,255,.25)",position:"relative",zIndex:2}}>
       {isLast?"タップしてはじめる":"タップでつぎへ ▶"}
@@ -727,17 +727,11 @@ const cpuCards = (hand,comp) => { const n={...comp.a},ids=[]; for(const c of han
    🎨 PREMIUM CSS - 全面リニューアル
    ═══════════════════════════════════════════════════════════ */
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Silkscreen:wght@400;700&display=swap');
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;image-rendering:pixelated}
-body{font-family:'DotGothic16','Silkscreen',monospace;overflow-x:hidden;background:#0a0a1a}
-input::placeholder{color:rgba(255,255,255,.25)}input{user-select:text;font-family:inherit}
-button{font-family:'DotGothic16','Silkscreen',monospace;transition:transform .1s;border-image:none}button:active{transform:scale(.95)!important}
-
-/* ═ ピクセルボーダー ═ */
-.pxbtn{position:relative;border:none;padding:14px 20px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;image-rendering:pixelated;
-  clip-path:polygon(4px 0,calc(100% - 4px) 0,100% 4px,100% calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,0 calc(100% - 4px),0 4px)}
-.pxcard{clip-path:polygon(3px 0,calc(100% - 3px) 0,100% 3px,100% calc(100% - 3px),calc(100% - 3px) 100%,3px 100%,0 calc(100% - 3px),0 3px)}
-.pxbox{border:3px solid rgba(255,255,255,.15);background:rgba(10,10,30,.85);image-rendering:pixelated}
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+body{font-family:'DotGothic16',monospace;overflow-x:hidden;background:#080820;image-rendering:pixelated}
+input::placeholder{color:rgba(255,255,255,.25)}input{user-select:text;font-family:'DotGothic16',monospace}
+button{font-family:'DotGothic16',monospace;transition:transform .08s}button:active{transform:scale(.93)!important}
 
 /* ═ アニメーション ═ */
 @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
@@ -765,39 +759,42 @@ button{font-family:'DotGothic16','Silkscreen',monospace;transition:transform .1s
 @keyframes textReveal{0%{transform:scale(3);opacity:0}100%{transform:scale(1);opacity:1}}
 @keyframes starSpin{0%{transform:rotate(0) scale(0);opacity:0}50%{opacity:1}100%{transform:rotate(360deg) scale(1);opacity:0}}
 @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-@keyframes titleGlow{0%,100%{text-shadow:0 0 8px rgba(100,200,255,.5),0 0 20px rgba(100,200,255,.2)}50%{text-shadow:0 0 16px rgba(100,200,255,.8),0 0 40px rgba(100,200,255,.4),0 0 60px rgba(100,200,255,.2)}}
+@keyframes titleGlow{0%,100%{text-shadow:2px 2px 0 #003,0 0 6px rgba(80,180,255,.4)}50%{text-shadow:2px 2px 0 #003,0 0 12px rgba(80,180,255,.7),0 0 24px rgba(80,180,255,.3)}}
 @keyframes pulseRing{0%{transform:scale(.8);opacity:0}40%{opacity:1}100%{transform:scale(1.4);opacity:0}}
-@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeScale{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
 @keyframes blink{0%,90%,100%{opacity:1}95%{opacity:0}}
-@keyframes pixelStar{0%,100%{opacity:.2}50%{opacity:1}}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(100,200,255,.2);border-radius:0}
+@keyframes pixelStar{0%,100%{opacity:.15}50%{opacity:.9}}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(80,180,255,.2)}
 `;
 
-const BG = "linear-gradient(180deg,#0a0a2e 0%,#0f0f3d 40%,#0a0a2e 100%)";
+const BG = "linear-gradient(180deg,#080820 0%,#0c0c30 40%,#080820 100%)";
 
 /* ═══════════════════════════════════════════════════════════
-   🎨 PREMIUM UI コンポーネント
+   🎨 PIXEL ART UIコンポーネント
    ═══════════════════════════════════════════════════════════ */
 
-/* ── 星空背景（ドット風） ─── */
-const Orbs = ({n=30}) => {
-  const stars = useRef(Array.from({length:n},(_,i)=>({id:i,x:Math.random()*100,y:Math.random()*100,sz:2+Math.floor(Math.random()*3)*2,d:2+Math.random()*5,dl:Math.random()*5}))).current;
+/* ── ピクセル星空 ─── */
+const Orbs = ({n=40}) => {
+  const stars = useRef(Array.from({length:n},(_,i)=>({id:i,x:Math.random()*100,y:Math.random()*100,sz:(1+Math.floor(Math.random()*2))*2,d:2+Math.random()*4,dl:Math.random()*4,co:["#5cf","#fff","#c9f","#8f8","#fc8"][i%5]}))).current;
   return <div style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:0,overflow:"hidden"}}>
-    {stars.map(s=><div key={s.id} style={{position:"absolute",left:`${s.x}%`,top:`${s.y}%`,width:s.sz,height:s.sz,background:["#64b5f6","#fff","#ce93d8","#81c784","#ffcc80"][s.id%5],imageRendering:"pixelated",animation:`pixelStar ${s.d}s ${s.dl}s ease-in-out infinite`}} />)}
+    {stars.map(s=><div key={s.id} style={{position:"absolute",left:`${s.x}%`,top:`${s.y}%`,width:s.sz,height:s.sz,background:s.co,imageRendering:"pixelated",animation:`pixelStar ${s.d}s ${s.dl}s ease-in-out infinite`}} />)}
   </div>;
 };
 
-/* ── ピクセルグリッド背景 ─── */
-const NoiseOverlay = () => <div style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:1,opacity:0.04,backgroundImage:"repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(100,200,255,.08) 3px,rgba(100,200,255,.08) 4px),repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(100,200,255,.08) 3px,rgba(100,200,255,.08) 4px)",backgroundSize:"4px 4px"}} />;
+/* ── スキャンライン（CRT風） ─── */
+const NoiseOverlay = () => <div style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:1,background:"repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.12) 2px,rgba(0,0,0,.12) 4px)",backgroundSize:"100% 4px",opacity:.5}} />;
 
 /* ── ピクセルボタン ─── */
-const PremBtn = ({children,onClick,bg="#4a6cf7",disabled,style,...rest}) =>
-  <button className="pxbtn" onClick={()=>{if(!disabled){onClick?.();SE.tap();}}} style={{
-    background:disabled?"#333":bg,color:disabled?"#666":"#fff",
-    fontSize:15,fontWeight:700,cursor:disabled?"default":"pointer",
-    boxShadow:disabled?"none":`0 4px 0 ${bg}88,0 6px 16px rgba(0,0,0,.4)`,
-    letterSpacing:".05em",textShadow:disabled?"none":"1px 1px 0 rgba(0,0,0,.5)",...style
+const PremBtn = ({children,onClick,bg="#3355cc",disabled,style,...rest}) =>
+  <button onClick={()=>{if(!disabled){onClick?.();SE.tap();}}} style={{
+    border:`3px solid ${disabled?"#444":bg}`,
+    background:disabled?"#222":bg,color:disabled?"#555":"#fff",
+    fontSize:14,fontWeight:700,cursor:disabled?"default":"pointer",
+    padding:"12px 20px",
+    boxShadow:disabled?"none":`0 4px 0 rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.2)`,
+    letterSpacing:".04em",imageRendering:"pixelated",
+    textShadow:disabled?"none":"1px 1px 0 rgba(0,0,0,.6)",...style
   }} {...rest}>{children}</button>;
 
 /* ── BGMボタン ─── */
@@ -805,21 +802,21 @@ const BgmBtn = () => {
   const t = useT();
   const [on,setOn] = useState(BGM.on());
   return <button onClick={()=>{if(on){BGM.stop();setOn(false);}else{BGM.start();setOn(true);}}} style={{
-    padding:"4px 10px",border:`2px solid ${on?"#64b5f6":"#444"}`,
-    background:on?"#1a237e":"#111",color:on?"#64b5f6":"#555",
-    fontSize:11,fontWeight:700,cursor:"pointer",
-    position:"fixed",top:"max(10px,env(safe-area-inset-top))",right:10,zIndex:100,
+    padding:"3px 8px",border:`2px solid ${on?"#5cf":"#333"}`,
+    background:on?"#112":"#111",color:on?"#5cf":"#444",
+    fontSize:10,fontWeight:700,cursor:"pointer",
+    position:"fixed",top:"max(8px,env(safe-area-inset-top))",right:8,zIndex:100,
     fontFamily:"'DotGothic16',monospace",imageRendering:"pixelated"
   }}>{on?t("bgmOn"):t("bgmOff")}</button>;
 };
 
 /* ── 設定ボタン ─── */
-const SBtn = ({l,a,co="#64b5f6",onClick}) =>
+const SBtn = ({l,a,co="#5cf",onClick}) =>
   <button onClick={()=>{onClick();SE.tap();}} style={{
-    padding:"7px 12px",border:`2px solid ${a?co:"#333"}`,
+    padding:"6px 10px",border:`2px solid ${a?co:"#333"}`,
     background:a?co+"22":"#111",color:a?co:"#555",
-    fontSize:13,fontWeight:700,cursor:"pointer",
-    fontFamily:"'DotGothic16',monospace",boxShadow:a?`0 2px 0 ${co}44`:"none"
+    fontSize:12,fontWeight:700,cursor:"pointer",
+    fontFamily:"'DotGothic16',monospace",boxShadow:a?`0 2px 0 ${co}44, inset 0 0 4px ${co}22`:"0 2px 0 #0a0a0a",imageRendering:"pixelated"
   }}>{l}</button>;
 
 /* ═══════════════════════════════════════════════════════════
@@ -829,39 +826,46 @@ const Card = ({card,sel,onTap,dl=0}) => {
   const t = useT();
   const i = getAI(card.s);
   const rarity = RARITY[card.s]||1;
-  return <div onClick={()=>onTap?.(card)} className="pxcard" style={{
-    width:68,minWidth:68,height:90,position:"relative",
-    background:sel?`${i.c}`:"#161630",
-    border:sel?`3px solid ${i.g}`:`2px solid ${rarity>=3?"#ffd700":rarity>=2?"#64b5f6":"#333"}`,
+  const rarityBorder = rarity>=3?"#ffd700":rarity>=2?"#5cf":"#334";
+  return <div onClick={()=>onTap?.(card)} style={{
+    width:66,minWidth:66,height:88,position:"relative",
+    background:sel?i.c:"#161630",
+    border:`3px solid ${sel?i.g:rarityBorder}`,
     display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",
-    boxShadow:sel?`0 0 12px ${i.g}88,0 4px 0 ${i.g}44`:`0 3px 0 #0a0a1a`,
+    boxShadow:sel?`0 0 8px ${i.g}88, 0 4px 0 ${i.g}44, inset 0 0 6px ${i.g}33`:`0 3px 0 #0a0a1a, inset 0 1px 0 rgba(255,255,255,.06)`,
     cursor:onTap?"pointer":"default",
-    transition:"all .15s",flexShrink:0,
-    transform:sel?"translateY(-8px)":"none",gap:2,
-    "--g":i.g+"88",
+    transition:"all .12s",flexShrink:0,
+    transform:sel?"translateY(-8px)":"none",gap:1,
+    "--g":i.g+"66",
     animation:sel?"pg 1.5s ease-in-out infinite":`ca .3s ${dl}s ease both`,
     imageRendering:"pixelated"
   }}>
-    {rarity>=3 && <div style={{position:"absolute",top:2,right:3,fontSize:6,color:"#ffd700",fontFamily:"monospace"}}>★★★</div>}
-    {rarity===2 && <div style={{position:"absolute",top:2,right:3,fontSize:6,color:"#64b5f6",fontFamily:"monospace"}}>★★</div>}
-    <span style={{fontSize:20}}>{i.e}</span>
-    <span style={{fontSize:20,fontWeight:900,color:sel?i.tc:"#fff",lineHeight:1,textShadow:sel?"none":"1px 1px 0 #000"}}>{card.s}</span>
-    <span style={{fontSize:8,color:sel?i.tc+"cc":"#888",fontWeight:700}}>{t(card.k)}</span>
+    {/* ピクセルコーナー装飾 */}
+    <div style={{position:"absolute",top:0,left:0,width:4,height:4,background:sel?i.g:rarityBorder,opacity:.4}} />
+    <div style={{position:"absolute",top:0,right:0,width:4,height:4,background:sel?i.g:rarityBorder,opacity:.4}} />
+    <div style={{position:"absolute",bottom:0,left:0,width:4,height:4,background:sel?i.g:rarityBorder,opacity:.4}} />
+    <div style={{position:"absolute",bottom:0,right:0,width:4,height:4,background:sel?i.g:rarityBorder,opacity:.4}} />
+    {rarity>=3 && <div style={{position:"absolute",top:2,right:3,fontSize:6,color:"#ffd700",fontFamily:"monospace",letterSpacing:"-1px"}}>★★★</div>}
+    {rarity===2 && <div style={{position:"absolute",top:2,right:3,fontSize:6,color:"#5cf",fontFamily:"monospace",letterSpacing:"-1px"}}>★★</div>}
+    <span style={{fontSize:18}}>{i.e}</span>
+    <span style={{fontSize:18,fontWeight:900,color:sel?i.tc:"#fff",lineHeight:1,textShadow:sel?"none":"1px 1px 0 #000"}}>{card.s}</span>
+    <span style={{fontSize:8,color:sel?i.tc+"cc":"#777",fontWeight:700}}>{t(card.k)}</span>
   </div>;
 };
 
 /* ── バッジ ─── */
 const Badge = ({comp}) => {
   const t = useT();
+  const ptCol = comp.sp?"#c9f":comp.p>=8?"#f93":comp.p>=5?"#fc3":"#5f8";
   return <div style={{
-    display:"inline-flex",alignItems:"center",gap:4,
-    background:"#111",padding:"3px 8px",
-    border:comp.sp?"2px solid #ce93d8":"2px solid #333",
-    fontSize:11
+    display:"inline-flex",alignItems:"center",gap:3,
+    background:"#111",padding:"2px 6px",
+    border:comp.sp?"2px solid #c9f":"2px solid #334",
+    fontSize:10,imageRendering:"pixelated"
   }}>
-    <span style={{fontSize:12}}>{comp.e}</span>
-    <span style={{fontWeight:700,color:"#ccc"}}>{t(comp.k)}</span>
-    <span style={{fontWeight:700,color:"#000",background:comp.sp?"#ce93d8":comp.p>=8?"#f97316":comp.p>=5?"#fbbf24":"#4ade80",padding:"0 5px",fontSize:10}}>{comp.p}{t("pt")}</span>
+    <span style={{fontSize:11}}>{comp.e}</span>
+    <span style={{fontWeight:700,color:"#bbb"}}>{t(comp.k)}</span>
+    <span style={{fontWeight:700,color:"#000",background:ptCol,padding:"0 4px",fontSize:9}}>{comp.p}{t("pt")}</span>
   </div>;
 };
 
@@ -874,22 +878,22 @@ const Inv = ({state,myHand}) => {
   state.pl.forEach(p=>p.bonds.forEach(b=>Object.entries(b.a).forEach(([s,n])=>bu[s]=(bu[s]||0)+n)));
   return <div style={{marginTop:12}}>
     <button onClick={()=>{setOpen(!open);SE.tap();}} style={{
-      width:"100%",padding:12,borderRadius:14,
-      border:"1px solid rgba(255,255,255,.06)",
-      background:"rgba(255,255,255,.03)",color:"rgba(255,255,255,.4)",
-      fontSize:13,fontWeight:700,cursor:"pointer",backdropFilter:"blur(4px)"
+      width:"100%",padding:12,borderRadius:0,
+      border:"2px solid #223",
+      background:"#0e0e1e",color:"rgba(255,255,255,.4)",
+      fontSize:13,fontWeight:700,cursor:"pointer",
     }}>🧪 {open?t("crC"):t("crO")}</button>
-    {open && <div style={{marginTop:6,padding:12,borderRadius:14,background:"rgba(255,255,255,.02)",border:"1px solid rgba(255,255,255,.06)",animation:"su .3s ease"}}>
+    {open && <div style={{marginTop:6,padding:12,borderRadius:0,background:"#0c0c1a",border:"2px solid #223",animation:"su .3s ease"}}>
       <div style={{display:"flex",gap:4,justifyContent:"center",flexWrap:"wrap",marginBottom:8}}>
         {ATOMS.map(at=>{
           const rem=at.n-(hc[at.s]||0)-(bu[at.s]||0)-(dc[at.s]||0);
           return <div key={at.s} style={{display:"flex",flexDirection:"column",alignItems:"center",width:28}}>
-            <div style={{width:20,height:36,borderRadius:5,background:"rgba(255,255,255,.04)",position:"relative",overflow:"hidden",border:"1px solid rgba(255,255,255,.06)"}}>
-              <div style={{position:"absolute",bottom:0,width:"100%",height:`${Math.max(0,rem/at.n*100)}%`,background:`linear-gradient(180deg,${at.g}88,${at.g}33)`,borderRadius:3,transition:"height .3s"}} />
+            <div style={{width:20,height:36,borderRadius:0,background:"#111",position:"relative",overflow:"hidden",border:"2px solid #223"}}>
+              <div style={{position:"absolute",bottom:0,width:"100%",height:`${Math.max(0,rem/at.n*100)}%`,background:`linear-gradient(180deg,${at.g}88,${at.g}33)`,borderRadius:0,transition:"height .3s"}} />
             </div>
             <span style={{fontSize:10,marginTop:2}}>{at.e}</span>
             <span style={{fontSize:9,fontWeight:800,color:at.g}}>{at.s}</span>
-            <span style={{fontSize:10,fontWeight:800,color:rem>at.n*.5?"#4ade80":rem>0?"#fbbf24":"#ef4444"}}>{rem}</span>
+            <span style={{fontSize:10,fontWeight:800,color:rem>at.n*.5?"#5f8":rem>0?"#fc3":"#f44"}}>{rem}</span>
           </div>;
         })}
       </div>
@@ -905,7 +909,7 @@ const Celeb = ({comp,onDone}) => {
   const t=useT(); const pts=comp.p;
   const [ph,setPh]=useState(0);
   const tier=pts>=35?3:pts>=8?2:pts>=5?1:0;
-  const mc=["#4ade80","#fbbf24","#f97316","#c084fc"][tier];
+  const mc=["#5f8","#fc3","#f93","#c9f"][tier];
   const bg=["rgba(10,30,15,.96)","rgba(30,25,5,.96)","rgba(40,12,3,.96)","rgba(20,5,35,.96)"][tier];
   useEffect(()=>{
     if(tier>=2){SE.tap();requestAnimationFrame(()=>setPh(1));const a=setTimeout(()=>{SE.bond(pts);setPh(2);},tier>=3?2000:1200);const b=setTimeout(()=>setPh(3),tier>=3?2600:1700);const c=setTimeout(()=>setPh(4),tier>=3?3200:2200);const d=setTimeout(onDone,tier>=3?5500:4000);return ()=>{[a,b,c,d].forEach(clearTimeout);};}
@@ -914,7 +918,7 @@ const Celeb = ({comp,onDone}) => {
   const ce=[["✨","⭐"],["✨","⭐","🎵","💫"],["🎉","✨","⭐","🔥","💫","🌟"],["🎉","🎆","✨","⭐","🔥","💎","🌟","🏆","💫","🎊","⚡","👑"]][tier];
   const ec=[8,14,28,50][tier];
   const ep=useRef(Array.from({length:ec},(_,i)=>{const a=i/ec*360+Math.random()*20,d=50+Math.random()*(60+tier*50),r=a*Math.PI/180;return {id:i,x:Math.cos(r)*d,y:Math.sin(r)*d,em:ce[i%ce.length],dl:Math.random()*.5,sz:16+Math.random()*(10+tier*8)};})).current;
-  const spinS=useRef(tier>=2?Array.from({length:tier>=3?16:8},(_,i)=>({id:i,ang:i/(tier>=3?16:8)*360,dist:80+Math.random()*60,sz:12+Math.random()*16,dl:Math.random()*.6,co:["#fbbf24","#f97316","#c084fc","#38bdf8","#4ade80","#ef4444"][i%6]})):[]).current;
+  const spinS=useRef(tier>=2?Array.from({length:tier>=3?16:8},(_,i)=>({id:i,ang:i/(tier>=3?16:8)*360,dist:80+Math.random()*60,sz:12+Math.random()*16,dl:Math.random()*.6,co:["#fc3","#f93","#c9f","#38bdf8","#5f8","#f44"][i%6]})):[]).current;
   const rings=tier>=2?[0,.3,.6]:[];
   return <div style={{position:"fixed",inset:0,zIndex:9999,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:ph>=1?bg:"rgba(0,0,0,0)",transition:`background ${tier>=2?'.5s':'.3s'}`,overflow:"hidden"}}>
     {ph>=2&&tier>=2&&<div style={{position:"absolute",inset:0,background:mc,animation:"bgFlash .4s ease forwards",zIndex:1}} />}
@@ -932,7 +936,7 @@ const Celeb = ({comp,onDone}) => {
     </div>}
     {ph>=4&&<div style={{position:"relative",zIndex:10,textAlign:"center",animation:"sp .4s ease both"}}>
       <div style={{fontSize:44,fontWeight:900,color:mc,textShadow:`0 0 30px ${mc}88`,marginTop:4}}>+{comp.p}<span style={{fontSize:20}}>{t("pt")}</span></div>
-      {comp.sp&&<div style={{fontSize:16,color:"#c084fc",fontWeight:800,marginTop:2}}>💎 {t("sp")}</div>}
+      {comp.sp&&<div style={{fontSize:16,color:"#c9f",fontWeight:800,marginTop:2}}>💎 {t("sp")}</div>}
     </div>}
   </div>;
 };
@@ -948,14 +952,14 @@ const CpuOv = ({name,action,comp}) => {
     <div style={{textAlign:"center",animation:ph>=1?"cb .4s ease both":"none",opacity:0}}>
       {stageMatch
         ? <div style={{marginBottom:8,filter:`drop-shadow(0 8px 30px ${stageMatch.color}55)`}}><MonsterSVG id={stageMatch.id} size={100} color={stageMatch.color} /></div>
-        : <div style={{fontSize:56,marginBottom:8,filter:"drop-shadow(0 4px 20px rgba(167,139,250,.3))"}}>{emoji}</div>
+        : <div style={{fontSize:56,marginBottom:8,filter:"drop-shadow(0 4px 20px rgba(80,180,255,.3))"}}>{emoji}</div>
       }
-      <div style={{fontSize:18,fontWeight:900,color:stageMatch?stageMatch.color:"#a78bfa",marginBottom:4}}>{name}</div>
+      <div style={{fontSize:18,fontWeight:900,color:stageMatch?stageMatch.color:"#5cf",marginBottom:4}}>{name}</div>
       {action==="bond"&&comp&&<>
-        <div style={{fontSize:15,color:"#4ade80",fontWeight:800}}>{t("cpuB")}</div>
+        <div style={{fontSize:15,color:"#5f8",fontWeight:800}}>{t("cpuB")}</div>
         <div style={{fontSize:40,marginTop:4}}>{comp.e}</div>
         <div style={{fontSize:18,fontWeight:900,color:"#fff",marginTop:2}}>{t(comp.k)}</div>
-        <div style={{fontSize:14,color:"#fbbf24",fontWeight:800}}>+{comp.p}{t("pt")}</div>
+        <div style={{fontSize:14,color:"#fc3",fontWeight:800}}>+{comp.p}{t("pt")}</div>
       </>}
       {action==="pass"&&<div style={{fontSize:15,color:"rgba(255,255,255,.35)"}}>{t("cpuT")}</div>}
     </div>
@@ -968,11 +972,11 @@ const Pass = ({pn,onReady,info}) => {
   return <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"calc(24px + env(safe-area-inset-top)) 24px 24px 24px",background:BG,position:"relative"}}>
     <Orbs /><NoiseOverlay />
     <div style={{position:"relative",zIndex:2,textAlign:"center"}}>
-      <div style={{fontSize:64,marginBottom:16,animation:"fl 2s ease-in-out infinite",filter:"drop-shadow(0 4px 20px rgba(167,139,250,.3))"}}>📱</div>
+      <div style={{fontSize:64,marginBottom:16,animation:"fl 2s ease-in-out infinite",filter:"drop-shadow(0 4px 20px rgba(80,180,255,.3))"}}>📱</div>
       <h2 style={{fontSize:22,fontWeight:900,color:"#fff",margin:"0 0 8px",textAlign:"center"}}>{t("passD")}</h2>
-      <p style={{fontSize:18,color:"rgba(255,255,255,.5)",margin:"0 0 4px"}}>{t("next")} <strong style={{color:"#a78bfa",fontSize:22}}>{pn}</strong> {t("trn")}</p>
+      <p style={{fontSize:18,color:"rgba(255,255,255,.5)",margin:"0 0 4px"}}>{t("next")} <strong style={{color:"#5cf",fontSize:22}}>{pn}</strong> {t("trn")}</p>
       <p style={{fontSize:13,color:"rgba(255,255,255,.25)",margin:"0 0 28px"}}>{info}</p>
-      <PremBtn onClick={onReady} gradient="linear-gradient(135deg,#7c3aed,#a78bfa)" shadow="rgba(124,58,237,.4)" style={{padding:"18px 48px",fontSize:20,borderRadius:20}}>{t("ready")}</PremBtn>
+      <PremBtn onClick={onReady} gradient="linear-gradient(135deg,#55c,#5cf)" shadow="rgba(80,80,200,.4)" style={{padding:"18px 48px",fontSize:20,borderRadius:0}}>{t("ready")}</PremBtn>
     </div>
   </div>;
 };
@@ -994,36 +998,36 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
   const [bgmOn,setBgmOn]=useState(BGM.on());
   const [seOn,setSeOn]=useState(SE.isEnabled());
   
-  const Stg = () => <div style={{marginTop:18,padding:18,borderRadius:20,background:"rgba(255,255,255,.02)",border:"1px solid rgba(255,255,255,.06)",maxWidth:300,width:"100%",backdropFilter:"blur(8px)"}}>
-    <div style={{fontSize:14,fontWeight:900,color:"#fbbf24",marginBottom:12}}>⚙️ {t("settings")}</div>
+  const Stg = () => <div style={{marginTop:18,padding:18,borderRadius:0,background:"#0c0c1a",border:"2px solid #223",maxWidth:300,width:"100%",}}>
+    <div style={{fontSize:14,fontWeight:900,color:"#fc3",marginBottom:12}}>⚙️ {t("settings")}</div>
     <div style={{fontSize:13,color:"rgba(255,255,255,.4)",fontWeight:700,marginBottom:6}}>🔤 {t("langLabel")}</div>
     <div style={{display:"flex",gap:6,justifyContent:"center",marginBottom:14}}>
-      <SBtn l={t("langH")} a={lang==="hiragana"} co="#a78bfa" onClick={()=>setLang("hiragana")} />
-      <SBtn l={t("langK")} a={lang==="kanji"} co="#a78bfa" onClick={()=>setLang("kanji")} />
+      <SBtn l={t("langH")} a={lang==="hiragana"} co="#5cf" onClick={()=>setLang("hiragana")} />
+      <SBtn l={t("langK")} a={lang==="kanji"} co="#5cf" onClick={()=>setLang("kanji")} />
     </div>
     <div style={{fontSize:13,color:"rgba(255,255,255,.4)",fontWeight:700,marginBottom:6}}>🔊 {t("soundLabel")}</div>
     <div style={{display:"flex",gap:12,justifyContent:"center"}}>
       <div style={{display:"flex",alignItems:"center",gap:6}}>
         <span style={{fontSize:12,color:"rgba(255,255,255,.3)"}}>{t("bgmLabel")}</span>
-        <SBtn l={t("onLabel")} a={bgmOn} co="#4ade80" onClick={()=>{BGM.start();setBgmOn(true);}} />
-        <SBtn l={t("offLabel")} a={!bgmOn} co="#ef4444" onClick={()=>{BGM.stop();setBgmOn(false);}} />
+        <SBtn l={t("onLabel")} a={bgmOn} co="#5f8" onClick={()=>{BGM.start();setBgmOn(true);}} />
+        <SBtn l={t("offLabel")} a={!bgmOn} co="#f44" onClick={()=>{BGM.stop();setBgmOn(false);}} />
       </div>
       <div style={{display:"flex",alignItems:"center",gap:6}}>
         <span style={{fontSize:12,color:"rgba(255,255,255,.3)"}}>{t("seLabel")}</span>
-        <SBtn l={t("onLabel")} a={seOn} co="#4ade80" onClick={()=>{SE.setEnabled(true);setSeOn(true);}} />
-        <SBtn l={t("offLabel")} a={!seOn} co="#ef4444" onClick={()=>{SE.setEnabled(false);setSeOn(false);}} />
+        <SBtn l={t("onLabel")} a={seOn} co="#5f8" onClick={()=>{SE.setEnabled(true);setSeOn(true);}} />
+        <SBtn l={t("offLabel")} a={!seOn} co="#f44" onClick={()=>{SE.setEnabled(false);setSeOn(false);}} />
       </div>
     </div>
   </div>;
   
-  const PremPanel = () => <div style={{marginTop:12,padding:18,borderRadius:20,background:premium?"rgba(74,222,128,.03)":"linear-gradient(135deg,rgba(251,191,36,.04),rgba(249,115,22,.04))",border:premium?"1px solid rgba(74,222,128,.15)":"1.5px solid rgba(251,191,36,.15)",maxWidth:300,width:"100%",backdropFilter:"blur(8px)"}}>
-    <div style={{fontSize:15,fontWeight:900,color:premium?"#4ade80":"#fbbf24",marginBottom:6}}>{t("premTitle")}</div>
-    {premium ? <div style={{fontSize:13,color:"#4ade80",fontWeight:700}}>{t("premDone")}</div> : <>
+  const PremPanel = () => <div style={{marginTop:12,padding:18,borderRadius:0,background:premium?"rgba(80,255,128,.03)":"linear-gradient(135deg,rgba(255,200,50,.04),rgba(255,150,50,.04))",border:premium?"1px solid rgba(80,255,128,.15)":"1.5px solid rgba(255,200,50,.15)",maxWidth:300,width:"100%",}}>
+    <div style={{fontSize:15,fontWeight:900,color:premium?"#5f8":"#fc3",marginBottom:6}}>{t("premTitle")}</div>
+    {premium ? <div style={{fontSize:13,color:"#5f8",fontWeight:700}}>{t("premDone")}</div> : <>
       <div style={{fontSize:13,color:"rgba(255,255,255,.4)",marginBottom:10,lineHeight:1.6}}>{t("premMsg")}</div>
       <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:10}}>
-        {COMPS.filter(c=>!c.free).map(c=><span key={c.k} style={{fontSize:11,padding:"2px 8px",borderRadius:8,background:"rgba(255,255,255,.04)",border:"1px solid rgba(251,191,36,.15)",color:"rgba(255,255,255,.4)"}}>{t("locked")} {t(c.k)}</span>)}
+        {COMPS.filter(c=>!c.free).map(c=><span key={c.k} style={{fontSize:11,padding:"2px 8px",borderRadius:0,background:"#111",border:"1px solid rgba(255,200,50,.15)",color:"rgba(255,255,255,.4)"}}>{t("locked")} {t(c.k)}</span>)}
       </div>
-      <PremBtn onClick={()=>{SE.gStart();setPremium(true);}} gradient="linear-gradient(135deg,#f59e0b,#fbbf24)" shadow="rgba(245,158,11,.3)" style={{width:"100%",fontSize:15}}>{t("premBtn")}</PremBtn>
+      <PremBtn onClick={()=>{SE.gStart();setPremium(true);}} gradient="linear-gradient(135deg,#f59e0b,#fc3)" shadow="rgba(200,150,0,.3)" style={{width:"100%",fontSize:15}}>{t("premBtn")}</PremBtn>
       <div style={{fontSize:10,color:"rgba(255,255,255,.2)",marginTop:6,textAlign:"center"}}>※ App Store公開時に実際の課金に切り替わります</div>
     </>}
   </div>;
@@ -1040,10 +1044,10 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
       <DrSVG size={90} />
     </div>
     {/* ピクセルタイトルロゴ */}
-    <h1 style={{fontSize:28,fontWeight:700,color:"#64b5f6",textAlign:"center",margin:"0 0 0px",letterSpacing:".08em",textShadow:"2px 2px 0 #1a237e,0 0 20px rgba(100,180,255,.4)",animation:"titleGlow 4s ease-in-out infinite",fontFamily:"'DotGothic16',monospace"}}>{t("title1")}</h1>
-    <h2 style={{fontSize:18,fontWeight:400,color:"#ce93d8",margin:"0 0 8px",letterSpacing:".12em",textShadow:"1px 1px 0 #4a148c",fontFamily:"'DotGothic16',monospace"}}>{t("title2")}</h2>
+    <h1 style={{fontSize:20,fontWeight:700,color:"#5cf",textAlign:"center",margin:"0 0 0px",letterSpacing:".05em",textShadow:"2px 2px 0 #003,0 0 8px rgba(80,180,255,.4)",animation:"titleGlow 4s ease-in-out infinite",fontFamily:"'Press Start 2P','DotGothic16',monospace"}}>{t("title1")}</h1>
+    <h2 style={{fontSize:12,fontWeight:400,color:"#c9f",margin:"4px 0 6px",letterSpacing:".15em",textShadow:"1px 1px 0 #204",fontFamily:"'Press Start 2P','DotGothic16',monospace"}}>{t("title2")}</h2>
     {/* バージョン */}
-    <div style={{fontSize:10,color:"#555",marginBottom:28,fontFamily:"monospace"}}>- PRESS START -</div>
+    <div style={{fontSize:8,color:"#555",marginBottom:24,fontFamily:"'Press Start 2P',monospace",animation:"pixelStar 2s ease-in-out infinite",letterSpacing:".1em"}}>- PRESS START -</div>
     
     {/* メニューボタン（ドットスタイル） */}
     <div style={{width:"100%",display:"flex",flexDirection:"column",gap:10,maxWidth:280}}>
@@ -1071,24 +1075,24 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
 
   // ─ CPU対戦セットアップ ─
   if(mode==="cpu") return wrap(<>
-    <div style={{fontSize:52,marginBottom:8,filter:"drop-shadow(0 4px 20px rgba(249,115,22,.3))"}}>🤖</div>
+    <div style={{fontSize:52,marginBottom:8,filter:"drop-shadow(0 4px 20px rgba(255,150,50,.3))"}}>🤖</div>
     <h2 style={{fontSize:22,fontWeight:900,color:"#fff",margin:"0 0 24px"}}>{t("solo")}</h2>
     <div style={{width:"100%",marginBottom:16}}>
-      <input value={cn} onChange={e=>setCn(e.target.value)} placeholder={t("name")} style={{width:"100%",padding:"14px 18px",borderRadius:14,border:"1.5px solid rgba(255,255,255,.08)",background:"rgba(255,255,255,.04)",color:"#fff",fontSize:16,outline:"none",boxSizing:"border-box",fontWeight:600,backdropFilter:"blur(4px)"}} />
+      <input value={cn} onChange={e=>setCn(e.target.value)} placeholder={t("name")} style={{width:"100%",padding:"14px 18px",borderRadius:0,border:"3px solid #334",background:"#111",color:"#fff",fontSize:16,outline:"none",boxSizing:"border-box",fontWeight:600,}} />
     </div>
     <div style={{fontSize:14,color:"rgba(255,255,255,.4)",fontWeight:700,marginBottom:8}}>{t("opp")}</div>
-    <div style={{display:"flex",gap:8,marginBottom:16}}>{[1,2,3].map(n=><SBtn key={n} l={`${n}${t("unit")}`} a={cc===n} co="#f97316" onClick={()=>setCc(n)} />)}</div>
+    <div style={{display:"flex",gap:8,marginBottom:16}}>{[1,2,3].map(n=><SBtn key={n} l={`${n}${t("unit")}`} a={cc===n} co="#f93" onClick={()=>setCc(n)} />)}</div>
     <div style={{fontSize:14,color:"rgba(255,255,255,.4)",fontWeight:700,marginBottom:8}}>{t("str")}</div>
-    <div style={{display:"flex",gap:8,marginBottom:16}}>{["easy","normal","hard"].map(d=><SBtn key={d} l={t(d)} a={cd===d} co="#f97316" onClick={()=>setCd(d)} />)}</div>
+    <div style={{display:"flex",gap:8,marginBottom:16}}>{["easy","normal","hard"].map(d=><SBtn key={d} l={t(d)} a={cd===d} co="#f93" onClick={()=>setCd(d)} />)}</div>
     <div style={{fontSize:14,color:"rgba(255,255,255,.4)",fontWeight:700,marginBottom:8}}>🃏 {t("hlLabel")}</div>
     <div style={{display:"flex",gap:6,marginBottom:28,flexWrap:"wrap",justifyContent:"center"}}>{[7,8,9,10].map(n=><SBtn key={n} l={`${n}${t("mai")}${n===7?`（${t("basic")}）`:""}`} a={hl===n} onClick={()=>setHL(n)} />)}</div>
-    <PremBtn onClick={()=>{SE.gStart();onStartCpu(cn.trim()||"あなた",Array.from({length:cc},(_,i)=>CPUN[i%3]),cd,hl);}} gradient="linear-gradient(135deg,#ea580c,#f97316)" shadow="rgba(234,88,12,.35)" style={{padding:"16px 48px",fontSize:20,borderRadius:20}}>🎮 {t("start")}</PremBtn>
+    <PremBtn onClick={()=>{SE.gStart();onStartCpu(cn.trim()||"あなた",Array.from({length:cc},(_,i)=>CPUN[i%3]),cd,hl);}} gradient="linear-gradient(135deg,#ea580c,#f93)" shadow="rgba(200,100,0,.35)" style={{padding:"16px 48px",fontSize:20,borderRadius:0}}>🎮 {t("start")}</PremBtn>
     <Stg />
-    <div style={{marginTop:12,padding:18,borderRadius:20,background:"rgba(255,255,255,.02)",border:"1px solid rgba(255,255,255,.06)",maxWidth:300,width:"100%"}}>
-      <div style={{fontSize:14,fontWeight:900,color:"#a78bfa",marginBottom:8}}>🎴 {t("rules")}</div>
+    <div style={{marginTop:12,padding:18,borderRadius:0,background:"#0c0c1a",border:"2px solid #223",maxWidth:300,width:"100%"}}>
+      <div style={{fontSize:14,fontWeight:900,color:"#5cf",marginBottom:8}}>🎴 {t("rules")}</div>
       <div style={{fontSize:13,color:"rgba(255,255,255,.45)",lineHeight:2}}>① {t("r1")}<br/>② {t("r2")}<br/>③ {t("r3")}<br/>④ {t("hand")}{hl}{t("r4")}<br/>⑤ {t("r5")}<br/>{t("r6")}<br/>{t("r7")}</div>
     </div>
-    <button onClick={()=>setMode(null)} style={{marginTop:14,padding:"10px 24px",borderRadius:12,border:"1px solid rgba(255,255,255,.08)",background:"transparent",color:"rgba(255,255,255,.35)",fontSize:14,fontWeight:700,cursor:"pointer"}}>{t("back")}</button>
+    <button onClick={()=>setMode(null)} style={{marginTop:14,padding:"10px 24px",borderRadius:0,border:"2px solid #334",background:"transparent",color:"rgba(255,255,255,.35)",fontSize:14,fontWeight:700,cursor:"pointer"}}>{t("back")}</button>
   </>);
 
   // ─ ストーリーモード ─
@@ -1104,7 +1108,7 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
       return wrap(<>
         {/* 博士ヘッダー */}
         <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:20,animation:"fadeScale .4s ease both"}}>
-          <div style={{filter:"drop-shadow(0 4px 12px rgba(167,139,250,.3))"}}>
+          <div style={{filter:"drop-shadow(0 4px 12px rgba(80,180,255,.3))"}}>
             <DrSVG size={64} />
           </div>
           <div>
@@ -1117,20 +1121,20 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
             const unlocked=i===0||cleared.has(STORY[i-1].id);
             const isCleared=cleared.has(s.id);
             const diffLabel={easy:"★☆☆",normal:"★★☆",hard:"★★★"}[s.diff];
-            const diffColor={easy:"#4ade80",normal:"#fbbf24",hard:"#ef4444"}[s.diff];
+            const diffColor={easy:"#5f8",normal:"#fc3",hard:"#f44"}[s.diff];
             return <button key={s.id} onClick={()=>{if(unlocked){SE.tap();setStorySt(s);}}} style={{
-              padding:"12px 14px",borderRadius:16,
+              padding:"12px 14px",borderRadius:0,
               border:`1.5px solid ${unlocked?s.color+'44':'rgba(255,255,255,.05)'}`,
               background:unlocked?`linear-gradient(135deg,${s.color}08,${s.color}04)`:'rgba(255,255,255,.01)',
               color:"#fff",cursor:unlocked?"pointer":"default",opacity:unlocked?1:.35,textAlign:"left",
               position:"relative",overflow:"hidden"
             }}>
-              {isCleared && <div style={{position:"absolute",top:0,right:0,padding:"3px 10px",borderRadius:"0 14px 0 10px",background:"rgba(74,222,128,.15)",border:"1px solid rgba(74,222,128,.2)"}}>
-                <span style={{fontSize:10,color:"#4ade80",fontWeight:800}}>✓ {t("storyClear")}</span>
+              {isCleared && <div style={{position:"absolute",top:0,right:0,padding:"3px 10px",borderRadius:"0 14px 0 10px",background:"rgba(80,255,128,.15)",border:"1px solid rgba(80,255,128,.2)"}}>
+                <span style={{fontSize:10,color:"#5f8",fontWeight:800}}>✓ {t("storyClear")}</span>
               </div>}
               <div style={{display:"flex",alignItems:"center",gap:10}}>
                 {/* モンスターイラスト */}
-                <div style={{width:52,height:52,borderRadius:14,background:`${s.color}12`,border:`1px solid ${s.color}33`,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",flexShrink:0}}>
+                <div style={{width:52,height:52,borderRadius:0,background:`${s.color}12`,border:`1px solid ${s.color}33`,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",flexShrink:0}}>
                   {unlocked ? <MonsterSVG id={s.id} size={48} color={s.color} /> : <span style={{fontSize:24,opacity:.5}}>🔒</span>}
                 </div>
                 <div style={{flex:1}}>
@@ -1142,35 +1146,35 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
             </button>;
           })}
           {allMainCleared && <>
-            <div style={{textAlign:"center",margin:"12px 0 4px",fontSize:13,fontWeight:800,color:"#c084fc",letterSpacing:".06em"}}>— EX STAGES —</div>
+            <div style={{textAlign:"center",margin:"12px 0 4px",fontSize:13,fontWeight:800,color:"#c9f",letterSpacing:".06em"}}>— EX STAGES —</div>
             {exStages.map((s,i)=>{
               const prev=i===0?10:exStages[i-1].id;
               const unlocked=cleared.has(prev);
               const isCleared=cleared.has(s.id);
               return <button key={s.id} onClick={()=>{if(unlocked){SE.tap();setStorySt(s);}}} style={{
-                padding:"12px 14px",borderRadius:16,
+                padding:"12px 14px",borderRadius:0,
                 border:`1.5px solid ${unlocked?s.color+'44':'rgba(255,255,255,.05)'}`,
                 background:unlocked?`linear-gradient(135deg,${s.color}0a,${s.color}04)`:'rgba(255,255,255,.01)',
                 color:"#fff",cursor:unlocked?"pointer":"default",opacity:unlocked?1:.35,textAlign:"left",
                 position:"relative",overflow:"hidden"
               }}>
-                {isCleared && <div style={{position:"absolute",top:0,right:0,padding:"3px 10px",borderRadius:"0 14px 0 10px",background:"rgba(74,222,128,.15)",border:"1px solid rgba(74,222,128,.2)"}}>
-                  <span style={{fontSize:10,color:"#4ade80",fontWeight:800}}>✓ {t("storyClear")}</span>
+                {isCleared && <div style={{position:"absolute",top:0,right:0,padding:"3px 10px",borderRadius:"0 14px 0 10px",background:"rgba(80,255,128,.15)",border:"1px solid rgba(80,255,128,.2)"}}>
+                  <span style={{fontSize:10,color:"#5f8",fontWeight:800}}>✓ {t("storyClear")}</span>
                 </div>}
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
-                  <div style={{width:52,height:52,borderRadius:14,background:`${s.color}12`,border:`1px solid ${s.color}33`,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",flexShrink:0}}>
+                  <div style={{width:52,height:52,borderRadius:0,background:`${s.color}12`,border:`1px solid ${s.color}33`,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",flexShrink:0}}>
                     {unlocked ? <MonsterSVG id={s.id} size={48} color={s.color} /> : <span style={{fontSize:24,opacity:.5}}>🔒</span>}
                   </div>
                   <div style={{flex:1}}>
                     <div style={{fontSize:15,fontWeight:900}}>{unlocked?`EX${s.id-10}  ${s.name}`:t("storyLocked")}</div>
-                    <div style={{fontSize:12,color:"#ef4444",fontWeight:700,marginTop:2}}>★★★</div>
+                    <div style={{fontSize:12,color:"#f44",fontWeight:700,marginTop:2}}>★★★</div>
                   </div>
                 </div>
               </button>;
             })}
           </>}
         </div>
-        <button onClick={()=>setMode(null)} style={{marginTop:18,padding:"10px 24px",borderRadius:12,border:"1px solid rgba(255,255,255,.08)",background:"transparent",color:"rgba(255,255,255,.35)",fontSize:14,fontWeight:700,cursor:"pointer"}}>{t("back")}</button>
+        <button onClick={()=>setMode(null)} style={{marginTop:18,padding:"10px 24px",borderRadius:0,border:"2px solid #334",background:"transparent",color:"rgba(255,255,255,.35)",fontSize:14,fontWeight:700,cursor:"pointer"}}>{t("back")}</button>
       </>);
     }
     // ステージ詳細（モンスターイラスト大表示 + 博士の会話）
@@ -1183,15 +1187,15 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
         {/* 背景グロウ */}
         <div style={{position:"absolute",inset:"-30px",borderRadius:"50%",background:`radial-gradient(circle,${storySt.color}22,transparent 70%)`,zIndex:-1,animation:"pulseRing 3s ease-in-out infinite"}} />
       </div>
-      <h2 style={{fontSize:28,fontWeight:900,color:"#fff",margin:"0 0 2px",textShadow:`0 0 20px ${storySt.color}44`}}>{storySt.name}</h2>
+      <h2 style={{fontSize:20,fontWeight:900,color:"#fff",margin:"0 0 2px",textShadow:`0 0 12px ${storySt.color}44`,fontFamily:"'Press Start 2P','DotGothic16',monospace"}}>{storySt.name}</h2>
       <div style={{fontSize:14,color:storySt.color,fontWeight:700,marginBottom:16}}>{storySt.ex?`EX ${t("storyStage")} ${storySt.id-10}`:`${t("storyStage")} ${storySt.id}`}</div>
       
       {/* 博士の会話ボックス */}
       <div style={{display:"flex",gap:12,alignItems:"flex-start",maxWidth:320,width:"100%",marginBottom:20,animation:"slideUp .5s .2s ease both",opacity:0}}>
-        <div style={{flexShrink:0,filter:"drop-shadow(0 4px 10px rgba(167,139,250,.2))"}}>
+        <div style={{flexShrink:0,filter:"drop-shadow(0 4px 10px rgba(80,180,255,.2))"}}>
           <DrSVG size={56} />
         </div>
-        <div style={{flex:1,padding:14,borderRadius:"4px 16px 16px 16px",background:"rgba(255,255,255,.05)",border:"1px solid rgba(255,255,255,.08)",backdropFilter:"blur(4px)",position:"relative"}}>
+        <div style={{flex:1,padding:14,background:"#0e0e1e",border:"2px solid #334",position:"relative"}}>
           {/* 吹き出し三角 */}
           <div style={{position:"absolute",left:-6,top:12,width:0,height:0,borderTop:"6px solid transparent",borderBottom:"6px solid transparent",borderRight:"6px solid rgba(255,255,255,.08)"}} />
           <p style={{fontSize:14,color:"rgba(255,255,255,.7)",lineHeight:1.8,margin:0}}>{storySt.intro}</p>
@@ -1200,22 +1204,22 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
       
       {/* 難易度・ルール情報 */}
       <div style={{display:"flex",gap:12,marginBottom:20,animation:"slideUp .5s .35s ease both",opacity:0}}>
-        <div style={{padding:"8px 14px",borderRadius:12,background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.06)",textAlign:"center"}}>
+        <div style={{padding:"8px 14px",borderRadius:0,background:"#0e0e1e",border:"2px solid #223",textAlign:"center"}}>
           <div style={{fontSize:10,color:"rgba(255,255,255,.3)",fontWeight:700}}>難易度</div>
-          <div style={{fontSize:14,fontWeight:900,color:{easy:"#4ade80",normal:"#fbbf24",hard:"#ef4444"}[storySt.diff]}}>{{easy:"★☆☆",normal:"★★☆",hard:"★★★"}[storySt.diff]}</div>
+          <div style={{fontSize:14,fontWeight:900,color:{easy:"#5f8",normal:"#fc3",hard:"#f44"}[storySt.diff]}}>{{easy:"★☆☆",normal:"★★☆",hard:"★★★"}[storySt.diff]}</div>
         </div>
-        <div style={{padding:"8px 14px",borderRadius:12,background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.06)",textAlign:"center"}}>
+        <div style={{padding:"8px 14px",borderRadius:0,background:"#0e0e1e",border:"2px solid #223",textAlign:"center"}}>
           <div style={{fontSize:10,color:"rgba(255,255,255,.3)",fontWeight:700}}>手札上限</div>
-          <div style={{fontSize:14,fontWeight:900,color:"#a78bfa"}}>{storySt.hl}枚</div>
+          <div style={{fontSize:14,fontWeight:900,color:"#5cf"}}>{storySt.hl}枚</div>
         </div>
-        {storySt.deckSize && <div style={{padding:"8px 14px",borderRadius:12,background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.06)",textAlign:"center"}}>
+        {storySt.deckSize && <div style={{padding:"8px 14px",borderRadius:0,background:"#0e0e1e",border:"2px solid #223",textAlign:"center"}}>
           <div style={{fontSize:10,color:"rgba(255,255,255,.3)",fontWeight:700}}>山札</div>
-          <div style={{fontSize:14,fontWeight:900,color:"#ef4444"}}>{storySt.deckSize}枚</div>
+          <div style={{fontSize:14,fontWeight:900,color:"#f44"}}>{storySt.deckSize}枚</div>
         </div>}
       </div>
       
-      <PremBtn onClick={()=>{SE.gStart();onStartStory(storySt);}} gradient={`linear-gradient(135deg,${storySt.color}cc,${storySt.color})`} shadow={`${storySt.color}44`} style={{padding:"16px 48px",fontSize:20,borderRadius:20,animation:"slideUp .5s .5s ease both",opacity:0}}>⚔️ {t("storyFight")}</PremBtn>
-      <button onClick={()=>setStorySt(null)} style={{marginTop:14,padding:"10px 24px",borderRadius:12,border:"1px solid rgba(255,255,255,.08)",background:"transparent",color:"rgba(255,255,255,.35)",fontSize:14,fontWeight:700,cursor:"pointer"}}>{t("storyBack")}</button>
+      <PremBtn onClick={()=>{SE.gStart();onStartStory(storySt);}} gradient={`linear-gradient(135deg,${storySt.color}cc,${storySt.color})`} shadow={`${storySt.color}44`} style={{padding:"16px 48px",fontSize:20,borderRadius:0,animation:"slideUp .5s .5s ease both",opacity:0}}>⚔️ {t("storyFight")}</PremBtn>
+      <button onClick={()=>setStorySt(null)} style={{marginTop:14,padding:"10px 24px",borderRadius:0,border:"2px solid #334",background:"transparent",color:"rgba(255,255,255,.35)",fontSize:14,fontWeight:700,cursor:"pointer"}}>{t("storyBack")}</button>
     </>);
   }
 
@@ -1224,18 +1228,18 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
     <div style={{fontSize:52,marginBottom:8}}>👫</div>
     <h2 style={{fontSize:22,fontWeight:900,color:"#fff",margin:"0 0 24px"}}>{t("multi")}</h2>
     <div style={{fontSize:14,color:"rgba(255,255,255,.4)",fontWeight:700,marginBottom:8}}>{t("howMany")}</div>
-    <div style={{display:"flex",gap:8,marginBottom:16}}>{[2,3,4].map(n=><SBtn key={n} l={`${n}${t("unitP")}`} a={pc===n} co="#8b5cf6" onClick={()=>setPc(n)} />)}</div>
-    {Array.from({length:pc}).map((_,i)=><input key={i} value={names[i]} onChange={e=>{const nn=[...names];nn[i]=e.target.value;setNames(nn);}} placeholder={`${i+1}${t("pn")}`} style={{width:"100%",maxWidth:280,padding:"12px 16px",borderRadius:14,border:"1.5px solid rgba(255,255,255,.08)",background:"rgba(255,255,255,.04)",color:"#fff",fontSize:15,outline:"none",fontWeight:600,marginBottom:8,boxSizing:"border-box"}} />)}
+    <div style={{display:"flex",gap:8,marginBottom:16}}>{[2,3,4].map(n=><SBtn key={n} l={`${n}${t("unitP")}`} a={pc===n} co="#c9f" onClick={()=>setPc(n)} />)}</div>
+    {Array.from({length:pc}).map((_,i)=><input key={i} value={names[i]} onChange={e=>{const nn=[...names];nn[i]=e.target.value;setNames(nn);}} placeholder={`${i+1}${t("pn")}`} style={{width:"100%",maxWidth:280,padding:"12px 16px",borderRadius:0,border:"3px solid #334",background:"#111",color:"#fff",fontSize:15,outline:"none",fontWeight:600,marginBottom:8,boxSizing:"border-box"}} />)}
     <div style={{fontSize:14,color:"rgba(255,255,255,.4)",fontWeight:700,marginBottom:8,marginTop:4}}>🃏 {t("hlLabel")}</div>
     <div style={{display:"flex",gap:6,marginBottom:24,flexWrap:"wrap",justifyContent:"center"}}>{[7,8,9,10].map(n=><SBtn key={n} l={`${n}${t("mai")}${n===7?`（${t("basic")}）`:""}`} a={hl===n} onClick={()=>setHL(n)} />)}</div>
-    <PremBtn onClick={()=>{SE.gStart();const pn=Array.from({length:pc},(_,i)=>names[i].trim()||`P${i+1}`);onStart(pn,hl);}} gradient="linear-gradient(135deg,#6d28d9,#8b5cf6)" shadow="rgba(109,40,217,.35)" style={{padding:"16px 48px",fontSize:20,borderRadius:20}}>🎮 {t("gstart")}</PremBtn>
+    <PremBtn onClick={()=>{SE.gStart();const pn=Array.from({length:pc},(_,i)=>names[i].trim()||`P${i+1}`);onStart(pn,hl);}} gradient="linear-gradient(135deg,#44a,#c9f)" shadow="rgba(60,60,180,.35)" style={{padding:"16px 48px",fontSize:20,borderRadius:0}}>🎮 {t("gstart")}</PremBtn>
     <Stg />
-    <div style={{marginTop:12,padding:18,borderRadius:20,background:"rgba(255,255,255,.02)",border:"1px solid rgba(255,255,255,.06)",maxWidth:300,width:"100%"}}>
-      <div style={{fontSize:14,fontWeight:900,color:"#a78bfa",marginBottom:8}}>🎴 {t("rules")}</div>
+    <div style={{marginTop:12,padding:18,borderRadius:0,background:"#0c0c1a",border:"2px solid #223",maxWidth:300,width:"100%"}}>
+      <div style={{fontSize:14,fontWeight:900,color:"#5cf",marginBottom:8}}>🎴 {t("rules")}</div>
       <div style={{fontSize:13,color:"rgba(255,255,255,.45)",lineHeight:2}}>① {t("r1")}<br/>② {t("r2")}<br/>③ {t("r3")}<br/>④ {t("hand")}{hl}{t("r4")}<br/>⑤ {t("r5")}<br/>{t("r6")}<br/>{t("r7")}</div>
     </div>
     <PremPanel />
-    <button onClick={()=>setMode(null)} style={{marginTop:14,padding:"10px 24px",borderRadius:12,border:"1px solid rgba(255,255,255,.08)",background:"transparent",color:"rgba(255,255,255,.35)",fontSize:14,fontWeight:700,cursor:"pointer"}}>{t("back")}</button>
+    <button onClick={()=>setMode(null)} style={{marginTop:14,padding:"10px 24px",borderRadius:0,border:"2px solid #334",background:"transparent",color:"rgba(255,255,255,.35)",fontSize:14,fontWeight:700,cursor:"pointer"}}>{t("back")}</button>
   </>);
 }
 
@@ -1246,10 +1250,10 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
   const t=useT();
   const pl=state.pl[pi],hand=pl.hand;
   const PLCOLORS=[
-    {bg:"linear-gradient(180deg,#060612,#0c0c24)",accent:"#a78bfa",headerBg:"rgba(167,139,250,.05)",border:"rgba(167,139,250,.1)"},
-    {bg:"linear-gradient(180deg,#060e12,#0a1c10)",accent:"#4ade80",headerBg:"rgba(74,222,128,.05)",border:"rgba(74,222,128,.1)"},
-    {bg:"linear-gradient(180deg,#120606,#241010)",accent:"#fb923c",headerBg:"rgba(251,146,60,.05)",border:"rgba(251,146,60,.1)"},
-    {bg:"linear-gradient(180deg,#121206,#242010)",accent:"#fbbf24",headerBg:"rgba(251,191,36,.05)",border:"rgba(251,191,36,.1)"}
+    {bg:"linear-gradient(180deg,#080820,#0c0c30)",accent:"#5cf",headerBg:"rgba(80,180,255,.04)",border:"rgba(80,180,255,.15)"},
+    {bg:"linear-gradient(180deg,#081008,#0c200c)",accent:"#5f8",headerBg:"rgba(80,255,128,.04)",border:"rgba(80,255,128,.15)"},
+    {bg:"linear-gradient(180deg,#100808,#200c0c)",accent:"#f93",headerBg:"rgba(255,150,50,.04)",border:"rgba(255,150,50,.15)"},
+    {bg:"linear-gradient(180deg,#101008,#201c0c)",accent:"#fc3",headerBg:"rgba(255,200,50,.04)",border:"rgba(255,200,50,.15)"}
   ];
   const pco=PLCOLORS[pi%PLCOLORS.length];
   const [sel,setSel]=useState(new Set());
@@ -1275,26 +1279,26 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
     {cel && <Celeb comp={cel} onDone={()=>setCel(null)} />}
     
     {/* ── ヘッダー ── */}
-    <div style={{padding:"max(14px, env(safe-area-inset-top)) 16px 12px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",background:pco.headerBg,borderBottom:`1px solid ${pco.border}`,backdropFilter:"blur(12px)"}}>
+    <div style={{padding:"max(14px, env(safe-area-inset-top)) 16px 12px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",background:pco.headerBg,borderBottom:`1px solid ${pco.border}`,}}>
       <div style={{display:"flex",alignItems:"center",gap:8}}>
-        <button onClick={()=>{if(window.confirm(t("quitConfirm"))){BGM.stop();onQuit();}}} style={{padding:"5px 10px",borderRadius:10,border:"1px solid rgba(255,255,255,.1)",background:"rgba(255,255,255,.04)",color:"rgba(255,255,255,.35)",fontSize:11,fontWeight:700,cursor:"pointer"}}>{t("quit")}</button>
+        <button onClick={()=>{if(window.confirm(t("quitConfirm"))){BGM.stop();onQuit();}}} style={{padding:"5px 10px",borderRadius:0,border:"1px solid rgba(255,255,255,.1)",background:"#111",color:"rgba(255,255,255,.35)",fontSize:11,fontWeight:700,cursor:"pointer"}}>{t("quit")}</button>
         <span style={{fontSize:16,fontWeight:900,color:pco.accent}}>{pl.name}</span>
         <span style={{fontSize:12,color:"rgba(255,255,255,.25)"}}>{t("tl")}</span>
       </div>
       <div style={{display:"flex",gap:14,alignItems:"center"}}>
         <div style={{textAlign:"center"}}>
           <div style={{fontSize:9,color:"rgba(255,255,255,.25)",fontWeight:700,letterSpacing:".05em"}}>{t("sc")}</div>
-          <div style={{fontSize:20,fontWeight:900,color:"#fbbf24",textShadow:"0 0 12px rgba(251,191,36,.3)"}}>{psc}</div>
+          <div style={{fontSize:20,fontWeight:900,color:"#fc3",textShadow:"0 0 12px rgba(255,200,50,.3)"}}>{psc}</div>
         </div>
         <div style={{textAlign:"center"}}>
           <div style={{fontSize:9,color:"rgba(255,255,255,.25)",fontWeight:700,letterSpacing:".05em"}}>{t("dk")}</div>
-          <div style={{fontSize:20,fontWeight:900,color:state.deck.length>20?pco.accent:"#ef4444",textShadow:state.deck.length<=10?"0 0 12px rgba(239,68,68,.3)":"none"}}>{state.deck.length}</div>
+          <div style={{fontSize:20,fontWeight:900,color:state.deck.length>20?pco.accent:"#f44",textShadow:state.deck.length<=10?"0 0 12px rgba(255,50,50,.3)":"none"}}>{state.deck.length}</div>
         </div>
       </div>
     </div>
     
     {/* ── 既存の結合表示 ── */}
-    {pl.bonds.length>0 && <div style={{padding:"8px 16px",display:"flex",flexWrap:"wrap",gap:6,background:"rgba(255,255,255,.01)",borderBottom:"1px solid rgba(255,255,255,.04)"}}>
+    {pl.bonds.length>0 && <div style={{padding:"8px 16px",display:"flex",flexWrap:"wrap",gap:6,background:"#0a0a18",borderBottom:"1px solid rgba(255,255,255,.04)"}}>
       {pl.bonds.map((b,i)=><Badge key={i} comp={b} />)}
     </div>}
     
@@ -1304,12 +1308,12 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
       <Card card={drawnC} />
     </div>}
     
-    {bonded&&!cel && <div style={{padding:"10px 16px",textAlign:"center",background:"rgba(74,222,128,.06)",borderBottom:"1px solid rgba(74,222,128,.1)"}}>
-      <span style={{fontSize:14,color:"#4ade80",fontWeight:800}}>{t("bondOk")}</span>
+    {bonded&&!cel && <div style={{padding:"10px 16px",textAlign:"center",background:"rgba(80,255,128,.06)",borderBottom:"1px solid rgba(80,255,128,.1)"}}>
+      <span style={{fontSize:14,color:"#5f8",fontWeight:800}}>{t("bondOk")}</span>
     </div>}
     
-    {overLimit && <div style={{padding:"10px 16px",textAlign:"center",background:"rgba(239,68,68,.06)",borderBottom:"1px solid rgba(239,68,68,.1)"}}>
-      <span style={{fontSize:14,color:"#ef4444",fontWeight:800}}>⚠️ {t("hand")}{hl}{t("discW")}</span>
+    {overLimit && <div style={{padding:"10px 16px",textAlign:"center",background:"rgba(255,50,50,.06)",borderBottom:"1px solid rgba(255,50,50,.1)"}}>
+      <span style={{fontSize:14,color:"#f44",fontWeight:800}}>⚠️ {t("hand")}{hl}{t("discW")}</span>
     </div>}
     
     {/* ── メインエリア ── */}
@@ -1326,10 +1330,10 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
             return <div key={c.id} style={{position:"relative",marginLeft:gap?10:0}}>
               <Card card={c} sel={sel.has(c.id)} onTap={toggle} dl={i*.03} />
               {overLimit && <button onClick={()=>doDiscard(c.id)} style={{
-                position:"absolute",top:-6,right:-6,width:24,height:24,borderRadius:12,border:"none",
-                background:"linear-gradient(135deg,#ef4444,#dc2626)",color:"#fff",fontSize:14,fontWeight:900,
+                position:"absolute",top:-6,right:-6,width:24,height:24,borderRadius:0,border:"none",
+                background:"linear-gradient(135deg,#f44,#dc2626)",color:"#fff",fontSize:14,fontWeight:900,
                 cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
-                boxShadow:"0 2px 8px rgba(239,68,68,.5)",lineHeight:1,zIndex:2
+                boxShadow:"0 2px 8px rgba(255,50,50,.5)",lineHeight:1,zIndex:2
               }}>×</button>}
             </div>;
           })}
@@ -1337,14 +1341,14 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
       })()}
       
       {/* ── 合成プレビュー ── */}
-      {match&&!cel && <div style={{marginTop:18,padding:18,borderRadius:18,background:"rgba(74,222,128,.04)",border:"1.5px solid rgba(74,222,128,.15)",textAlign:"center",animation:"fadeScale .3s ease",backdropFilter:"blur(4px)"}}>
-        <div style={{fontSize:13,color:"#4ade80",fontWeight:700,marginBottom:4}}>{t("canB")}</div>
+      {match&&!cel && <div style={{marginTop:18,padding:18,borderRadius:0,background:"rgba(80,255,128,.04)",border:"1.5px solid rgba(80,255,128,.15)",textAlign:"center",animation:"fadeScale .3s ease",}}>
+        <div style={{fontSize:13,color:"#5f8",fontWeight:700,marginBottom:4}}>{t("canB")}</div>
         <div style={{fontSize:36}}>{match.e}</div>
         <div style={{fontSize:20,fontWeight:900,color:"#fff"}}>{t(match.k)}</div>
         <div style={{fontSize:14,color:"rgba(255,255,255,.4)"}}>
           {match.f}（+{match.p}{t("pt")}）
         </div>
-        {match.sp && <div style={{fontSize:12,color:"#c084fc",fontWeight:800,marginTop:2}}>💎 {t("sp")}</div>}
+        {match.sp && <div style={{fontSize:12,color:"#c9f",fontWeight:800,marginTop:2}}>💎 {t("sp")}</div>}
         <PremBtn onClick={doBond} gradient="linear-gradient(135deg,#059669,#34d399)" shadow="rgba(5,150,105,.35)" style={{marginTop:12,padding:"12px 36px",fontSize:18}}>{t("bBtn")}</PremBtn>
       </div>}
       
@@ -1353,36 +1357,36 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
       {/* ── 化合物リスト ── */}
       <div style={{marginTop:8}}>
         <button onClick={()=>{setSC(!showC);SE.tap();}} style={{
-          width:"100%",padding:12,borderRadius:14,border:"1px solid rgba(255,255,255,.06)",
-          background:"rgba(255,255,255,.03)",color:"rgba(255,255,255,.4)",fontSize:13,fontWeight:700,cursor:"pointer"
+          width:"100%",padding:12,borderRadius:0,border:"2px solid #223",
+          background:"#0e0e1e",color:"rgba(255,255,255,.4)",fontSize:13,fontWeight:700,cursor:"pointer"
         }}>📋 {showC?t("cpC"):t("cpO")}</button>
-        {showC && <div style={{marginTop:6,padding:12,borderRadius:14,background:"rgba(255,255,255,.02)",border:"1px solid rgba(255,255,255,.04)",maxHeight:350,overflowY:"auto",animation:"su .3s ease"}}>
+        {showC && <div style={{marginTop:6,padding:12,borderRadius:0,background:"#0c0c1a",border:"2px solid #222",maxHeight:350,overflowY:"auto",animation:"su .3s ease"}}>
           {poss.length>0 && <div style={{marginBottom:12}}>
-            <div style={{fontSize:13,color:"#4ade80",fontWeight:900,marginBottom:6}}>{t("now")}</div>
-            {poss.map((c,i)=><div key={i} style={{padding:"8px 6px",marginBottom:6,borderRadius:10,background:"rgba(74,222,128,.03)",border:c.sp?"1.5px solid #c084fc":"1px solid rgba(74,222,128,.1)"}}>
+            <div style={{fontSize:13,color:"#5f8",fontWeight:900,marginBottom:6}}>{t("now")}</div>
+            {poss.map((c,i)=><div key={i} style={{padding:"8px 6px",marginBottom:6,borderRadius:0,background:"rgba(80,255,128,.03)",border:c.sp?"1.5px solid #c9f":"1px solid rgba(80,255,128,.1)"}}>
               <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-                <span style={{fontSize:14,color:"#4ade80",fontWeight:800}}>{c.e} {t(c.k)}</span>
-                <span style={{fontSize:14,fontWeight:900,color:"#000",background:c.sp?"#c084fc":"#4ade80",borderRadius:8,padding:"2px 8px"}}>{c.p}{t("pt")}</span>
+                <span style={{fontSize:14,color:"#5f8",fontWeight:800}}>{c.e} {t(c.k)}</span>
+                <span style={{fontSize:14,fontWeight:900,color:"#000",background:c.sp?"#c9f":"#5f8",borderRadius:0,padding:"2px 8px"}}>{c.p}{t("pt")}</span>
               </div>
               <div style={{display:"flex",gap:3,flexWrap:"wrap",alignItems:"center"}}>
-                {Object.entries(c.a).map(([s,n])=>{const inf=getAI(s);return Array.from({length:n}).map((_,j)=><div key={`${s}${j}`} style={{width:32,height:38,borderRadius:7,background:"rgba(255,255,255,.04)",border:`1.5px solid ${inf.g}33`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+                {Object.entries(c.a).map(([s,n])=>{const inf=getAI(s);return Array.from({length:n}).map((_,j)=><div key={`${s}${j}`} style={{width:32,height:38,borderRadius:0,background:"#111",border:`1.5px solid ${inf.g}33`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
                   <span style={{fontSize:10}}>{inf.e}</span><span style={{fontSize:11,fontWeight:900,color:inf.g}}>{s}</span>
                 </div>);})}
-                <span style={{color:"rgba(74,222,128,.3)"}}>→</span>
-                <span style={{fontSize:12,color:"#4ade80",fontWeight:600}}>{c.f}</span>
+                <span style={{color:"rgba(80,255,128,.3)"}}>→</span>
+                <span style={{fontSize:12,color:"#5f8",fontWeight:600}}>{c.f}</span>
               </div>
             </div>)}
           </div>}
           <div style={{fontSize:13,color:"rgba(255,255,255,.25)",fontWeight:900,marginBottom:6}}>{t("all")}</div>
           {[...COMPS].sort((a,b)=>a.p-b.p).map((c,i)=>{
             const isLocked=!premium&&!c.free;
-            return <div key={i} style={{padding:"8px 6px",marginBottom:6,borderRadius:10,background:isLocked?"rgba(255,255,255,.005)":"rgba(255,255,255,.015)",border:c.sp?"1.5px solid #c084fc":isLocked?"1px solid rgba(255,255,255,.02)":"1px solid rgba(255,255,255,.04)",opacity:isLocked?.45:1}}>
+            return <div key={i} style={{padding:"8px 6px",marginBottom:6,borderRadius:0,background:isLocked?"rgba(255,255,255,.005)":"rgba(255,255,255,.015)",border:c.sp?"1.5px solid #c9f":isLocked?"1px solid rgba(255,255,255,.02)":"1px solid rgba(255,255,255,.04)",opacity:isLocked?.45:1}}>
               <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-                <span style={{fontSize:13,color:isLocked?"rgba(255,255,255,.25)":"rgba(255,255,255,.55)",fontWeight:700}}>{isLocked?"🔒 ":""}{c.e} {t(c.k)}{c.sp&&<span style={{marginLeft:4,fontSize:10,color:"#c084fc"}}>{t("sp")}</span>}</span>
-                <span style={{fontSize:14,fontWeight:900,color:isLocked?"rgba(255,255,255,.25)":"#000",background:isLocked?"rgba(255,255,255,.06)":c.sp?"#c084fc":c.p>=8?"#f97316":c.p>=5?"#fbbf24":c.p>=4?"#fb923c":"#4ade80",borderRadius:8,padding:"2px 8px",minWidth:40,textAlign:"center"}}>{c.p}{t("pt")}</span>
+                <span style={{fontSize:13,color:isLocked?"rgba(255,255,255,.25)":"rgba(255,255,255,.55)",fontWeight:700}}>{isLocked?"🔒 ":""}{c.e} {t(c.k)}{c.sp&&<span style={{marginLeft:4,fontSize:10,color:"#c9f"}}>{t("sp")}</span>}</span>
+                <span style={{fontSize:14,fontWeight:900,color:isLocked?"rgba(255,255,255,.25)":"#000",background:isLocked?"rgba(255,255,255,.06)":c.sp?"#c9f":c.p>=8?"#f93":c.p>=5?"#fc3":c.p>=4?"#fb923c":"#5f8",borderRadius:0,padding:"2px 8px",minWidth:40,textAlign:"center"}}>{c.p}{t("pt")}</span>
               </div>
               <div style={{display:"flex",gap:3,flexWrap:"wrap",alignItems:"center"}}>
-                {Object.entries(c.a).map(([s,n])=>{const inf=getAI(s);return Array.from({length:n}).map((_,j)=><div key={`${s}${j}`} style={{width:32,height:38,borderRadius:7,background:isLocked?"rgba(255,255,255,.015)":"rgba(255,255,255,.03)",border:`1.5px solid ${isLocked?'rgba(255,255,255,.04)':inf.g+'22'}`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+                {Object.entries(c.a).map(([s,n])=>{const inf=getAI(s);return Array.from({length:n}).map((_,j)=><div key={`${s}${j}`} style={{width:32,height:38,borderRadius:0,background:isLocked?"rgba(255,255,255,.015)":"rgba(255,255,255,.03)",border:`1.5px solid ${isLocked?'rgba(255,255,255,.04)':inf.g+'22'}`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
                   <span style={{fontSize:10,opacity:isLocked?.3:1}}>{inf.e}</span><span style={{fontSize:11,fontWeight:900,color:isLocked?"rgba(255,255,255,.15)":inf.g}}>{s}</span>
                 </div>);})}
                 <span style={{color:"rgba(255,255,255,.1)"}}>→</span>
@@ -1397,21 +1401,21 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
       <div style={{marginTop:12}}>
         <div style={{fontSize:13,color:"rgba(255,255,255,.3)",marginBottom:4,paddingLeft:4,fontWeight:700}}>{t("scL")}</div>
         <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-          {state.pl.map((p,i)=><div key={i} style={{padding:"8px 14px",borderRadius:12,background:i===pi?`${pco.accent}0a`:"rgba(255,255,255,.02)",border:i===pi?`1.5px solid ${pco.accent}33`:"1px solid rgba(255,255,255,.04)"}}>
+          {state.pl.map((p,i)=><div key={i} style={{padding:"8px 14px",borderRadius:0,background:i===pi?`${pco.accent}0a`:"rgba(255,255,255,.02)",border:i===pi?`1.5px solid ${pco.accent}33`:"1px solid rgba(255,255,255,.04)"}}>
             <span style={{fontSize:13,color:i===pi?pco.accent:"rgba(255,255,255,.35)",fontWeight:700}}>{p.name}</span>
-            <span style={{fontSize:15,color:"#fbbf24",fontWeight:900,marginLeft:6}}>{p.bonds.reduce((s,b)=>s+b.p,0)}{t("pt")}</span>
+            <span style={{fontSize:15,color:"#fc3",fontWeight:900,marginLeft:6}}>{p.bonds.reduce((s,b)=>s+b.p,0)}{t("pt")}</span>
           </div>)}
         </div>
       </div>
     </div>
     
     {/* ── アクションバー ── */}
-    <div style={{padding:"12px 16px max(28px, env(safe-area-inset-bottom))",borderTop:"1px solid rgba(255,255,255,.05)",display:"flex",gap:10,background:"rgba(6,6,18,.97)",backdropFilter:"blur(12px)"}}>
+    <div style={{padding:"12px 16px max(28px, env(safe-area-inset-bottom))",borderTop:"1px solid rgba(255,255,255,.05)",display:"flex",gap:10,background:"rgba(8,8,32,.97)",}}>
       {!drew&&!bonded
         ? state.deck.length>0
-          ? <PremBtn onClick={doDraw} disabled={!!cel} gradient={`linear-gradient(135deg,#6d28d9,${pco.accent})`} shadow="rgba(109,40,217,.35)" style={{flex:1,padding:16,fontSize:18,borderRadius:18}}>{t("drB")}</PremBtn>
-          : <PremBtn onClick={onFinish} gradient="linear-gradient(135deg,#ea580c,#f97316)" shadow="rgba(234,88,12,.35)" style={{flex:1,padding:16,fontSize:18,borderRadius:18,"--g":"rgba(249,115,22,.4)",animation:"pg 1.5s ease-in-out infinite"}}>{t("fin")}</PremBtn>
-        : !overLimit&&!cel && <button onClick={doPass} style={{flex:1,padding:16,borderRadius:18,border:"none",background:"linear-gradient(135deg,#334155,#475569)",color:"#fff",fontSize:18,fontWeight:900,cursor:"pointer",boxShadow:"0 4px 16px rgba(0,0,0,.3)"}}>{bonded?t("tEnd"):poss.length>0?t("exp"):t("tEnd")}</button>
+          ? <PremBtn onClick={doDraw} disabled={!!cel} gradient={`linear-gradient(135deg,#44a,${pco.accent})`} shadow="rgba(60,60,180,.35)" style={{flex:1,padding:16,fontSize:18,borderRadius:0}}>{t("drB")}</PremBtn>
+          : <PremBtn onClick={onFinish} gradient="linear-gradient(135deg,#ea580c,#f93)" shadow="rgba(200,100,0,.35)" style={{flex:1,padding:16,fontSize:18,borderRadius:0,"--g":"rgba(255,150,50,.4)",animation:"pg 1.5s ease-in-out infinite"}}>{t("fin")}</PremBtn>
+        : !overLimit&&!cel && <button onClick={doPass} style={{flex:1,padding:16,borderRadius:0,border:"none",background:"linear-gradient(135deg,#334155,#475569)",color:"#fff",fontSize:18,fontWeight:900,cursor:"pointer",boxShadow:"0 4px 16px rgba(0,0,0,.3)"}}>{bonded?t("tEnd"):poss.length>0?t("exp"):t("tEnd")}</button>
       }
     </div>
   </div>;
@@ -1438,12 +1442,12 @@ function Result({state,onRestart,isCpu,storyStage,onStoryWin}) {
     if(storyStage&&playerWon&&onStoryWin) setTimeout(()=>onStoryWin(),100);
     return ()=>{[t1,t2,t3,t4].forEach(clearTimeout);};
   },[]);
-  const conf=useRef(Array.from({length:40},(_,i)=>({id:i,x:Math.random()*100,dl:Math.random()*3,dur:2+Math.random()*3,co:["#ef4444","#fbbf24","#4ade80","#38bdf8","#a78bfa","#f97316","#22d3ee","#c084fc"][i%8],sz:6+Math.random()*8}))).current;
-  const fws=useRef(Array.from({length:12},(_,i)=>({id:i,x:15+Math.random()*70,y:10+Math.random()*40,dl:.5+Math.random()*2.5,sz:40+Math.random()*60,co:["#ef4444","#fbbf24","#4ade80","#a78bfa","#22d3ee","#f97316"][i%6]}))).current;
+  const conf=useRef(Array.from({length:40},(_,i)=>({id:i,x:Math.random()*100,dl:Math.random()*3,dur:2+Math.random()*3,co:["#f44","#fc3","#5f8","#38bdf8","#5cf","#f93","#22d3ee","#c9f"][i%8],sz:6+Math.random()*8}))).current;
+  const fws=useRef(Array.from({length:12},(_,i)=>({id:i,x:15+Math.random()*70,y:10+Math.random()*40,dl:.5+Math.random()*2.5,sz:40+Math.random()*60,co:["#f44","#fc3","#5f8","#5cf","#22d3ee","#f93"][i%6]}))).current;
   const raindrops=useRef(Array.from({length:30},(_,i)=>({id:i,x:Math.random()*100,dl:Math.random()*4,dur:1.5+Math.random()*2,sz:2+Math.random()*3}))).current;
   
-  return <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",alignItems:"center",padding:"24px 20px",paddingTop:20,background:playerLost?"radial-gradient(ellipse at 50% 30%,rgba(100,100,180,.06) 0%,transparent 50%),linear-gradient(180deg,#060612,#0a0e20)":isDraw?"radial-gradient(ellipse at 50% 30%,rgba(180,180,180,.05) 0%,transparent 50%),linear-gradient(180deg,#060612,#0c0c24)":"radial-gradient(ellipse at 50% 30%,rgba(251,191,36,.08) 0%,transparent 50%),linear-gradient(180deg,#060612,#0c0c24)",position:"relative",overflow:"hidden"}}>
-    <Orbs n={10} co={playerLost?"rgba(100,130,200,.03)":"rgba(251,191,36,.03)"} />
+  return <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",alignItems:"center",padding:"24px 20px",paddingTop:20,background:playerLost?"radial-gradient(ellipse at 50% 30%,rgba(100,100,180,.06) 0%,transparent 50%),linear-gradient(180deg,#080820,#0a0e20)":isDraw?"radial-gradient(ellipse at 50% 30%,rgba(180,180,180,.05) 0%,transparent 50%),linear-gradient(180deg,#080820,#0c0c30)":"radial-gradient(ellipse at 50% 30%,rgba(255,200,50,.08) 0%,transparent 50%),linear-gradient(180deg,#080820,#0c0c30)",position:"relative",overflow:"hidden"}}>
+    <Orbs n={10} co={playerLost?"rgba(100,130,200,.03)":"rgba(255,200,50,.03)"} />
     <NoiseOverlay />
     
     {ph>=1&&playerWon&&conf.map(c=><div key={c.id} style={{position:"fixed",left:`${c.x}%`,top:-20,width:c.sz,height:c.sz*1.4,background:c.co,borderRadius:2,opacity:0,animation:`cf ${c.dur}s ${c.dl}s linear infinite`,zIndex:5}} />)}
@@ -1457,8 +1461,8 @@ function Result({state,onRestart,isCpu,storyStage,onStoryWin}) {
       </div>}
       
       {ph>=1&&playerWon&&<>
-        <div style={{fontSize:88,animation:"crb .8s cubic-bezier(.34,1.56,.64,1) both",filter:"drop-shadow(0 8px 40px rgba(251,191,36,.5))",marginBottom:8}}>👑</div>
-        <div style={{fontSize:36,fontWeight:900,color:"#fff","--gc":"rgba(251,191,36,.5)",animation:"gp 2s ease-in-out infinite",textAlign:"center"}}>{win.name}<br/><span style={{color:"#fbbf24"}}>{t("win")}</span></div>
+        <div style={{fontSize:88,animation:"crb .8s cubic-bezier(.34,1.56,.64,1) both",filter:"drop-shadow(0 8px 40px rgba(255,200,50,.5))",marginBottom:8}}>👑</div>
+        <div style={{fontSize:24,fontWeight:900,color:"#fff","--gc":"rgba(255,200,50,.5)",animation:"gp 2s ease-in-out infinite",textAlign:"center",fontFamily:"'Press Start 2P','DotGothic16',monospace"}}>{win.name}<br/><span style={{color:"#fc3"}}>{t("win")}</span></div>
       </>}
       {ph>=1&&playerLost&&<>
         <div style={{fontSize:88,animation:"sadBounce .8s ease both",filter:"drop-shadow(0 4px 15px rgba(100,130,200,.3))",marginBottom:8}}>😢</div>
@@ -1471,18 +1475,18 @@ function Result({state,onRestart,isCpu,storyStage,onStoryWin}) {
       </>}
       
       {ph>=2 && <div style={{marginTop:16,animation:"sp .5s cubic-bezier(.34,1.56,.64,1) both"}}>
-        <div style={{fontSize:64,fontWeight:900,color:playerLost?"rgba(150,180,220,.65)":"#fbbf24",textShadow:playerLost?"none":"0 0 40px rgba(251,191,36,.4),0 0 80px rgba(251,191,36,.2)",textAlign:"center"}}>{win.sc}<span style={{fontSize:28}}>{t("pt")}</span></div>
-        {!isDraw&&diff>0 && <div style={{textAlign:"center",marginTop:4,fontSize:16,color:playerLost?"rgba(150,180,220,.4)":"#f97316",fontWeight:800,animation:"su .4s .3s ease both",opacity:0}}>{playerLost?`📉 ${diff}${t("pdif")}`:`🔥 ${diff}${t("more")}`}</div>}
+        <div style={{fontSize:48,fontWeight:900,color:playerLost?"rgba(150,180,220,.65)":"#fc3",textShadow:playerLost?"none":"0 0 16px rgba(255,200,50,.4)",textAlign:"center",fontFamily:"'Press Start 2P','DotGothic16',monospace"}}>{win.sc}<span style={{fontSize:20}}>{t("pt")}</span></div>
+        {!isDraw&&diff>0 && <div style={{textAlign:"center",marginTop:4,fontSize:16,color:playerLost?"rgba(150,180,220,.4)":"#f93",fontWeight:800,animation:"su .4s .3s ease both",opacity:0}}>{playerLost?`📉 ${diff}${t("pdif")}`:`🔥 ${diff}${t("more")}`}</div>}
       </div>}
       
       {ph>=3 && <div style={{width:"100%",display:"flex",flexDirection:"column",gap:10,marginTop:20}}>
-        {ranks.map((p,r)=><div key={p.idx} style={{padding:16,borderRadius:18,background:r===0?playerLost?"rgba(100,130,200,.04)":"rgba(251,191,36,.05)":"rgba(255,255,255,.02)",border:r===0?playerLost?"1.5px solid rgba(100,130,200,.15)":"1.5px solid rgba(251,191,36,.2)":"1px solid rgba(255,255,255,.04)",boxShadow:r===0?playerLost?"0 4px 20px rgba(100,130,200,.08)":"0 4px 30px rgba(251,191,36,.15)":"none",animation:`slideUp .4s ${r*.15}s ease both`,opacity:0}}>
+        {ranks.map((p,r)=><div key={p.idx} style={{padding:16,borderRadius:0,background:r===0?playerLost?"rgba(100,130,200,.04)":"rgba(255,200,50,.05)":"rgba(255,255,255,.02)",border:r===0?playerLost?"1.5px solid rgba(100,130,200,.15)":"1.5px solid rgba(255,200,50,.2)":"1px solid rgba(255,255,255,.04)",boxShadow:r===0?playerLost?"0 4px 20px rgba(100,130,200,.08)":"0 4px 30px rgba(255,200,50,.15)":"none",animation:`slideUp .4s ${r*.15}s ease both`,opacity:0}}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:p.bonds.length>0?8:0}}>
             <div style={{display:"flex",alignItems:"center",gap:8}}>
               <span style={{fontSize:24}}>{"🥇🥈🥉4️⃣"[r]?["🥇","🥈","🥉","4️⃣"][r]:"4️⃣"}</span>
               <span style={{fontSize:16,fontWeight:900,color:"#fff"}}>{p.name}</span>
             </div>
-            <span style={{fontSize:22,fontWeight:900,color:r===0?playerLost?"rgba(150,180,220,.7)":"#fbbf24":"rgba(255,255,255,.5)"}}>{p.sc}<span style={{fontSize:14}}>{t("pt")}</span></span>
+            <span style={{fontSize:22,fontWeight:900,color:r===0?playerLost?"rgba(150,180,220,.7)":"#fc3":"rgba(255,255,255,.5)"}}>{p.sc}<span style={{fontSize:14}}>{t("pt")}</span></span>
           </div>
           {p.bonds.length>0 && <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
             {p.bonds.map((b,bi)=><Badge key={bi} comp={b} />)}
@@ -1492,20 +1496,20 @@ function Result({state,onRestart,isCpu,storyStage,onStoryWin}) {
       </div>}
       
       {ph>=4 && <div style={{marginTop:24,animation:"su .4s ease both",width:"100%",display:"flex",flexDirection:"column",gap:10,alignItems:"center"}}>
-        {storyStage && <div style={{padding:18,borderRadius:16,background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.06)",width:"100%",marginBottom:4}}>
+        {storyStage && <div style={{padding:18,borderRadius:0,background:"#0e0e1e",border:"2px solid #223",width:"100%",marginBottom:4}}>
           {/* 博士の感想 + イラスト */}
           <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
-            <div style={{flexShrink:0,filter:"drop-shadow(0 4px 10px rgba(167,139,250,.2))"}}>
+            <div style={{flexShrink:0,filter:"drop-shadow(0 4px 10px rgba(80,180,255,.2))"}}>
               <DrSVG size={52} />
             </div>
-            <div style={{flex:1,padding:12,borderRadius:"4px 14px 14px 14px",background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.06)",position:"relative"}}>
+            <div style={{flex:1,padding:12,borderRadius:"4px 14px 14px 14px",background:"#111",border:"2px solid #223",position:"relative"}}>
               <div style={{position:"absolute",left:-6,top:10,width:0,height:0,borderTop:"6px solid transparent",borderBottom:"6px solid transparent",borderRight:"6px solid rgba(255,255,255,.06)"}} />
               <p style={{fontSize:14,color:"rgba(255,255,255,.65)",lineHeight:1.8,margin:0}}>{playerWon?storyStage.win:storyStage.lose}</p>
             </div>
           </div>
           {playerLost&&<div style={{fontSize:13,color:"rgba(255,255,255,.35)",marginTop:8,textAlign:"center"}}>{t("retry")}</div>}
         </div>}
-        <PremBtn onClick={onRestart} gradient="linear-gradient(135deg,#ea580c,#f97316)" shadow="rgba(234,88,12,.35)" style={{padding:"16px 48px",fontSize:20,borderRadius:20,width:"100%",maxWidth:280}}>{t("again")}</PremBtn>
+        <PremBtn onClick={onRestart} gradient="linear-gradient(135deg,#ea580c,#f93)" shadow="rgba(200,100,0,.35)" style={{padding:"16px 48px",fontSize:20,borderRadius:0,width:"100%",maxWidth:280}}>{t("again")}</PremBtn>
       </div>}
     </div>
   </div>;
