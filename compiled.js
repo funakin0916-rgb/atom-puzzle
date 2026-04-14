@@ -1656,23 +1656,28 @@ const cpuCards = (hand, comp) => {
    🎨 PREMIUM CSS - 全面リニューアル
    ═══════════════════════════════════════════════════════════ */
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Outfit:wght@400;600;800;900&display=swap');
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
-body{font-family:'Zen Maru Gothic','Outfit',sans-serif;overflow-x:hidden;background:#060612}
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Silkscreen:wght@400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;image-rendering:pixelated}
+body{font-family:'DotGothic16','Silkscreen',monospace;overflow-x:hidden;background:#0a0a1a}
 input::placeholder{color:rgba(255,255,255,.25)}input{user-select:text;font-family:inherit}
-button{font-family:inherit;transition:transform .12s,box-shadow .2s}button:active{transform:scale(.95)!important}
+button{font-family:'DotGothic16','Silkscreen',monospace;transition:transform .1s;border-image:none}button:active{transform:scale(.95)!important}
+
+/* ═ ピクセルボーダー ═ */
+.pxbtn{position:relative;border:none;padding:14px 20px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;image-rendering:pixelated;
+  clip-path:polygon(4px 0,calc(100% - 4px) 0,100% 4px,100% calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,0 calc(100% - 4px),0 4px)}
+.pxcard{clip-path:polygon(3px 0,calc(100% - 3px) 0,100% 3px,100% calc(100% - 3px),calc(100% - 3px) 100%,3px 100%,0 calc(100% - 3px),0 3px)}
+.pxbox{border:3px solid rgba(255,255,255,.15);background:rgba(10,10,30,.85);image-rendering:pixelated}
 
 /* ═ アニメーション ═ */
-@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-@keyframes pg{0%,100%{box-shadow:0 0 12px var(--g),inset 0 0 6px var(--gi,transparent)}50%{box-shadow:0 0 28px var(--g),0 0 56px var(--g),inset 0 0 12px var(--gi,transparent)}}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes pg{0%,100%{box-shadow:0 0 8px var(--g)}50%{box-shadow:0 0 20px var(--g),0 0 40px var(--g)}}
 @keyframes su{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes ca{0%{opacity:0;transform:scale(.6) rotateY(90deg)}60%{transform:scale(1.06) rotateY(-4deg)}100%{opacity:1;transform:scale(1) rotateY(0)}}
+@keyframes ca{0%{opacity:0;transform:scale(.6)}60%{transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
 @keyframes bo{0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.1)}66%{transform:translate(-20px,15px) scale(.95)}100%{transform:translate(0,0) scale(1)}}
 @keyframes ke{0%{opacity:0;transform:translate(0,0) scale(.3)}30%{opacity:1;transform:translate(calc(var(--dx)*.4),calc(var(--dy)*.4)) scale(1.2)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2)}}
 @keyframes kb{0%{transform:scale(.3);opacity:0}50%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
 @keyframes ku{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes kt{0%,100%{opacity:.2;transform:scale(.5)}50%{opacity:1;transform:scale(1.2)}}
-@keyframes ks{0%,100%{transform:translate(0,0)}25%{transform:translate(-4px,2px)}50%{transform:translate(4px,-2px)}75%{transform:translate(-2px,4px)}}
 @keyframes cb{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
 @keyframes cf{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 @keyframes crb{0%{transform:scale(0) rotate(-20deg)}40%{transform:scale(1.3) rotate(10deg)}70%{transform:scale(.9) rotate(-5deg)}100%{transform:scale(1) rotate(0)}}
@@ -1681,43 +1686,41 @@ button{font-family:inherit;transition:transform .12s,box-shadow .2s}button:activ
 @keyframes fw{0%{transform:scale(0);opacity:1}50%{opacity:1}100%{transform:scale(1);opacity:0}}
 @keyframes rain{0%{transform:translateY(-20px);opacity:0}10%{opacity:.6}90%{opacity:.6}100%{transform:translateY(100vh);opacity:0}}
 @keyframes sadBounce{0%{transform:scale(0) rotate(10deg)}50%{transform:scale(1.1) rotate(-5deg)}100%{transform:scale(1) rotate(0)}}
-@keyframes charge{0%{transform:scale(.5);opacity:.3;filter:blur(8px)}60%{transform:scale(.8);opacity:.8;filter:blur(4px)}80%{transform:scale(.9);opacity:1;filter:blur(2px)}100%{transform:scale(1);opacity:1;filter:blur(0)}}
+@keyframes charge{0%{transform:scale(.5);opacity:.3}60%{transform:scale(.8);opacity:.8}100%{transform:scale(1);opacity:1}}
 @keyframes chargeGlow{0%{box-shadow:0 0 20px var(--cg)}50%{box-shadow:0 0 60px var(--cg),0 0 120px var(--cg)}100%{box-shadow:0 0 20px var(--cg)}}
-@keyframes flash{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(3)}}
-@keyframes ringBurst{0%{transform:scale(0);opacity:1;border-width:8px}100%{transform:scale(3);opacity:0;border-width:1px}}
-@keyframes megaBounce{0%{transform:scale(0) rotate(-10deg)}30%{transform:scale(1.4) rotate(5deg)}50%{transform:scale(.85) rotate(-3deg)}70%{transform:scale(1.15) rotate(2deg)}100%{transform:scale(1) rotate(0)}}
-@keyframes textReveal{0%{transform:scale(3);opacity:0;filter:blur(12px)}100%{transform:scale(1);opacity:1;filter:blur(0)}}
-@keyframes starSpin{0%{transform:rotate(0) scale(0);opacity:0}50%{opacity:1}100%{transform:rotate(360deg) scale(1);opacity:0}}
 @keyframes bgFlash{0%{opacity:.8}100%{opacity:0}}
+@keyframes ringBurst{0%{transform:scale(0);opacity:1;border-width:8px}100%{transform:scale(3);opacity:0;border-width:1px}}
+@keyframes megaBounce{0%{transform:scale(0)}30%{transform:scale(1.4)}50%{transform:scale(.85)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes textReveal{0%{transform:scale(3);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes starSpin{0%{transform:rotate(0) scale(0);opacity:0}50%{opacity:1}100%{transform:rotate(360deg) scale(1);opacity:0}}
 @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-@keyframes titleGlow{0%,100%{filter:drop-shadow(0 0 20px rgba(167,139,250,.4)) drop-shadow(0 0 60px rgba(167,139,250,.15))}50%{filter:drop-shadow(0 0 40px rgba(167,139,250,.6)) drop-shadow(0 0 100px rgba(167,139,250,.25))}}
-@keyframes orbFloat{0%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(10px,-15px) rotate(90deg)}50%{transform:translate(-5px,-25px) rotate(180deg)}75%{transform:translate(-15px,-10px) rotate(270deg)}100%{transform:translate(0,0) rotate(360deg)}}
-@keyframes cardHolo{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes titleGlow{0%,100%{text-shadow:0 0 8px rgba(100,200,255,.5),0 0 20px rgba(100,200,255,.2)}50%{text-shadow:0 0 16px rgba(100,200,255,.8),0 0 40px rgba(100,200,255,.4),0 0 60px rgba(100,200,255,.2)}}
 @keyframes pulseRing{0%{transform:scale(.8);opacity:0}40%{opacity:1}100%{transform:scale(1.4);opacity:0}}
 @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeScale{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
-::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:rgba(167,139,250,.2);border-radius:4px}
+@keyframes blink{0%,90%,100%{opacity:1}95%{opacity:0}}
+@keyframes pixelStar{0%,100%{opacity:.2}50%{opacity:1}}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(100,200,255,.2);border-radius:0}
 `;
-const BG = "radial-gradient(ellipse at 30% 15%,rgba(167,139,250,.12) 0%,transparent 50%),radial-gradient(ellipse at 75% 85%,rgba(251,146,60,.08) 0%,transparent 45%),radial-gradient(ellipse at 50% 50%,rgba(56,189,248,.05) 0%,transparent 60%),linear-gradient(180deg,#060612 0%,#0c0c24 50%,#0a0a1e 100%)";
+const BG = "linear-gradient(180deg,#0a0a2e 0%,#0f0f3d 40%,#0a0a2e 100%)";
 
 /* ═══════════════════════════════════════════════════════════
    🎨 PREMIUM UI コンポーネント
    ═══════════════════════════════════════════════════════════ */
 
-/* ── 背景オーブ ─── */
+/* ── 星空背景（ドット風） ─── */
 const Orbs = ({
-  n = 10,
-  co = "rgba(167,139,250,.05)"
+  n = 30
 }) => {
-  const o = useRef(Array.from({
+  const stars = useRef(Array.from({
     length: n
   }, (_, i) => ({
     id: i,
     x: Math.random() * 100,
     y: Math.random() * 100,
-    sz: 80 + Math.random() * 200,
-    d: 15 + Math.random() * 25,
-    dl: Math.random() * -20
+    sz: 2 + Math.floor(Math.random() * 3) * 2,
+    d: 2 + Math.random() * 5,
+    dl: Math.random() * 5
   }))).current;
   return /*#__PURE__*/React.createElement("div", {
     style: {
@@ -1727,46 +1730,44 @@ const Orbs = ({
       zIndex: 0,
       overflow: "hidden"
     }
-  }, o.map(v => /*#__PURE__*/React.createElement("div", {
-    key: v.id,
+  }, stars.map(s => /*#__PURE__*/React.createElement("div", {
+    key: s.id,
     style: {
       position: "absolute",
-      left: `${v.x}%`,
-      top: `${v.y}%`,
-      width: v.sz,
-      height: v.sz,
-      borderRadius: "50%",
-      background: co,
-      filter: "blur(60px)",
-      animation: `bo ${v.d}s ${v.dl}s ease-in-out infinite`
+      left: `${s.x}%`,
+      top: `${s.y}%`,
+      width: s.sz,
+      height: s.sz,
+      background: ["#64b5f6", "#fff", "#ce93d8", "#81c784", "#ffcc80"][s.id % 5],
+      imageRendering: "pixelated",
+      animation: `pixelStar ${s.d}s ${s.dl}s ease-in-out infinite`
     }
   })));
 };
 
-/* ── ノイズテクスチャ ─── */
+/* ── ピクセルグリッド背景 ─── */
 const NoiseOverlay = () => /*#__PURE__*/React.createElement("div", {
   style: {
     position: "fixed",
     inset: 0,
     pointerEvents: "none",
     zIndex: 1,
-    opacity: 0.03,
-    backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-    backgroundRepeat: "repeat",
-    backgroundSize: "128px 128px"
+    opacity: 0.04,
+    backgroundImage: "repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(100,200,255,.08) 3px,rgba(100,200,255,.08) 4px),repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(100,200,255,.08) 3px,rgba(100,200,255,.08) 4px)",
+    backgroundSize: "4px 4px"
   }
 });
 
-/* ── プレミアムボタン ─── */
+/* ── ピクセルボタン ─── */
 const PremBtn = ({
   children,
   onClick,
-  gradient = "linear-gradient(135deg,#a78bfa,#818cf8)",
-  shadow = "rgba(167,139,250,.35)",
+  bg = "#4a6cf7",
   disabled,
   style,
   ...rest
 }) => /*#__PURE__*/React.createElement("button", _extends({
+  className: "pxbtn",
   onClick: () => {
     if (!disabled) {
       onClick === null || onClick === void 0 || onClick();
@@ -1774,29 +1775,17 @@ const PremBtn = ({
     }
   },
   style: {
-    padding: "14px 28px",
-    borderRadius: 16,
-    border: "none",
-    background: disabled ? "rgba(255,255,255,.06)" : gradient,
-    color: disabled ? "rgba(255,255,255,.25)" : "#fff",
-    fontSize: 16,
-    fontWeight: 800,
+    background: disabled ? "#333" : bg,
+    color: disabled ? "#666" : "#fff",
+    fontSize: 15,
+    fontWeight: 700,
     cursor: disabled ? "default" : "pointer",
-    boxShadow: disabled ? "none" : `0 4px 24px ${shadow},inset 0 1px 0 rgba(255,255,255,.15)`,
-    letterSpacing: ".02em",
-    position: "relative",
-    overflow: "hidden",
+    boxShadow: disabled ? "none" : `0 4px 0 ${bg}88,0 6px 16px rgba(0,0,0,.4)`,
+    letterSpacing: ".05em",
+    textShadow: disabled ? "none" : "1px 1px 0 rgba(0,0,0,.5)",
     ...style
   }
-}, rest), children, !disabled && /*#__PURE__*/React.createElement("div", {
-  style: {
-    position: "absolute",
-    inset: 0,
-    background: "linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)",
-    backgroundSize: "200% 100%",
-    animation: "shimmer 3s linear infinite"
-  }
-}));
+}, rest), children);
 
 /* ── BGMボタン ─── */
 const BgmBtn = () => {
@@ -1813,20 +1802,19 @@ const BgmBtn = () => {
       }
     },
     style: {
-      padding: "5px 12px",
-      borderRadius: 20,
-      border: `1px solid ${on ? "rgba(167,139,250,.3)" : "rgba(255,255,255,.1)"}`,
-      background: on ? "rgba(167,139,250,.12)" : "rgba(255,255,255,.04)",
-      color: on ? "#a78bfa" : "rgba(255,255,255,.3)",
+      padding: "4px 10px",
+      border: `2px solid ${on ? "#64b5f6" : "#444"}`,
+      background: on ? "#1a237e" : "#111",
+      color: on ? "#64b5f6" : "#555",
       fontSize: 11,
       fontWeight: 700,
       cursor: "pointer",
-      whiteSpace: "nowrap",
-      backdropFilter: "blur(8px)",
       position: "fixed",
-      top: "max(12px,env(safe-area-inset-top))",
-      right: 12,
-      zIndex: 100
+      top: "max(10px,env(safe-area-inset-top))",
+      right: 10,
+      zIndex: 100,
+      fontFamily: "'DotGothic16',monospace",
+      imageRendering: "pixelated"
     }
   }, on ? t("bgmOn") : t("bgmOff"));
 };
@@ -1835,7 +1823,7 @@ const BgmBtn = () => {
 const SBtn = ({
   l,
   a,
-  co = "#a78bfa",
+  co = "#64b5f6",
   onClick
 }) => /*#__PURE__*/React.createElement("button", {
   onClick: () => {
@@ -1843,21 +1831,20 @@ const SBtn = ({
     SE.tap();
   },
   style: {
-    padding: "8px 14px",
-    borderRadius: 12,
-    border: `2px solid ${a ? co + "99" : "rgba(255,255,255,.08)"}`,
-    background: a ? co + "15" : "rgba(255,255,255,.03)",
-    color: a ? co : "rgba(255,255,255,.35)",
+    padding: "7px 12px",
+    border: `2px solid ${a ? co : "#333"}`,
+    background: a ? co + "22" : "#111",
+    color: a ? co : "#555",
     fontSize: 13,
-    fontWeight: 800,
+    fontWeight: 700,
     cursor: "pointer",
-    boxShadow: a ? `0 0 12px ${co}22` : "none",
-    backdropFilter: "blur(4px)"
+    fontFamily: "'DotGothic16',monospace",
+    boxShadow: a ? `0 2px 0 ${co}44` : "none"
   }
 }, l);
 
 /* ═══════════════════════════════════════════════════════════
-   🃏 PREMIUM カードデザイン
+   🃏 ピクセルカードデザイン
    ═══════════════════════════════════════════════════════════ */
 const Card = ({
   card,
@@ -1868,85 +1855,65 @@ const Card = ({
   const t = useT();
   const i = getAI(card.s);
   const rarity = RARITY[card.s] || 1;
-  const rarityBorder = rarity >= 3 ? "rgba(255,215,0,.5)" : rarity >= 2 ? "rgba(167,139,250,.4)" : "rgba(255,255,255,.1)";
-  const rarityGlow = rarity >= 3 ? `0 0 20px ${i.g}44` : rarity >= 2 ? `0 0 12px ${i.g}33` : "none";
   return /*#__PURE__*/React.createElement("div", {
     onClick: () => onTap === null || onTap === void 0 ? void 0 : onTap(card),
+    className: "pxcard",
     style: {
-      width: 72,
-      minWidth: 72,
-      height: 96,
-      borderRadius: 14,
+      width: 68,
+      minWidth: 68,
+      height: 90,
       position: "relative",
-      overflow: "hidden",
-      background: sel ? `linear-gradient(145deg,${i.c},${i.c}88)` : `linear-gradient(160deg,rgba(20,20,40,.95),rgba(15,15,35,.98))`,
-      border: sel ? `2.5px solid ${i.g}` : `1.5px solid ${rarityBorder}`,
+      background: sel ? `${i.c}` : "#161630",
+      border: sel ? `3px solid ${i.g}` : `2px solid ${rarity >= 3 ? "#ffd700" : rarity >= 2 ? "#64b5f6" : "#333"}`,
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      boxShadow: sel ? `0 0 20px ${i.g}88,0 8px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.15)` : `0 4px 12px rgba(0,0,0,.4),${rarityGlow}`,
+      boxShadow: sel ? `0 0 12px ${i.g}88,0 4px 0 ${i.g}44` : `0 3px 0 #0a0a1a`,
       cursor: onTap ? "pointer" : "default",
-      transition: "all .25s cubic-bezier(.34,1.56,.64,1)",
+      transition: "all .15s",
       flexShrink: 0,
-      transform: sel ? "translateY(-10px) scale(1.1)" : "none",
+      transform: sel ? "translateY(-8px)" : "none",
       gap: 2,
       "--g": i.g + "88",
-      "--gi": i.g + "22",
-      animation: sel ? "pg 1.5s ease-in-out infinite" : `ca .35s ${dl}s ease both`
+      animation: sel ? "pg 1.5s ease-in-out infinite" : `ca .3s ${dl}s ease both`,
+      imageRendering: "pixelated"
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, rarity >= 3 && /*#__PURE__*/React.createElement("div", {
     style: {
       position: "absolute",
-      inset: 0,
-      borderRadius: 12,
-      background: sel ? "linear-gradient(135deg,transparent 20%,rgba(255,255,255,.15) 40%,transparent 60%)" : "linear-gradient(135deg,transparent 30%,rgba(255,255,255,.04) 50%,transparent 70%)",
-      backgroundSize: "200% 200%",
-      animation: rarity >= 2 ? "cardHolo 4s ease infinite" : "none",
-      pointerEvents: "none"
-    }
-  }), rarity >= 3 && /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: "absolute",
-      top: 4,
-      right: 4,
-      fontSize: 7,
+      top: 2,
+      right: 3,
+      fontSize: 6,
       color: "#ffd700",
-      textShadow: "0 0 6px rgba(255,215,0,.6)"
+      fontFamily: "monospace"
     }
   }, "\u2605\u2605\u2605"), rarity === 2 && /*#__PURE__*/React.createElement("div", {
     style: {
       position: "absolute",
-      top: 4,
-      right: 4,
-      fontSize: 7,
-      color: "#a78bfa",
-      textShadow: "0 0 4px rgba(167,139,250,.5)"
+      top: 2,
+      right: 3,
+      fontSize: 6,
+      color: "#64b5f6",
+      fontFamily: "monospace"
     }
   }, "\u2605\u2605"), /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 22,
-      filter: sel ? "drop-shadow(0 2px 6px rgba(0,0,0,.3))" : "none",
-      position: "relative",
-      zIndex: 2
+      fontSize: 20
     }
   }, i.e), /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 22,
+      fontSize: 20,
       fontWeight: 900,
       color: sel ? i.tc : "#fff",
       lineHeight: 1,
-      position: "relative",
-      zIndex: 2,
-      textShadow: sel ? "none" : "0 1px 3px rgba(0,0,0,.5)"
+      textShadow: sel ? "none" : "1px 1px 0 #000"
     }
   }, card.s), /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 9,
-      color: sel ? i.tc + "cc" : "rgba(255,255,255,.4)",
-      fontWeight: 700,
-      position: "relative",
-      zIndex: 2
+      fontSize: 8,
+      color: sel ? i.tc + "cc" : "#888",
+      fontWeight: 700
     }
   }, t(card.k)));
 };
@@ -1956,36 +1923,32 @@ const Badge = ({
   comp
 }) => {
   const t = useT();
-  const tier = comp.p >= 20 ? "#f97316" : comp.p >= 8 ? "#a78bfa" : comp.p >= 5 ? "#38bdf8" : "#4ade80";
   return /*#__PURE__*/React.createElement("div", {
     style: {
       display: "inline-flex",
       alignItems: "center",
-      gap: 5,
-      background: "rgba(255,255,255,.04)",
-      borderRadius: 10,
-      padding: "4px 10px",
-      border: comp.sp ? `1.5px solid #c084fc` : `1px solid rgba(255,255,255,.08)`,
-      backdropFilter: "blur(4px)"
+      gap: 4,
+      background: "#111",
+      padding: "3px 8px",
+      border: comp.sp ? "2px solid #ce93d8" : "2px solid #333",
+      fontSize: 11
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 14
+      fontSize: 12
     }
   }, comp.e), /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 12,
       fontWeight: 700,
-      color: "rgba(255,255,255,.75)"
+      color: "#ccc"
     }
   }, t(comp.k)), /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 10,
-      fontWeight: 800,
+      fontWeight: 700,
       color: "#000",
-      background: comp.sp ? "linear-gradient(135deg,#c084fc,#a855f7)" : tier,
-      borderRadius: 6,
-      padding: "1px 6px"
+      background: comp.sp ? "#ce93d8" : comp.p >= 8 ? "#f97316" : comp.p >= 5 ? "#fbbf24" : "#4ade80",
+      padding: "0 5px",
+      fontSize: 10
     }
   }, comp.p, t("pt")));
 };
@@ -2694,163 +2657,109 @@ function Title({
   // ─ タイトルトップ ─
   if (mode === null) return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     style: {
-      position: "relative",
-      marginBottom: 6
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 72,
       animation: "fl 3s ease-in-out infinite",
-      filter: "drop-shadow(0 6px 30px rgba(167,139,250,.5))",
-      position: "relative",
-      zIndex: 2
+      marginBottom: 8
     }
-  }, "\uD83E\uDDEA"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: "absolute",
-      inset: "-20px",
-      borderRadius: "50%",
-      background: "radial-gradient(circle,rgba(167,139,250,.15),transparent 70%)",
-      animation: "pulseRing 3s ease-in-out infinite",
-      zIndex: 1
-    }
+  }, /*#__PURE__*/React.createElement(DrSVG, {
+    size: 90
   })), /*#__PURE__*/React.createElement("h1", {
     style: {
-      fontSize: 34,
-      fontWeight: 900,
-      color: "#fff",
+      fontSize: 28,
+      fontWeight: 700,
+      color: "#64b5f6",
       textAlign: "center",
-      margin: "0 0 2px",
-      letterSpacing: ".04em",
-      animation: "titleGlow 4s ease-in-out infinite"
+      margin: "0 0 0px",
+      letterSpacing: ".08em",
+      textShadow: "2px 2px 0 #1a237e,0 0 20px rgba(100,180,255,.4)",
+      animation: "titleGlow 4s ease-in-out infinite",
+      fontFamily: "'DotGothic16',monospace"
     }
   }, t("title1")), /*#__PURE__*/React.createElement("h2", {
     style: {
-      fontSize: 20,
-      fontWeight: 700,
-      color: "#a78bfa",
-      margin: "0 0 40px",
-      letterSpacing: ".08em"
+      fontSize: 18,
+      fontWeight: 400,
+      color: "#ce93d8",
+      margin: "0 0 8px",
+      letterSpacing: ".12em",
+      textShadow: "1px 1px 0 #4a148c",
+      fontFamily: "'DotGothic16',monospace"
     }
   }, t("title2")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: "#555",
+      marginBottom: 28,
+      fontFamily: "monospace"
+    }
+  }, "- PRESS START -"), /*#__PURE__*/React.createElement("div", {
     style: {
       width: "100%",
       display: "flex",
       flexDirection: "column",
-      gap: 12
+      gap: 10,
+      maxWidth: 280
     }
-  }, /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement(PremBtn, {
     onClick: () => {
       setMode("story");
       SE.tap();
     },
+    bg: "#c62828",
     style: {
-      width: "100%",
-      padding: "18px 20px",
-      borderRadius: 20,
-      border: "none",
-      background: "linear-gradient(135deg,#be185d,#ec4899)",
-      color: "#fff",
-      fontSize: 17,
-      fontWeight: 900,
-      cursor: "pointer",
-      boxShadow: "0 4px 30px rgba(190,24,93,.35),inset 0 1px 0 rgba(255,255,255,.15)",
       display: "flex",
       alignItems: "center",
-      justifyContent: "center",
-      gap: 12,
-      position: "relative",
-      overflow: "hidden"
+      gap: 10,
+      padding: "14px 16px"
     }
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement(MonsterSVG, {
+    id: 1,
+    size: 36,
+    color: "#81D4FA"
+  }), /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 28
-    }
-  }, "\u2694\uFE0F"), /*#__PURE__*/React.createElement("span", {
-    style: {
-      textAlign: "left"
+      textAlign: "left",
+      flex: 1
     }
   }, t("story"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 12,
-      fontWeight: 600,
-      opacity: .85
+      fontSize: 10,
+      opacity: .7
     }
-  }, t("storySub"))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: "absolute",
-      inset: 0,
-      background: "linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)",
-      backgroundSize: "200% 100%",
-      animation: "shimmer 3s linear infinite"
-    }
-  })), /*#__PURE__*/React.createElement("button", {
+  }, t("storySub")))), /*#__PURE__*/React.createElement(PremBtn, {
     onClick: () => {
       setMode("cpu");
       SE.tap();
     },
+    bg: "#e65100",
     style: {
-      width: "100%",
-      padding: "18px 20px",
-      borderRadius: 20,
-      border: "none",
-      background: "linear-gradient(135deg,#ea580c,#f97316)",
-      color: "#fff",
-      fontSize: 17,
-      fontWeight: 900,
-      cursor: "pointer",
-      boxShadow: "0 4px 30px rgba(234,88,12,.35),inset 0 1px 0 rgba(255,255,255,.15)",
       display: "flex",
       alignItems: "center",
-      justifyContent: "center",
-      gap: 12,
-      position: "relative",
-      overflow: "hidden"
+      gap: 10,
+      padding: "14px 16px"
     }
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement(DrSVG, {
+    size: 36
+  }), /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 28
-    }
-  }, "\uD83E\uDD16"), /*#__PURE__*/React.createElement("span", {
-    style: {
-      textAlign: "left"
+      textAlign: "left",
+      flex: 1
     }
   }, t("solo"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 12,
-      fontWeight: 600,
-      opacity: .85
+      fontSize: 10,
+      opacity: .7
     }
-  }, t("soloSub"))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: "absolute",
-      inset: 0,
-      background: "linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)",
-      backgroundSize: "200% 100%",
-      animation: "shimmer 3s linear infinite"
-    }
-  })), /*#__PURE__*/React.createElement("button", {
+  }, t("soloSub")))), /*#__PURE__*/React.createElement(PremBtn, {
     onClick: () => {
       setMode("multi");
       SE.tap();
     },
+    bg: "#4a148c",
     style: {
-      width: "100%",
-      padding: "18px 20px",
-      borderRadius: 20,
-      border: "none",
-      background: "linear-gradient(135deg,#6d28d9,#8b5cf6)",
-      color: "#fff",
-      fontSize: 17,
-      fontWeight: 900,
-      cursor: "pointer",
-      boxShadow: "0 4px 30px rgba(109,40,217,.35),inset 0 1px 0 rgba(255,255,255,.15)",
       display: "flex",
       alignItems: "center",
-      justifyContent: "center",
-      gap: 12,
-      position: "relative",
-      overflow: "hidden"
+      gap: 10,
+      padding: "14px 16px"
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
@@ -2858,23 +2767,34 @@ function Title({
     }
   }, "\uD83D\uDC6B"), /*#__PURE__*/React.createElement("span", {
     style: {
-      textAlign: "left"
+      textAlign: "left",
+      flex: 1
     }
   }, t("multi"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 12,
-      fontWeight: 600,
-      opacity: .85
+      fontSize: 10,
+      opacity: .7
     }
-  }, t("multiSub"))), /*#__PURE__*/React.createElement("div", {
+  }, t("multiSub"))))), /*#__PURE__*/React.createElement("div", {
     style: {
-      position: "absolute",
-      inset: 0,
-      background: "linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)",
-      backgroundSize: "200% 100%",
-      animation: "shimmer 3s linear infinite"
+      marginTop: 24,
+      display: "flex",
+      gap: 4,
+      opacity: .4
     }
-  })))));
+  }, [1, 3, 5, 7, 10].map(id => {
+    var _STORY$find;
+    return /*#__PURE__*/React.createElement("div", {
+      key: id,
+      style: {
+        animation: `fl ${2 + id * .3}s ease-in-out infinite`
+      }
+    }, /*#__PURE__*/React.createElement(MonsterSVG, {
+      id: id,
+      size: 28,
+      color: ((_STORY$find = STORY.find(s => s.id === id)) === null || _STORY$find === void 0 ? void 0 : _STORY$find.color) || "#888"
+    }));
+  }))));
 
   // ─ CPU対戦セットアップ ─
   if (mode === "cpu") return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
