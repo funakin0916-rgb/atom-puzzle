@@ -6,9 +6,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="原子パズル">
-<meta name="theme-color" content="#0a0a2e">
+<meta name="theme-color" content="#0a0a1a">
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjogIuWOn+WtkOODkeOCuuODq+OCsuODvOODoCIsICJzaG9ydF9uYW1lIjogIuWOn+WtkOODkeOCuuODqyIsICJzdGFydF91cmwiOiAiLiIsICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLCAib3JpZW50YXRpb24iOiAicG9ydHJhaXQiLCAiYmFja2dyb3VuZF9jb2xvciI6ICIjMGEwYTFhIiwgInRoZW1lX2NvbG9yIjogIiMwYTBhMWEiLCAiaWNvbnMiOiBbeyJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLDxzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgMTAwIDEwMCc+PHRleHQgeT0nLjllbScgZm9udC1zaXplPSc5MCc+8J+nqjwvdGV4dD48L3N2Zz4iLCAic2l6ZXMiOiAiYW55IiwgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
 <title>原子パズルゲーム</title>
-<style>html,body,#root{margin:0;padding:0;height:100%;background:#0a0a2e}#root{min-height:100dvh}#err{color:#ff4444;font-size:12px;padding:16px;white-space:pre-wrap;word-break:break-all;position:fixed;bottom:0;left:0;right:0;z-index:99999}</style>
+<style>html,body,#root{margin:0;padding:0;height:100%;background:#0a0a1a}#root{min-height:100dvh}#err{color:#ff4444;font-size:12px;padding:16px;white-space:pre-wrap;word-break:break-all;position:fixed;bottom:0;left:0;right:0;z-index:99999}</style>
 </head>
 <body>
 <div id="root"></div>
@@ -20,7 +21,6 @@ window.onerror = function(msg, url, line, col, err) {
   document.getElementById("err").textContent = "ERR: " + msg + " L:" + line + " C:" + col;
 };
 try {
-function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 const {
   useState,
   useEffect,
@@ -31,7 +31,7 @@ const {
 } = React;
 
 // ═══════════════════════════════════════════════════════════
-// げんしパズルゲーム 🧪 v4 PREMIUM EDITION
+// げんしパズルゲーム 🧪 v3
 // ═══════════════════════════════════════════════════════════
 
 /* ── 言語コンテキスト ─── */
@@ -453,7 +453,7 @@ const SE = (() => {
   };
 })();
 
-/* ── BGMエンジン ─── */
+/* ── BGMエンジン（マルチトラック対応） ─── */
 const BGM = (() => {
   let ctx = null,
     playing = false,
@@ -472,8 +472,11 @@ const BGM = (() => {
     });
     nodes = [];
   };
+
+  // 曲データ: mel=メロディ, bas=ベース, mt/bt=波形, mv/bv=音量
   const TRACKS = {
     title: {
+      // ゆったり幻想的なタイトル曲（ペンタトニック）
       mel: [[440, .4], [494, .4], [587, .4], [659, .4], [440, .4], [587, .2], [659, .2], [587, .4], [494, .8], [440, .4], [587, .4], [659, .4], [784, .8], [659, .4], [587, .4], [494, .8], [440, .4], [494, .2], [587, .2], [494, .4], [440, .8], [392, .4], [440, .8]],
       bas: [[220, .8], [220, .8], [294, .8], [294, .8], [220, .8], [220, .8], [196, .8], [196, .8], [220, .8], [220, .8], [294, .8], [294, .8], [196, .8], [196, .8], [220, 1.6]],
       mt: "triangle",
@@ -482,6 +485,7 @@ const BGM = (() => {
       bv: 0.03
     },
     battle_easy: {
+      // 明るく弾むポップバトル（C major bounce）
       mel: [[523, .2], [0, .1], [659, .2], [0, .1], [784, .2], [659, .2], [0, .1], [523, .2], [0, .1], [659, .2], [784, .4], [0, .2], [880, .2], [784, .2], [659, .2], [0, .1], [523, .2], [0, .1], [587, .2], [659, .2], [587, .4], [523, .4], [0, .2], [440, .2], [523, .2], [659, .2], [0, .1], [587, .2], [523, .2], [440, .4], [523, .2], [0, .1], [440, .4], [0, .4]],
       bas: [[262, .4], [262, .4], [330, .4], [330, .4], [349, .4], [349, .4], [262, .4], [262, .4], [220, .4], [220, .4], [262, .4], [262, .4], [196, .4], [196, .4], [220, .4], [262, .4]],
       mt: "square",
@@ -490,6 +494,7 @@ const BGM = (() => {
       bv: 0.035
     },
     battle_normal: {
+      // テンポある緊張感（D minor groove）
       mel: [[587, .15], [0, .05], [587, .15], [0, .05], [698, .15], [0, .05], [659, .3], [587, .15], [0, .05], [523, .15], [0, .05], [466, .3], [0, .1], [523, .15], [587, .15], [659, .15], [0, .05], [698, .15], [0, .05], [659, .15], [587, .15], [523, .3], [466, .15], [0, .05], [440, .3], [0, .2], [698, .15], [0, .05], [659, .15], [0, .05], [587, .3], [523, .15], [0, .05], [466, .15], [523, .15], [587, .3], [0, .1], [523, .3], [0, .2]],
       bas: [[294, .3], [294, .3], [349, .3], [349, .3], [262, .3], [262, .3], [233, .3], [233, .3], [294, .3], [294, .3], [349, .3], [349, .3], [233, .3], [233, .3], [294, .6]],
       mt: "sawtooth",
@@ -498,6 +503,7 @@ const BGM = (() => {
       bv: 0.035
     },
     battle_hard: {
+      // 重厚で激しいボス曲（E minor power）
       mel: [[330, .1], [0, .05], [330, .1], [0, .05], [330, .1], [0, .1], [494, .15], [0, .05], [440, .2], [0, .1], [392, .1], [0, .05], [440, .1], [0, .05], [494, .2], [0, .1], [523, .15], [0, .05], [494, .2], [0, .1], [659, .15], [0, .05], [587, .15], [0, .05], [494, .2], [440, .1], [0, .05], [392, .2], [0, .1], [330, .1], [0, .05], [392, .1], [0, .05], [440, .15], [0, .05], [494, .2], [0, .1], [587, .2], [0, .1], [523, .15], [0, .05], [494, .2], [440, .15], [0, .05], [392, .2], [0, .1], [330, .2], [0, .1], [294, .3], [0, .2]],
       bas: [[165, .3], [165, .3], [196, .3], [196, .3], [220, .3], [220, .3], [247, .3], [247, .3], [165, .3], [165, .3], [131, .3], [131, .3], [147, .3], [147, .3], [165, .6], [165, .3], [165, .3], [196, .3], [196, .3], [131, .3], [131, .3], [165, .6]],
       mt: "sawtooth",
@@ -506,6 +512,7 @@ const BGM = (() => {
       bv: 0.03
     },
     battle_ex: {
+      // 不穏で畳みかけるEXボス曲（Eb minor chaos）
       mel: [[311, .1], [0, .05], [311, .1], [0, .05], [370, .1], [0, .05], [415, .15], [0, .05], [370, .15], [0, .1], [466, .15], [0, .05], [415, .1], [0, .05], [370, .1], [0, .05], [311, .2], [0, .1], [415, .1], [0, .05], [466, .1], [0, .05], [523, .15], [0, .05], [466, .15], [0, .1], [370, .1], [0, .05], [311, .1], [0, .05], [294, .2], [0, .1], [311, .2], [0, .1], [523, .1], [0, .05], [466, .1], [0, .05], [415, .1], [0, .05], [370, .15], [0, .05], [311, .1], [0, .05], [294, .1], [0, .05], [277, .1], [0, .05], [262, .2], [0, .1], [311, .15], [0, .05], [370, .15], [0, .05], [311, .3], [0, .3]],
       bas: [[156, .3], [156, .3], [185, .3], [185, .3], [208, .3], [208, .3], [156, .3], [156, .3], [147, .3], [147, .3], [156, .3], [156, .3], [139, .3], [139, .3], [156, .6], [131, .3], [131, .3], [147, .3], [147, .3], [156, .3], [156, .3], [131, .6]],
       mt: "sawtooth",
@@ -514,11 +521,13 @@ const BGM = (() => {
       bv: 0.035
     }
   };
-  const trackForStage = id => {
-    if (!id) return "title";
-    if (id >= 11) return "battle_ex";
-    if (id >= 8) return "battle_hard";
-    if (id >= 4) return "battle_normal";
+
+  // ステージIDからトラックを決定
+  const trackForStage = stageId => {
+    if (!stageId) return "title";
+    if (stageId >= 11) return "battle_ex";
+    if (stageId >= 8) return "battle_hard";
+    if (stageId >= 4) return "battle_normal";
     return "battle_easy";
   };
   const loop = () => {
@@ -534,7 +543,7 @@ const BGM = (() => {
         if (f === 0) {
           off += d;
           return;
-        }
+        } // 休符
         const o = ctx.createOscillator(),
           g = ctx.createGain();
         o.type = tr.mt;
@@ -615,7 +624,7 @@ const BGM = (() => {
   };
 })();
 
-/* ── データ ─── */
+/* ── データ（オリジナルバランス） ─── */
 const ATOMS = [{
   s: "H",
   k: "H",
@@ -697,6 +706,10 @@ const ATOMS = [{
   n: 4,
   g: "#8d6e63"
 }];
+// 合計 73枚
+// 得点ルール: レア度合算 × 枚数倍率。ダイヤモンドは特別最高点。
+// レア度: H(18枚)=1, O(14枚)=1, C(9枚)=2, Cl(6枚)=2, Na(6枚)=2, N(4枚)=3, S(4枚)=3, Cu(4枚)=3, Ag(4枚)=3, Fe(4枚)=3
+// 枚数倍率: 2枚=×1, 3枚=×1.5, 4枚=×2, 5枚=×2.5, 6枚=×3, 7枚=×3.5
 const RARITY = {
   H: 1,
   O: 1,
@@ -722,7 +735,9 @@ const calcPts = a => {
   const cards = Object.values(a).reduce((s, n) => s + n, 0);
   return Math.round(rare * (MULT[cards] || 1));
 };
-const COMPS = [{
+const COMPS = [
+// ── 2枚 ──
+{
   k: "cH2",
   f: "H₂",
   a: {
@@ -730,7 +745,9 @@ const COMPS = [{
   },
   e: "💧",
   free: true
-}, {
+},
+// (1+1)×1=2
+{
   k: "cO2",
   f: "O₂",
   a: {
@@ -738,7 +755,9 @@ const COMPS = [{
   },
   e: "🌬️",
   free: true
-}, {
+},
+// (1+1)×1=2
+{
   k: "cHCl",
   f: "HCl",
   a: {
@@ -747,7 +766,9 @@ const COMPS = [{
   },
   e: "🫧",
   free: true
-}, {
+},
+// (1+2)×1=3
+{
   k: "cCl2",
   f: "Cl₂",
   a: {
@@ -755,7 +776,9 @@ const COMPS = [{
   },
   e: "🫧",
   free: true
-}, {
+},
+// (2+2)×1=4
+{
   k: "cNaCl",
   f: "NaCl",
   a: {
@@ -764,7 +787,9 @@ const COMPS = [{
   },
   e: "🧂",
   free: true
-}, {
+},
+// (2+2)×1=4
+{
   k: "cCuO",
   f: "CuO",
   a: {
@@ -773,7 +798,9 @@ const COMPS = [{
   },
   e: "🪙",
   free: true
-}, {
+},
+// (3+1)×1=4
+{
   k: "cFeO",
   f: "FeO",
   a: {
@@ -782,7 +809,9 @@ const COMPS = [{
   },
   e: "🔩",
   free: true
-}, {
+},
+// (3+1)×1=4
+{
   k: "cAgCl",
   f: "AgCl",
   a: {
@@ -791,7 +820,9 @@ const COMPS = [{
   },
   e: "🥈",
   free: true
-}, {
+},
+// (3+2)×1=5
+{
   k: "cN2",
   f: "N₂",
   a: {
@@ -799,7 +830,9 @@ const COMPS = [{
   },
   e: "🌸",
   free: true
-}, {
+},
+// (3+3)×1=6
+{
   k: "cCuS",
   f: "CuS",
   a: {
@@ -808,7 +841,9 @@ const COMPS = [{
   },
   e: "🪙",
   free: true
-}, {
+},
+// (3+3)×1=6
+{
   k: "cFeS",
   f: "FeS",
   a: {
@@ -817,7 +852,10 @@ const COMPS = [{
   },
   e: "🔩",
   free: true
-}, {
+},
+// (3+3)×1=6
+// ── 3枚 ──
+{
   k: "cH2O",
   f: "H₂O",
   a: {
@@ -826,7 +864,9 @@ const COMPS = [{
   },
   e: "💧",
   free: true
-}, {
+},
+// (1+1+1)×1.5=5
+{
   k: "cO3",
   f: "O₃",
   a: {
@@ -834,7 +874,9 @@ const COMPS = [{
   },
   e: "🌀",
   free: true
-}, {
+},
+// (1+1+1)×1.5=5
+{
   k: "cCO2",
   f: "CO₂",
   a: {
@@ -843,7 +885,9 @@ const COMPS = [{
   },
   e: "💨",
   free: true
-}, {
+},
+// (2+1+1)×1.5=6
+{
   k: "cNaOH",
   f: "NaOH",
   a: {
@@ -853,7 +897,9 @@ const COMPS = [{
   },
   e: "🧪",
   free: true
-}, {
+},
+// (2+1+1)×1.5=6
+{
   k: "cH2S",
   f: "H₂S",
   a: {
@@ -862,7 +908,9 @@ const COMPS = [{
   },
   e: "🥚",
   free: true
-}, {
+},
+// (1+1+3)×1.5=8
+{
   k: "cSO2",
   f: "SO₂",
   a: {
@@ -871,7 +919,9 @@ const COMPS = [{
   },
   e: "🌋",
   free: true
-}, {
+},
+// (3+1+1)×1.5=8
+{
   k: "cNa2O",
   f: "Na₂O",
   a: {
@@ -879,7 +929,9 @@ const COMPS = [{
     O: 1
   },
   e: "🧂"
-}, {
+},
+// (2+2+1)×1.5=8
+{
   k: "cFe2O",
   f: "Fe₂O",
   a: {
@@ -887,7 +939,9 @@ const COMPS = [{
     O: 1
   },
   e: "🔩"
-}, {
+},
+// (3+3+1)×1.5=11
+{
   k: "cAg2O",
   f: "Ag₂O",
   a: {
@@ -895,7 +949,9 @@ const COMPS = [{
     O: 1
   },
   e: "🥈"
-}, {
+},
+// (3+3+1)×1.5=11
+{
   k: "cCuCl2",
   f: "CuCl₂",
   a: {
@@ -903,7 +959,9 @@ const COMPS = [{
     Cl: 2
   },
   e: "🪙"
-}, {
+},
+// (3+2+2)×1.5=11
+{
   k: "cFeCl2",
   f: "FeCl₂",
   a: {
@@ -911,7 +969,9 @@ const COMPS = [{
     Cl: 2
   },
   e: "🔩"
-}, {
+},
+// (3+2+2)×1.5=11
+{
   k: "cNa2S",
   f: "Na₂S",
   a: {
@@ -919,7 +979,9 @@ const COMPS = [{
     S: 1
   },
   e: "🧂"
-}, {
+},
+// (2+2+3)×1.5=11
+{
   k: "cAg2S",
   f: "Ag₂S",
   a: {
@@ -927,7 +989,10 @@ const COMPS = [{
     S: 1
   },
   e: "🥈"
-}, {
+},
+// (3+3+3)×1.5=14
+// ── 4枚 ──
+{
   k: "cNH3",
   f: "NH₃",
   a: {
@@ -935,7 +1000,9 @@ const COMPS = [{
     H: 3
   },
   e: "💜"
-}, {
+},
+// (3+1+1+1)×2=12
+{
   k: "cSO3",
   f: "SO₃",
   a: {
@@ -943,7 +1010,9 @@ const COMPS = [{
     O: 3
   },
   e: "🌋"
-}, {
+},
+// (3+1+1+1)×2=12
+{
   k: "cC2H2",
   f: "C₂H₂",
   a: {
@@ -951,7 +1020,9 @@ const COMPS = [{
     H: 2
   },
   e: "🔥"
-}, {
+},
+// (2+2+1+1)×2=12
+{
   k: "cCH4",
   f: "CH₄",
   a: {
@@ -959,7 +1030,10 @@ const COMPS = [{
     H: 4
   },
   e: "🔥"
-}, {
+},
+// (2+1+1+1+1)×2=12 (5枚だけど)
+// ── 5枚 ──
+{
   k: "cCH3Cl",
   f: "CH₃Cl",
   a: {
@@ -968,7 +1042,9 @@ const COMPS = [{
     Cl: 1
   },
   e: "🧪"
-}, {
+},
+// (2+1+1+1+2)×2.5=18
+{
   k: "cFe2O3",
   f: "Fe₂O₃",
   a: {
@@ -976,7 +1052,10 @@ const COMPS = [{
     O: 3
   },
   e: "🔩"
-}, {
+},
+// (3+3+1+1+1)×2.5=23
+// ── 6枚 ──
+{
   k: "cNaHCO3",
   f: "NaHCO₃",
   a: {
@@ -986,7 +1065,9 @@ const COMPS = [{
     O: 3
   },
   e: "🧁"
-}, {
+},
+// (2+1+2+1+1+1)×3=24
+{
   k: "cCH4O",
   f: "CH₃OH",
   a: {
@@ -995,7 +1076,9 @@ const COMPS = [{
     O: 1
   },
   e: "🍶"
-}, {
+},
+// (2+1+1+1+1+1)×3=21
+{
   k: "cNa2CO3",
   f: "Na₂CO₃",
   a: {
@@ -1004,7 +1087,10 @@ const COMPS = [{
     O: 3
   },
   e: "🧪"
-}, {
+},
+// (2+2+2+1+1+1)×3=27
+// ── 7枚 ──
+{
   k: "cH2SO4",
   f: "H₂SO₄",
   a: {
@@ -1013,7 +1099,10 @@ const COMPS = [{
     O: 4
   },
   e: "⚗️"
-}, {
+},
+// (1+1+3+1+1+1+1)×3.5=32
+// ── 💎 スペシャル ──
+{
   k: "cC7",
   f: "C◆◆◆◆◆◆",
   a: {
@@ -1021,7 +1110,8 @@ const COMPS = [{
   },
   e: "💎",
   sp: true
-}].map(c => ({
+} // 特別 50点
+].map(c => ({
   ...c,
   p: c.sp ? 50 : calcPts(c.a)
 }));
@@ -1065,7 +1155,9 @@ const getAI = s => ATOMS.find(a => a.s === s) || {
 const CPUN = ["コンピュータ🤖", "ロボくん🤖", "AIちゃん🤖"];
 
 /* ── ストーリーモード ─── */
-const STORY = [{
+const STORY = [
+// メインステージ 1-10
+{
   id: 1,
   name: "バブリン",
   emoji: "🫧",
@@ -1165,7 +1257,9 @@ const STORY = [{
   intro: "🧑‍🔬博士「最強の結晶モンスター・ダイヤキング！すべてのモンスターの頂点に立つ存在じゃ！」",
   win: "🏆博士「ダイヤキングを倒した！！キミは化学マスターじゃ！！！…ん？まだ何かいるようじゃな…」",
   lose: "博士「ダイヤキングは強い…でもキミならきっと倒せる！」"
-}, {
+},
+// 隠しステージ EX1-5（ステージ10クリア後に解放）
+{
   id: 11,
   name: "ネオバブリン",
   emoji: "🫧",
@@ -1224,408 +1318,6 @@ const STORY = [{
   lose: "博士「この敵は…次元が違うようじゃ…でもキミなら…！」"
 }];
 
-/* ── ドット絵レンダラー ─── */
-// rows: 各行の文字列、palette: 文字→色マップ、px: 1ドットのサイズ
-const PixelArt = ({
-  rows,
-  palette,
-  size = 100
-}) => {
-  const h = rows.length;
-  const w = Math.max(...rows.map(r => r.length));
-  const px = size / Math.max(w, h);
-  return /*#__PURE__*/React.createElement("svg", {
-    width: size,
-    height: size,
-    viewBox: `0 0 ${size} ${size}`,
-    style: {
-      imageRendering: "pixelated"
-    }
-  }, rows.map((row, y) => row.split('').map((ch, x) => {
-    const col = palette[ch];
-    return col ? /*#__PURE__*/React.createElement("rect", {
-      key: `${x}-${y}`,
-      x: x * px,
-      y: y * px,
-      width: px + .5,
-      height: px + .5,
-      fill: col
-    }) : null;
-  })));
-};
-
-/* ── 博士ドット絵 ─── */
-const DrSVG = ({
-  size = 120
-}) => {
-  const P = {
-    'w': '#eceff1',
-    'W': '#cfd8dc',
-    's': '#ffdcb5',
-    'S': '#f0c8a0',
-    'g': '#455a64',
-    'G': '#37474f',
-    'e': '#263238',
-    'h': '#fff',
-    'b': '#4a6cf7',
-    'B': '#3949ab',
-    'r': '#e53935',
-    'u': '#1e88e5',
-    'c': '#4fc3f7',
-    'C': '#81d4fa',
-    'p': '#ffab91',
-    'm': '#a1887f',
-    'k': '#b0bec5'
-  };
-  const R = ['      WWWWWW      ', '     WwWWWwWW     ', '    WwWWWWWwWW    ', '   WWwWWWWWwWWW   ', '    sssssssssss   ', '   sssssssssssss  ', '  sssgghssgghsss  ', '  sssGehssgGehss  ', '  ssssssggsssssss ', '  sspsskkkksspss  ', '  ssssmmmmmmsss   ', '   sssssssssss    ', '    wwwbwwwwww    ', '   wwruwBwwwwww   ', '   wwwwwBwwwwwwc  ', '   wwwwwbwwwwwwc  ', '   wwwwwwwwwwwcCc ', '    wwwwwwwwwwcCc ', '    wwwwwwwwww c  ', '     wwwwwwww     '];
-  return /*#__PURE__*/React.createElement(PixelArt, {
-    rows: R,
-    palette: P,
-    size: size
-  });
-};
-
-/* ── モンスタードット絵 ─── */
-const MonsterSVG = ({
-  id,
-  size = 100,
-  color = "#81D4FA"
-}) => {
-  const monsters = {
-    // ══ 1: バブリン（泡スライム） ══
-    1: {
-      palette: {
-        'a': '#81D4FA',
-        'A': '#4FC3F7',
-        'b': '#B3E5FC',
-        'w': '#fff',
-        'e': '#0d47a1',
-        'p': '#f48fb1',
-        'h': '#e1f5fe'
-      },
-      rows: ['     bbb       ', '    bhhbb  b   ', '   bhhhbbb bb  ', '    bbbb  bb   ', '    aaaaaaa    ', '   aaaaaaaaa   ', '  aaawwaawwaa  ', '  aaaewaaewaA  ', '  aaaaaaaaaaA  ', '  aapaaaaapaA  ', '  aaaammmaaAA  ', '   aaaaaaaAA   ', '   AAAAAaaA    ', '    AAAAAAA    ', '   AA    AA    ']
-    },
-    // ══ 2: アクアン（水竜） ══
-    2: {
-      palette: {
-        'a': '#4FC3F7',
-        'A': '#0288d1',
-        'b': '#B3E5FC',
-        'w': '#fff',
-        'e': '#01579b',
-        'f': '#039be5',
-        'h': '#e1f5fe',
-        'p': '#80d8ff'
-      },
-      rows: ['   f    f      ', '  ff    ff     ', '  f aaaaaa f   ', '    aaaaaaa    ', '   aaawwaawwaa ', '   aaaewaewaa  ', '   aaaaaaaaaa  ', '    aapaaapaa  ', '    aaammmaa   ', '    aaaaaaa    ', '     aaaaaa   A', '     AAAAAa  AA', '      AAAA AAA ', '       AAAAA   ', '    AA    AA   ']
-    },
-    // ══ 3: ソルティ（結晶） ══
-    3: {
-      palette: {
-        'a': '#FFE082',
-        'A': '#F9A825',
-        'c': '#FFF8E1',
-        'w': '#fff',
-        'e': '#e65100',
-        'd': '#FFC107',
-        'k': '#FFF9C4'
-      },
-      rows: ['    A    A     ', '   AA    AA    ', '   AAaaaaaaA   ', '    aaaaaaaa   ', '   aaacaacaaa  ', '   aaaeaaeaaa  ', '   aaaaaaaaaa  ', '    aaaaaaa    ', '    aaeaeaa    ', '    aaaaaaa    ', '     AAAAA     ', ' d   AAAAA  d  ', ' dd  AA AA dd  ', '      A  A     ', '  w       w    ']
-    },
-    // ══ 4: エアロン（風の精霊） ══
-    4: {
-      palette: {
-        'a': '#A5D6A7',
-        'A': '#66BB6A',
-        'b': '#C8E6C9',
-        'w': '#fff',
-        'e': '#1b5e20',
-        'h': '#E8F5E9',
-        'f': '#81C784'
-      },
-      rows: ['      fff      ', '     faaaf     ', '   aaaaaaaaaa  ', '  aabaaabaaaa  ', '  aaeeaaeeaaa  ', '  aaaaaaaaaaaf ', ' faaaaaaaaaa f ', '  aaapaaapaa   ', '   aaammmaa    ', '   aaaaaaa     ', '    AAAAA      ', 'ff  AAAAA   ff ', ' ff  AAA  ff   ', '  ff     ff    ', '   ff   ff     ']
-    },
-    // ══ 5: コッパー（銅亀） ══
-    5: {
-      palette: {
-        'a': '#FF8A65',
-        'A': '#E65100',
-        'c': '#FFCCBC',
-        'w': '#fff',
-        'e': '#BF360C',
-        'y': '#FFF200',
-        's': '#D84315',
-        'h': '#4E342E'
-      },
-      rows: ['    aaaaaaa    ', '   aaaaaaaaa   ', '  aaawwawwaaa  ', '  aaayeayeaaa  ', '  aaaaaaaaaa   ', '   aaammmaa    ', '  eeeeeeeeeee  ', ' eAAAAAAAAAAAAe ', ' eAsAAAsAAAsAe  ', ' eAAAAAAAAAAAAe ', ' eAsAAAsAAAsAe  ', ' eAAAAAAAAAAAAe ', '  eeeeeeeeee   ', '  hh      hh   ', '  hh      hh   ']
-    },
-    // ══ 6: シルバーグ（銀狼騎士） ══
-    6: {
-      palette: {
-        'a': '#B0BEC5',
-        'A': '#78909C',
-        'c': '#ECEFF1',
-        'w': '#fff',
-        'e': '#37474F',
-        's': '#CFD8DC',
-        'g': '#546E7A',
-        'y': '#FDD835',
-        'd': '#455A64'
-      },
-      rows: ['  a      a     ', ' aa  aa  aa    ', ' aaaaaaaaaadd  ', '  aaacaacaadd  ', '  aaaeaaaeadd  ', '  aaaaaaaaaddd ', '   aaaeaaaddd  ', '  gaaaaaaaadd  ', ' ggAAAAAAAAddd ', ' g AAAAAAsAdyd ', ' gg AAAAAAA yd ', '  g AAAsAAA  d ', '    AAAAAAA    ', '    AA   AA    ', '    AA   AA    ']
-    },
-    // ══ 7: アイアンX（鉄巨人） ══
-    7: {
-      palette: {
-        'a': '#8D6E63',
-        'A': '#5D4037',
-        'c': '#D7CCC8',
-        'w': '#fff',
-        'e': '#3E2723',
-        'r': '#FF1744',
-        'h': '#4E342E',
-        'x': '#FF1744'
-      },
-      rows: ['    hh  hh     ', '   eeeeeeee   ', '   earrarre    ', '   eaaaaaa e   ', '   eehhhhee    ', '  aa aaaaaa aa ', '  aa axaaxa aa ', '  AA aaxxa AA  ', '  AA axaaxa A  ', '  AA aaaaaa A  ', '   A AAAAAA    ', '  hh AAAAAA hh ', '  hh  AAAA  hh ', '      AA AA    ', '     hh  hh    ']
-    },
-    // ══ 8: サルファー（毒蛇） ══
-    8: {
-      palette: {
-        'a': '#FDD835',
-        'A': '#F9A825',
-        'c': '#FFF9C4',
-        'w': '#fff',
-        'e': '#E65100',
-        'k': '#1a1a1a',
-        'g': '#FFF176',
-        't': '#F57F17',
-        'p': '#FDD835'
-      },
-      rows: ['   gg    gg    ', '   gg    gg    ', '   aaaaaaaaa   ', '  aaawwaawwaa  ', '  aaakkaakkaA  ', '  aaaaaaaaaa A ', '  aaeaaaaaaeA  ', '   aawaaawaa   ', '   aaatttaaa   ', '    aaaaaaa    ', '    AAAAAA  A  ', '     AAAA  AA  ', '       AA AA   ', '       AAAA    ', '        AA     ']
-    },
-    // ══ 9: ドクターカオス（暴走科学者） ══
-    9: {
-      palette: {
-        's': '#E8D5B7',
-        'S': '#DBB896',
-        'w': '#E0E0E0',
-        'W': '#BDBDBD',
-        'e': '#E91E63',
-        'E': '#C62828',
-        'k': '#424242',
-        'K': '#616161',
-        'h': '#fff',
-        'g': '#455A64',
-        'c': '#CE93D8',
-        'a': '#1a1a1a'
-      },
-      rows: ['  K  K K  K    ', '  KK KK KK K   ', '   kkkkkkkk    ', '   kssssssk    ', '  ssshhashhass ', '  ssseasseass  ', '  sssaaassass  ', '   ssssssss    ', '   sEsssEss    ', '    sssssss    ', '   wwwwwwww    ', '   wWwwwwWw    ', '   wwwwwwww c  ', '    wwwwww  c  ', '    ww  ww  c  ']
-    },
-    // ══ 10: ダイヤキング（結晶王） ══
-    10: {
-      palette: {
-        'd': '#CE93D8',
-        'D': '#AB47BC',
-        'p': '#E040FB',
-        'w': '#fff',
-        'e': '#6A1B9A',
-        'g': '#FFD700',
-        'G': '#FF8F00',
-        'r': '#F44336',
-        'b': '#2196F3',
-        'n': '#4CAF50',
-        'h': '#F3E5F5',
-        'k': '#4A148C'
-      },
-      rows: ['   g r g r g   ', '   gGbGgGnGg   ', '   gggggggg    ', '     ddddd     ', '    ddddddd    ', '   ddhwdhwdd   ', '   ddewddewdd  ', '   ddddddddd   ', '  dddddddddd   ', '   dddddddd    ', '   DDDdddDDD   ', '    DDDdDDD    ', '     DDDDD     ', '      DDD      ', '  w    D    w  ']
-    },
-    // ══ 11: ネオバブリン ══
-    11: {
-      palette: {
-        'a': '#00BCD4',
-        'A': '#00838F',
-        'b': '#B2EBF2',
-        'w': '#fff',
-        'e': '#E91E63',
-        'r': '#C62828',
-        'h': '#E0F7FA',
-        'p': '#F48FB1',
-        'n': '#FF1744'
-      },
-      rows: ['  r      r     ', '  rr    rr     ', '    bbb   b    ', '   bhhbb bb    ', '   aaaaaaaaaa  ', '  aaawwaawwaaa ', '  aaaewaaewaAa ', '  aaaaaaaaaaAa ', '  aapaaaaapaAA ', '  raaaammaAAA  ', '   AAAAAaAAA   ', '    AAAAAAA    ', '   AA    AA    ', '   AA    AA    ', '               ']
-    },
-    // ══ 12: ツインメタル ══
-    12: {
-      palette: {
-        'a': '#FF8A65',
-        'b': '#8D6E63',
-        'A': '#BF360C',
-        'B': '#5D4037',
-        'w': '#fff',
-        'y': '#FDD835',
-        'r': '#FF1744',
-        'e': '#E65100',
-        'f': '#3E2723',
-        'g': '#FFC107'
-      },
-      rows: ['   A      B    ', '  AA      BB   ', '  aaaaaabbbbb  ', '  aawwaabwwbb  ', '  aaeaaabrebbb ', '  aaaaaabbbbb  ', '  aaaaagbbbbb  ', '  aaAAAggBBBb  ', '  AAAAAAgBBBBB ', '  AAAAAAgBBBBB ', '  AAAAAABBBBBB ', '   AAAA  BBBB  ', '   AA      BB  ', '   AA      BB  ', '               ']
-    },
-    // ══ 13: ポイズンクイーン ══
-    13: {
-      palette: {
-        'a': '#AB47BC',
-        'A': '#7B1FA2',
-        'c': '#CE93D8',
-        'w': '#fff',
-        'e': '#4A148C',
-        'g': '#FFD700',
-        'r': '#E91E63',
-        'p': '#F48FB1',
-        'h': '#F3E5F5'
-      },
-      rows: ['    g r g      ', '   ggrggrgg    ', '   aaaaaaa     ', '  aaahhaahhaaa ', '  aaaeaaaeaaa  ', '  aaaaaaaaaa   ', '  aapaaaaapaA  ', '   aaawwwaa    ', '    aaaaaa     ', '     AAAA   A  ', '      AAA  AA  ', '       AA AA   ', '       AAAA    ', '        AA     ', '         A     ']
-    },
-    // ══ 14: プロフェッサーX ══
-    14: {
-      palette: {
-        's': '#E8D5B7',
-        'w': '#E0E0E0',
-        'W': '#CFD8DC',
-        'b': '#3949AB',
-        'B': '#1A237E',
-        'e': '#1A237E',
-        'h': '#fff',
-        'g': '#455A64',
-        'k': '#BDBDBD',
-        'c': '#7986CB',
-        'd': '#5C6BC0'
-      },
-      rows: ['   wwwwwwww    ', '  ww sssssww   ', '  w sssssss w  ', '  wssehhsehs w ', '   sseeBseeBs  ', '    ssssssss   ', '   swskkkswsw  ', '   sswkksswsw  ', '    swksksw    ', '   bbbbbbbbb   ', '   bbbcccbbb   ', '   bbbcccbbb   ', '   bbbbbbbbb   ', '    bbb bbb    ', '    bb   bb    ']
-    },
-    // ══ 15: ???（正体不明） ══
-    15: {
-      palette: {
-        'a': '#FF1744',
-        'A': '#D50000',
-        'c': '#FF5252',
-        'w': '#fff',
-        'e': '#FF1744',
-        'd': '#B71C1C',
-        'k': '#1a1a1a',
-        'g': '#FF8A80',
-        'h': '#FFCDD2'
-      },
-      rows: ['               ', '    ddddddd    ', '   ddaaaaadd   ', '  ddaaaaaaadd  ', '  daawwdawwad  ', '  daaeedaeedAd ', '  daaaaaaaaad  ', '  ddaaaaaaadd  ', '   ddawwwadd   ', '    ddaaadd    ', '     ddddd     ', '  g   ddd   g  ', ' g     d     g ', '       d       ', '  w         w  ']
-    }
-  };
-  const m = monsters[id] || monsters[1];
-  // colorをパレットに反映（ベースカラー上書き）
-  return /*#__PURE__*/React.createElement(PixelArt, {
-    rows: m.rows,
-    palette: m.palette,
-    size: size
-  });
-};
-
-/* ── プロローグ・ストーリー背景 ─── */
-const PROLOGUE = ["ここは、原子科学研究所。", "世界的な化学者・ゲンシ博士が\n日夜研究を続ける場所だ。", "ある日、実験中の事故で\n原子エネルギーが暴走！", "原子の力を持つモンスターたちが\n研究所から逃げ出してしまった！", "博士「大変じゃ！キミの力で\nモンスターを止めてくれ！」", "原子を組み合わせて化合物を作り、\nモンスターたちを倒すのだ！"];
-
-/* ── プロローグ画面コンポーネント ─── */
-const Prologue = ({
-  onDone
-}) => {
-  const [page, setPage] = useState(0);
-  const [fade, setFade] = useState(true);
-  const goNext = () => {
-    if (page >= PROLOGUE.length - 1) {
-      onDone();
-      return;
-    }
-    setFade(false);
-    setTimeout(() => {
-      setPage(p => p + 1);
-      setFade(true);
-    }, 300);
-    SE.tap();
-  };
-  const isLast = page >= PROLOGUE.length - 1;
-  const showDr = page >= 1;
-  return /*#__PURE__*/React.createElement("div", {
-    onClick: goNext,
-    style: {
-      minHeight: "100dvh",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "calc(24px + env(safe-area-inset-top)) 28px 24px",
-      cursor: "pointer",
-      position: "relative",
-      overflow: "hidden",
-      background: "radial-gradient(ellipse at 50% 40%,rgba(167,139,250,.1),transparent 60%),linear-gradient(180deg,#060612,#0c0c24)"
-    }
-  }, /*#__PURE__*/React.createElement(Orbs, {
-    n: 6
-  }), /*#__PURE__*/React.createElement(NoiseOverlay, null), showDr && /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginBottom: 20,
-      animation: "fadeScale .5s ease both",
-      filter: "drop-shadow(0 8px 30px rgba(167,139,250,.3))"
-    }
-  }, /*#__PURE__*/React.createElement(DrSVG, {
-    size: page >= 4 ? 140 : 100
-  })), /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: "relative",
-      zIndex: 2,
-      maxWidth: 300,
-      width: "100%",
-      padding: 24,
-      borderRadius: 20,
-      background: "rgba(255,255,255,.04)",
-      border: "1px solid rgba(255,255,255,.08)",
-      backdropFilter: "blur(8px)",
-      opacity: fade ? 1 : 0,
-      transition: "opacity .3s",
-      animation: fade ? "slideUp .4s ease both" : "none"
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: 16,
-      color: "rgba(255,255,255,.8)",
-      lineHeight: 2,
-      textAlign: "center",
-      whiteSpace: "pre-line",
-      fontWeight: 600
-    }
-  }, PROLOGUE[page])), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      gap: 6,
-      marginTop: 20,
-      position: "relative",
-      zIndex: 2
-    }
-  }, PROLOGUE.map((_, i) => /*#__PURE__*/React.createElement("div", {
-    key: i,
-    style: {
-      width: i === page ? 20 : 6,
-      height: 6,
-      borderRadius: 3,
-      background: i === page ? "#a78bfa" : "rgba(255,255,255,.15)",
-      transition: "all .3s"
-    }
-  }))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginTop: 16,
-      fontSize: 13,
-      color: "rgba(255,255,255,.25)",
-      position: "relative",
-      zIndex: 2
-    }
-  }, isLast ? "タップしてはじめる" : "タップでつぎへ ▶"));
-};
-
 /* ── CPU AI ─── */
 const cpuBond = (hand, d, prem) => {
   const p = findP(cntA(hand), prem);
@@ -1674,75 +1366,24 @@ const cpuCards = (hand, comp) => {
   return ids;
 };
 
-/* ═══════════════════════════════════════════════════════════
-   🎨 PREMIUM CSS - 全面リニューアル
-   ═══════════════════════════════════════════════════════════ */
-const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Silkscreen:wght@400;700&display=swap');
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;image-rendering:pixelated}
-body{font-family:'DotGothic16','Silkscreen',monospace;overflow-x:hidden;background:#0a0a1a}
-input::placeholder{color:rgba(255,255,255,.25)}input{user-select:text;font-family:inherit}
-button{font-family:'DotGothic16','Silkscreen',monospace;transition:transform .1s;border-image:none}button:active{transform:scale(.95)!important}
+/* ── CSS ─── */
+const CSS = "\n@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap');\n*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}\nbody{font-family:'Zen Maru Gothic',sans-serif;overflow-x:hidden;background:#0a0a1a}\ninput::placeholder{color:#888}input{user-select:text;font-family:inherit}button{font-family:inherit;transition:transform .1s}button:active{transform:scale(.96)!important}\n@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}\n@keyframes pg{0%,100%{box-shadow:0 0 8px var(--g)}50%{box-shadow:0 0 20px var(--g),0 0 40px var(--g)}}\n@keyframes su{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}\n@keyframes ca{0%{opacity:0;transform:scale(.5) rotateY(90deg)}60%{transform:scale(1.08) rotateY(-5deg)}100%{opacity:1;transform:scale(1) rotateY(0)}}\n@keyframes bo{0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.1)}66%{transform:translate(-20px,15px) scale(.95)}100%{transform:translate(0,0) scale(1)}}\n@keyframes ke{0%{opacity:0;transform:translate(0,0) scale(.3)}30%{opacity:1;transform:translate(calc(var(--dx)*.4),calc(var(--dy)*.4)) scale(1.2)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2)}}\n@keyframes kb{0%{transform:scale(.3);opacity:0}50%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}\n@keyframes ku{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}\n@keyframes kt{0%,100%{opacity:.2;transform:scale(.5)}50%{opacity:1;transform:scale(1.2)}}\n@keyframes ks{0%,100%{transform:translate(0,0)}25%{transform:translate(-4px,2px)}50%{transform:translate(4px,-2px)}75%{transform:translate(-2px,4px)}}\n@keyframes cb{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}\n@keyframes cf{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}\n@keyframes crb{0%{transform:scale(0) rotate(-20deg)}40%{transform:scale(1.3) rotate(10deg)}70%{transform:scale(.9) rotate(-5deg)}100%{transform:scale(1) rotate(0)}}\n@keyframes sp{0%{transform:scale(0);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}\n@keyframes gp{0%,100%{text-shadow:0 0 20px var(--gc),0 0 40px var(--gc)}50%{text-shadow:0 0 40px var(--gc),0 0 80px var(--gc),0 0 120px var(--gc)}}\n@keyframes fw{0%{transform:scale(0);opacity:1}50%{opacity:1}100%{transform:scale(1);opacity:0}}\n@keyframes rain{0%{transform:translateY(-20px);opacity:0}10%{opacity:.6}90%{opacity:.6}100%{transform:translateY(100vh);opacity:0}}\n@keyframes sadBounce{0%{transform:scale(0) rotate(10deg)}50%{transform:scale(1.1) rotate(-5deg)}100%{transform:scale(1) rotate(0)}}\n@keyframes charge{0%{transform:scale(.5);opacity:.3;filter:blur(8px)}60%{transform:scale(.8);opacity:.8;filter:blur(4px)}80%{transform:scale(.9);opacity:1;filter:blur(2px)}100%{transform:scale(1);opacity:1;filter:blur(0)}}\n@keyframes chargeGlow{0%{box-shadow:0 0 20px var(--cg)}50%{box-shadow:0 0 60px var(--cg),0 0 120px var(--cg)}100%{box-shadow:0 0 20px var(--cg)}}\n@keyframes flash{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(3)}}\n@keyframes ringBurst{0%{transform:scale(0);opacity:1;border-width:8px}100%{transform:scale(3);opacity:0;border-width:1px}}\n@keyframes megaBounce{0%{transform:scale(0) rotate(-10deg)}30%{transform:scale(1.4) rotate(5deg)}50%{transform:scale(.85) rotate(-3deg)}70%{transform:scale(1.15) rotate(2deg)}100%{transform:scale(1) rotate(0)}}\n@keyframes textReveal{0%{transform:scale(3);opacity:0;filter:blur(12px)}100%{transform:scale(1);opacity:1;filter:blur(0)}}\n@keyframes starSpin{0%{transform:rotate(0) scale(0);opacity:0}50%{opacity:1}100%{transform:rotate(360deg) scale(1);opacity:0}}\n@keyframes bgFlash{0%{opacity:.8}100%{opacity:0}}\n::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}\n";
+const BG = "radial-gradient(ellipse at 30% 20%,rgba(124,77,255,.15) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(255,112,67,.12) 0%,transparent 50%),linear-gradient(180deg,#0a0a1a,#0f1628)";
 
-/* ═ ピクセルボーダー ═ */
-.pxbtn{position:relative;border:none;padding:14px 20px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;image-rendering:pixelated;
-  clip-path:polygon(4px 0,calc(100% - 4px) 0,100% 4px,100% calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,0 calc(100% - 4px),0 4px)}
-.pxcard{clip-path:polygon(3px 0,calc(100% - 3px) 0,100% 3px,100% calc(100% - 3px),calc(100% - 3px) 100%,3px 100%,0 calc(100% - 3px),0 3px)}
-.pxbox{border:3px solid rgba(255,255,255,.15);background:rgba(10,10,30,.85);image-rendering:pixelated}
-
-/* ═ アニメーション ═ */
-@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-@keyframes pg{0%,100%{box-shadow:0 0 8px var(--g)}50%{box-shadow:0 0 20px var(--g),0 0 40px var(--g)}}
-@keyframes su{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes ca{0%{opacity:0;transform:scale(.6)}60%{transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
-@keyframes bo{0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.1)}66%{transform:translate(-20px,15px) scale(.95)}100%{transform:translate(0,0) scale(1)}}
-@keyframes ke{0%{opacity:0;transform:translate(0,0) scale(.3)}30%{opacity:1;transform:translate(calc(var(--dx)*.4),calc(var(--dy)*.4)) scale(1.2)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.2)}}
-@keyframes kb{0%{transform:scale(.3);opacity:0}50%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
-@keyframes ku{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes kt{0%,100%{opacity:.2;transform:scale(.5)}50%{opacity:1;transform:scale(1.2)}}
-@keyframes cb{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
-@keyframes cf{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
-@keyframes crb{0%{transform:scale(0) rotate(-20deg)}40%{transform:scale(1.3) rotate(10deg)}70%{transform:scale(.9) rotate(-5deg)}100%{transform:scale(1) rotate(0)}}
-@keyframes sp{0%{transform:scale(0);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
-@keyframes gp{0%,100%{text-shadow:0 0 20px var(--gc),0 0 40px var(--gc)}50%{text-shadow:0 0 40px var(--gc),0 0 80px var(--gc),0 0 120px var(--gc)}}
-@keyframes fw{0%{transform:scale(0);opacity:1}50%{opacity:1}100%{transform:scale(1);opacity:0}}
-@keyframes rain{0%{transform:translateY(-20px);opacity:0}10%{opacity:.6}90%{opacity:.6}100%{transform:translateY(100vh);opacity:0}}
-@keyframes sadBounce{0%{transform:scale(0) rotate(10deg)}50%{transform:scale(1.1) rotate(-5deg)}100%{transform:scale(1) rotate(0)}}
-@keyframes charge{0%{transform:scale(.5);opacity:.3}60%{transform:scale(.8);opacity:.8}100%{transform:scale(1);opacity:1}}
-@keyframes chargeGlow{0%{box-shadow:0 0 20px var(--cg)}50%{box-shadow:0 0 60px var(--cg),0 0 120px var(--cg)}100%{box-shadow:0 0 20px var(--cg)}}
-@keyframes bgFlash{0%{opacity:.8}100%{opacity:0}}
-@keyframes ringBurst{0%{transform:scale(0);opacity:1;border-width:8px}100%{transform:scale(3);opacity:0;border-width:1px}}
-@keyframes megaBounce{0%{transform:scale(0)}30%{transform:scale(1.4)}50%{transform:scale(.85)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
-@keyframes textReveal{0%{transform:scale(3);opacity:0}100%{transform:scale(1);opacity:1}}
-@keyframes starSpin{0%{transform:rotate(0) scale(0);opacity:0}50%{opacity:1}100%{transform:rotate(360deg) scale(1);opacity:0}}
-@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-@keyframes titleGlow{0%,100%{text-shadow:0 0 8px rgba(100,200,255,.5),0 0 20px rgba(100,200,255,.2)}50%{text-shadow:0 0 16px rgba(100,200,255,.8),0 0 40px rgba(100,200,255,.4),0 0 60px rgba(100,200,255,.2)}}
-@keyframes pulseRing{0%{transform:scale(.8);opacity:0}40%{opacity:1}100%{transform:scale(1.4);opacity:0}}
-@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeScale{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
-@keyframes blink{0%,90%,100%{opacity:1}95%{opacity:0}}
-@keyframes pixelStar{0%,100%{opacity:.2}50%{opacity:1}}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(100,200,255,.2);border-radius:0}
-`;
-const BG = "linear-gradient(180deg,#0a0a2e 0%,#0f0f3d 40%,#0a0a2e 100%)";
-
-/* ═══════════════════════════════════════════════════════════
-   🎨 PREMIUM UI コンポーネント
-   ═══════════════════════════════════════════════════════════ */
-
-/* ── 星空背景（ドット風） ─── */
+/* ── 共通小パーツ ─── */
 const Orbs = ({
-  n = 30
+  n = 8,
+  co = "rgba(124,77,255,.06)"
 }) => {
-  const stars = useRef(Array.from({
+  const o = useRef(Array.from({
     length: n
   }, (_, i) => ({
     id: i,
     x: Math.random() * 100,
     y: Math.random() * 100,
-    sz: 2 + Math.floor(Math.random() * 3) * 2,
-    d: 2 + Math.random() * 5,
-    dl: Math.random() * 5
+    sz: 60 + Math.random() * 160,
+    d: 12 + Math.random() * 18,
+    dl: Math.random() * -20
   }))).current;
   return /*#__PURE__*/React.createElement("div", {
     style: {
@@ -1752,64 +1393,21 @@ const Orbs = ({
       zIndex: 0,
       overflow: "hidden"
     }
-  }, stars.map(s => /*#__PURE__*/React.createElement("div", {
-    key: s.id,
+  }, o.map(v => /*#__PURE__*/React.createElement("div", {
+    key: v.id,
     style: {
       position: "absolute",
-      left: `${s.x}%`,
-      top: `${s.y}%`,
-      width: s.sz,
-      height: s.sz,
-      background: ["#64b5f6", "#fff", "#ce93d8", "#81c784", "#ffcc80"][s.id % 5],
-      imageRendering: "pixelated",
-      animation: `pixelStar ${s.d}s ${s.dl}s ease-in-out infinite`
+      left: "".concat(v.x, "%"),
+      top: "".concat(v.y, "%"),
+      width: v.sz,
+      height: v.sz,
+      borderRadius: "50%",
+      background: co,
+      filter: "blur(40px)",
+      animation: "bo ".concat(v.d, "s ").concat(v.dl, "s ease-in-out infinite")
     }
   })));
 };
-
-/* ── ピクセルグリッド背景 ─── */
-const NoiseOverlay = () => /*#__PURE__*/React.createElement("div", {
-  style: {
-    position: "fixed",
-    inset: 0,
-    pointerEvents: "none",
-    zIndex: 1,
-    opacity: 0.04,
-    backgroundImage: "repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(100,200,255,.08) 3px,rgba(100,200,255,.08) 4px),repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(100,200,255,.08) 3px,rgba(100,200,255,.08) 4px)",
-    backgroundSize: "4px 4px"
-  }
-});
-
-/* ── ピクセルボタン ─── */
-const PremBtn = ({
-  children,
-  onClick,
-  bg = "#4a6cf7",
-  disabled,
-  style,
-  ...rest
-}) => /*#__PURE__*/React.createElement("button", _extends({
-  className: "pxbtn",
-  onClick: () => {
-    if (!disabled) {
-      onClick === null || onClick === void 0 || onClick();
-      SE.tap();
-    }
-  },
-  style: {
-    background: disabled ? "#333" : bg,
-    color: disabled ? "#666" : "#fff",
-    fontSize: 15,
-    fontWeight: 700,
-    cursor: disabled ? "default" : "pointer",
-    boxShadow: disabled ? "none" : `0 4px 0 ${bg}88,0 6px 16px rgba(0,0,0,.4)`,
-    letterSpacing: ".05em",
-    textShadow: disabled ? "none" : "1px 1px 0 rgba(0,0,0,.5)",
-    ...style
-  }
-}, rest), children);
-
-/* ── BGMボタン ─── */
 const BgmBtn = () => {
   const t = useT();
   const [on, setOn] = useState(BGM.on());
@@ -1825,27 +1423,21 @@ const BgmBtn = () => {
     },
     style: {
       padding: "4px 10px",
-      border: `2px solid ${on ? "#64b5f6" : "#444"}`,
-      background: on ? "#1a237e" : "#111",
-      color: on ? "#64b5f6" : "#555",
+      borderRadius: 14,
+      border: "1px solid rgba(255,255,255,.15)",
+      background: on ? "rgba(102,255,102,.12)" : "rgba(255,255,255,.06)",
+      color: on ? "#66ff66" : "rgba(255,255,255,.4)",
       fontSize: 11,
       fontWeight: 700,
       cursor: "pointer",
-      position: "fixed",
-      top: "max(10px,env(safe-area-inset-top))",
-      right: 10,
-      zIndex: 100,
-      fontFamily: "'DotGothic16',monospace",
-      imageRendering: "pixelated"
+      whiteSpace: "nowrap"
     }
   }, on ? t("bgmOn") : t("bgmOff"));
 };
-
-/* ── 設定ボタン ─── */
 const SBtn = ({
   l,
   a,
-  co = "#64b5f6",
+  co = "#ffcc00",
   onClick
 }) => /*#__PURE__*/React.createElement("button", {
   onClick: () => {
@@ -1853,21 +1445,18 @@ const SBtn = ({
     SE.tap();
   },
   style: {
-    padding: "7px 12px",
-    border: `2px solid ${a ? co : "#333"}`,
-    background: a ? co + "22" : "#111",
-    color: a ? co : "#555",
+    padding: "8px 12px",
+    borderRadius: 12,
+    border: "2px solid ".concat(a ? co : "rgba(255,255,255,.1)"),
+    background: a ? "".concat(co, "18") : "rgba(255,255,255,.04)",
+    color: a ? co : "rgba(255,255,255,.4)",
     fontSize: 13,
-    fontWeight: 700,
-    cursor: "pointer",
-    fontFamily: "'DotGothic16',monospace",
-    boxShadow: a ? `0 2px 0 ${co}44` : "none"
+    fontWeight: 900,
+    cursor: "pointer"
   }
 }, l);
 
-/* ═══════════════════════════════════════════════════════════
-   🃏 ピクセルカードデザイン
-   ═══════════════════════════════════════════════════════════ */
+/* ── カード ─── */
 const Card = ({
   card,
   sel,
@@ -1876,71 +1465,47 @@ const Card = ({
 }) => {
   const t = useT();
   const i = getAI(card.s);
-  const rarity = RARITY[card.s] || 1;
   return /*#__PURE__*/React.createElement("div", {
     onClick: () => onTap === null || onTap === void 0 ? void 0 : onTap(card),
-    className: "pxcard",
     style: {
-      width: 68,
-      minWidth: 68,
-      height: 90,
-      position: "relative",
-      background: sel ? `${i.c}` : "#161630",
-      border: sel ? `3px solid ${i.g}` : `2px solid ${rarity >= 3 ? "#ffd700" : rarity >= 2 ? "#64b5f6" : "#333"}`,
+      width: 70,
+      minWidth: 70,
+      height: 92,
+      borderRadius: 16,
+      background: sel ? "linear-gradient(145deg,".concat(i.c, ",").concat(i.tc, "22)") : "linear-gradient(145deg,#1a1a2e,#16213e)",
+      border: sel ? "3px solid ".concat(i.g) : "2px solid rgba(255,255,255,.08)",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      boxShadow: sel ? `0 0 12px ${i.g}88,0 4px 0 ${i.g}44` : `0 3px 0 #0a0a1a`,
+      boxShadow: sel ? "0 0 16px ".concat(i.g, "66") : "0 2px 8px rgba(0,0,0,.3)",
       cursor: onTap ? "pointer" : "default",
-      transition: "all .15s",
+      transition: "all .2s cubic-bezier(.34,1.56,.64,1)",
       flexShrink: 0,
-      transform: sel ? "translateY(-8px)" : "none",
-      gap: 2,
-      "--g": i.g + "88",
-      animation: sel ? "pg 1.5s ease-in-out infinite" : `ca .3s ${dl}s ease both`,
-      imageRendering: "pixelated"
+      transform: sel ? "translateY(-8px) scale(1.08)" : "none",
+      gap: 1,
+      "--g": i.g,
+      animation: sel ? "pg 1.5s ease-in-out infinite" : "ca .3s ".concat(dl, "s ease both")
     }
-  }, rarity >= 3 && /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: "absolute",
-      top: 2,
-      right: 3,
-      fontSize: 6,
-      color: "#ffd700",
-      fontFamily: "monospace"
-    }
-  }, "\u2605\u2605\u2605"), rarity === 2 && /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: "absolute",
-      top: 2,
-      right: 3,
-      fontSize: 6,
-      color: "#64b5f6",
-      fontFamily: "monospace"
-    }
-  }, "\u2605\u2605"), /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 20
     }
   }, i.e), /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 20,
+      fontSize: 22,
       fontWeight: 900,
       color: sel ? i.tc : "#fff",
-      lineHeight: 1,
-      textShadow: sel ? "none" : "1px 1px 0 #000"
+      lineHeight: 1
     }
   }, card.s), /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 8,
-      color: sel ? i.tc + "cc" : "#888",
+      fontSize: 9,
+      color: sel ? i.tc : "rgba(255,255,255,.5)",
       fontWeight: 700
     }
   }, t(card.k)));
 };
-
-/* ── バッジ ─── */
 const Badge = ({
   comp
 }) => {
@@ -1950,27 +1515,29 @@ const Badge = ({
       display: "inline-flex",
       alignItems: "center",
       gap: 4,
-      background: "#111",
-      padding: "3px 8px",
-      border: comp.sp ? "2px solid #ce93d8" : "2px solid #333",
-      fontSize: 11
+      background: "rgba(255,255,255,.06)",
+      borderRadius: 10,
+      padding: "4px 10px",
+      border: comp.sp ? "2px solid #CE93D8" : "1px solid rgba(255,255,255,.1)"
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 12
+      fontSize: 14
     }
   }, comp.e), /*#__PURE__*/React.createElement("span", {
     style: {
+      fontSize: 12,
       fontWeight: 700,
-      color: "#ccc"
+      color: "#ddd"
     }
   }, t(comp.k)), /*#__PURE__*/React.createElement("span", {
     style: {
-      fontWeight: 700,
-      color: "#000",
-      background: comp.sp ? "#ce93d8" : comp.p >= 8 ? "#f97316" : comp.p >= 5 ? "#fbbf24" : "#4ade80",
-      padding: "0 5px",
-      fontSize: 10
+      fontSize: 11,
+      fontWeight: 800,
+      color: comp.sp ? "#e1bee7" : "#ffcc00",
+      background: comp.sp ? "rgba(156,39,176,.3)" : "rgba(255,152,0,.2)",
+      borderRadius: 6,
+      padding: "1px 6px"
     }
   }, comp.p, t("pt")));
 };
@@ -2000,21 +1567,20 @@ const Inv = ({
       width: "100%",
       padding: 12,
       borderRadius: 14,
-      border: "1px solid rgba(255,255,255,.06)",
-      background: "rgba(255,255,255,.03)",
-      color: "rgba(255,255,255,.4)",
-      fontSize: 13,
+      border: "1px solid rgba(255,255,255,.1)",
+      background: "rgba(255,255,255,.05)",
+      color: "rgba(255,255,255,.5)",
+      fontSize: 14,
       fontWeight: 700,
-      cursor: "pointer",
-      backdropFilter: "blur(4px)"
+      cursor: "pointer"
     }
   }, "\uD83E\uDDEA ", open ? t("crC") : t("crO")), open && /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 6,
       padding: 12,
       borderRadius: 14,
-      background: "rgba(255,255,255,.02)",
-      border: "1px solid rgba(255,255,255,.06)",
+      background: "rgba(255,255,255,.04)",
+      border: "1px solid rgba(255,255,255,.08)",
       animation: "su .3s ease"
     }
   }, /*#__PURE__*/React.createElement("div", {
@@ -2040,18 +1606,17 @@ const Inv = ({
         width: 20,
         height: 36,
         borderRadius: 5,
-        background: "rgba(255,255,255,.04)",
+        background: "rgba(255,255,255,.05)",
         position: "relative",
-        overflow: "hidden",
-        border: "1px solid rgba(255,255,255,.06)"
+        overflow: "hidden"
       }
     }, /*#__PURE__*/React.createElement("div", {
       style: {
         position: "absolute",
         bottom: 0,
         width: "100%",
-        height: `${Math.max(0, rem / at.n * 100)}%`,
-        background: `linear-gradient(180deg,${at.g}88,${at.g}33)`,
+        height: "".concat(Math.max(0, rem / at.n * 100), "%"),
+        background: "linear-gradient(180deg,".concat(at.g, "88,").concat(at.g, "33)"),
         borderRadius: 3,
         transition: "height .3s"
       }
@@ -2070,21 +1635,19 @@ const Inv = ({
       style: {
         fontSize: 10,
         fontWeight: 800,
-        color: rem > at.n * .5 ? "#4ade80" : rem > 0 ? "#fbbf24" : "#ef4444"
+        color: rem > at.n * .5 ? "#66ff66" : rem > 0 ? "#ffcc00" : "#ff4444"
       }
     }, rem));
   })), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 10,
-      color: "rgba(255,255,255,.2)",
+      color: "rgba(255,255,255,.25)",
       textAlign: "center"
     }
   }, t("crN"))));
 };
 
-/* ═══════════════════════════════════════════════════════════
-   🎆 おいわい（派手版 - 既存ロジック保持）
-   ═══════════════════════════════════════════════════════════ */
+/* ── おいわい（派手版） ─── */
 const Celeb = ({
   comp,
   onDone
@@ -2093,8 +1656,8 @@ const Celeb = ({
   const pts = comp.p;
   const [ph, setPh] = useState(0);
   const tier = pts >= 35 ? 3 : pts >= 8 ? 2 : pts >= 5 ? 1 : 0;
-  const mc = ["#4ade80", "#fbbf24", "#f97316", "#c084fc"][tier];
-  const bg = ["rgba(10,30,15,.96)", "rgba(30,25,5,.96)", "rgba(40,12,3,.96)", "rgba(20,5,35,.96)"][tier];
+  const mc = ["#66ff66", "#ffcc00", "#ff6633", "#cc66ff"][tier];
+  const bg = ["rgba(20,40,20,.95)", "rgba(40,30,10,.95)", "rgba(50,15,5,.95)", "rgba(25,5,45,.95)"][tier];
   useEffect(() => {
     if (tier >= 2) {
       SE.tap();
@@ -2145,7 +1708,7 @@ const Celeb = ({
     dist: 80 + Math.random() * 60,
     sz: 12 + Math.random() * 16,
     dl: Math.random() * .6,
-    co: ["#fbbf24", "#f97316", "#c084fc", "#38bdf8", "#4ade80", "#ef4444"][i % 6]
+    co: ["#FFD54F", "#FF8A65", "#CE93D8", "#81D4FA", "#A5D6A7", "#ff4444"][i % 6]
   })) : []).current;
   const rings = tier >= 2 ? [0, .3, .6] : [];
   return /*#__PURE__*/React.createElement("div", {
@@ -2158,7 +1721,7 @@ const Celeb = ({
       alignItems: "center",
       justifyContent: "center",
       background: ph >= 1 ? bg : "rgba(0,0,0,0)",
-      transition: `background ${tier >= 2 ? '.5s' : '.3s'}`,
+      transition: "background ".concat(tier >= 2 ? '.5s' : '.3s'),
       overflow: "hidden"
     }
   }, ph >= 2 && tier >= 2 && /*#__PURE__*/React.createElement("div", {
@@ -2175,9 +1738,9 @@ const Celeb = ({
       width: tier >= 3 ? 160 : 120,
       height: tier >= 3 ? 160 : 120,
       borderRadius: "50%",
-      background: `radial-gradient(circle,${mc}44,${mc}11,transparent)`,
-      "--cg": `${mc}66`,
-      animation: `charge ${tier >= 3 ? '1.8s' : '1s'} ease both, chargeGlow .4s ease-in-out infinite`,
+      background: "radial-gradient(circle,".concat(mc, "44,").concat(mc, "11,transparent)"),
+      "--cg": "".concat(mc, "66"),
+      animation: "charge ".concat(tier >= 3 ? '1.8s' : '1s', " ease both, chargeGlow .4s ease-in-out infinite"),
       zIndex: 2
     }
   }), ph === 1 && tier >= 3 && Array.from({
@@ -2185,28 +1748,28 @@ const Celeb = ({
   }).map((_, i) => {
     const a = i / 20 * 360 * Math.PI / 180;
     return /*#__PURE__*/React.createElement("div", {
-      key: `ch${i}`,
+      key: "ch".concat(i),
       style: {
         position: "absolute",
         width: 6,
         height: 6,
         borderRadius: "50%",
         background: mc,
-        left: `calc(50% + ${Math.cos(a) * 150}px)`,
-        top: `calc(50% + ${Math.sin(a) * 150}px)`,
-        animation: `charge 1.5s ${i * .08}s ease both`,
+        left: "calc(50% + ".concat(Math.cos(a) * 150, "px)"),
+        top: "calc(50% + ".concat(Math.sin(a) * 150, "px)"),
+        animation: "charge 1.5s ".concat(i * .08, "s ease both"),
         zIndex: 3
       }
     });
   }), ph >= 2 && rings.map((dl, i) => /*#__PURE__*/React.createElement("div", {
-    key: `r${i}`,
+    key: "r".concat(i),
     style: {
       position: "absolute",
       width: 100,
       height: 100,
       borderRadius: "50%",
-      border: `4px solid ${mc}`,
-      animation: `ringBurst .8s ${dl}s ease-out forwards`,
+      border: "4px solid ".concat(mc),
+      animation: "ringBurst .8s ".concat(dl, "s ease-out forwards"),
       opacity: 0,
       zIndex: 4
     }
@@ -2215,89 +1778,95 @@ const Celeb = ({
     style: {
       position: "absolute",
       fontSize: p.sz,
-      "--dx": `${p.x}px`,
-      "--dy": `${p.y}px`,
-      animation: `ke ${.6 + tier * .3}s ${p.dl}s cubic-bezier(.2,.6,.3,1) forwards`,
+      "--dx": "".concat(p.x, "px"),
+      "--dy": "".concat(p.y, "px"),
+      animation: "ke ".concat(.6 + tier * .3, "s ").concat(p.dl, "s cubic-bezier(.2,.6,.3,1) forwards"),
       opacity: 0,
       zIndex: 5
     }
   }, p.em)), ph >= 2 && spinS.map(s => /*#__PURE__*/React.createElement("div", {
-    key: `ss${s.id}`,
+    key: "ss".concat(s.id),
     style: {
       position: "absolute",
       width: s.sz,
       height: s.sz,
       borderRadius: "50%",
       background: s.co,
-      boxShadow: `0 0 ${s.sz}px ${s.co}`,
-      animation: `starSpin 1s ${s.dl}s ease-out forwards`,
+      boxShadow: "0 0 ".concat(s.sz, "px ").concat(s.co),
+      animation: "starSpin 1s ".concat(s.dl, "s ease-out forwards"),
       opacity: 0,
       zIndex: 5,
-      left: `calc(50% + ${Math.cos(s.ang * Math.PI / 180) * s.dist}px)`,
-      top: `calc(50% + ${Math.sin(s.ang * Math.PI / 180) * s.dist}px)`
+      left: "calc(50% + ".concat(Math.cos(s.ang * Math.PI / 180) * s.dist, "px)"),
+      top: "calc(50% + ".concat(Math.sin(s.ang * Math.PI / 180) * s.dist, "px)")
     }
-  })), ph >= 2 && /*#__PURE__*/React.createElement("div", {
+  })), /*#__PURE__*/React.createElement("div", {
     style: {
-      position: "relative",
-      zIndex: 10,
       textAlign: "center",
-      animation: tier >= 2 ? "megaBounce .8s ease both" : "kb .5s ease both"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: tier >= 3 ? 80 : 56,
-      filter: `drop-shadow(0 8px 30px ${mc}66)`
-    }
-  }, comp.e)), ph >= 3 && /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: "relative",
       zIndex: 10,
-      textAlign: "center",
-      animation: tier >= 3 ? "textReveal .6s ease both" : "su .4s ease both"
+      animation: tier >= 3 && ph >= 2 ? "ks .5s .1s ease both" : "none"
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, ph === 1 && tier >= 2 && /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 24,
-      fontWeight: 900,
-      color: "#fff",
-      marginTop: 4
-    }
-  }, t(comp.k)), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 14,
-      color: "rgba(255,255,255,.5)",
-      marginTop: 2
-    }
-  }, comp.f)), ph >= 4 && /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: "relative",
-      zIndex: 10,
-      textAlign: "center",
-      animation: "sp .4s ease both"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 44,
+      fontSize: 20,
       fontWeight: 900,
       color: mc,
-      textShadow: `0 0 30px ${mc}88`,
-      marginTop: 4
+      opacity: .8,
+      animation: "kt .3s ease-in-out infinite"
     }
-  }, "+", comp.p, /*#__PURE__*/React.createElement("span", {
+  }, tier >= 3 ? "・・・！！！" : "・・・！"), ph >= 2 && /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 20
+      fontSize: tier >= 3 ? 90 : tier >= 2 ? 72 : tier >= 1 ? 56 : 48,
+      animation: tier >= 2 ? "megaBounce .6s cubic-bezier(.34,1.56,.64,1) both" : "kb .5s .1s cubic-bezier(.34,1.56,.64,1) both",
+      opacity: 0,
+      filter: tier >= 2 ? "drop-shadow(0 0 30px ".concat(mc, "88)") : "none"
     }
-  }, t("pt"))), comp.sp && /*#__PURE__*/React.createElement("div", {
+  }, comp.e), ph >= 2 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: tier >= 3 ? 72 : tier >= 2 ? 56 : tier >= 1 ? 44 : 36,
+      fontWeight: 900,
+      lineHeight: 1.1,
+      color: mc,
+      textShadow: tier >= 2 ? "0 0 40px ".concat(mc, "88,0 0 80px ").concat(mc, "44") : "0 0 20px ".concat(mc, "66"),
+      animation: tier >= 2 ? "textReveal .5s .15s ease both" : "kb .5s .2s cubic-bezier(.34,1.56,.64,1) both",
+      opacity: 0
+    }
+  }, "+", pts, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "50%"
+    }
+  }, t("pt"))), ph >= 3 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: tier >= 2 ? 28 : tier >= 1 ? 22 : 18,
+      fontWeight: 800,
+      color: "#fff",
+      marginTop: 8,
+      opacity: 0,
+      animation: "ku .3s ease forwards",
+      textShadow: tier >= 2 ? "0 0 16px ".concat(mc, "44") : "none"
+    }
+  }, t(comp.k)), ph >= 3 && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 16,
-      color: "#c084fc",
-      fontWeight: 800,
-      marginTop: 2
+      color: "rgba(255,255,255,.5)",
+      marginTop: 2,
+      opacity: 0,
+      animation: "ku .3s .08s ease forwards"
     }
-  }, "\uD83D\uDC8E ", t("sp"))));
+  }, comp.f), ph >= 4 && tier >= 1 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 16,
+      display: "inline-block",
+      padding: tier >= 3 ? "10px 28px" : "6px 20px",
+      borderRadius: 24,
+      background: tier >= 3 ? "linear-gradient(135deg,#CE93D8,#FFD54F,#81D4FA,#CE93D8)" : tier >= 2 ? "linear-gradient(135deg,#FF8A65,#FFD54F)" : "linear-gradient(135deg,#66BB6A,#A5D6A7)",
+      fontSize: tier >= 3 ? 18 : 15,
+      fontWeight: 900,
+      color: "#111",
+      opacity: 0,
+      animation: "ku .3s ease forwards"
+    }
+  }, tier >= 3 ? pts >= 30 ? "💎👑 でんせつ！！！" : "🏆🔥 すごすぎ！！" : tier >= 2 ? "🔥 すごい！" : "⭐ いいね！")));
 };
-
-/* ── CPUオーバーレイ ─── */
 const CpuOv = ({
   name,
   action,
@@ -2308,9 +1877,8 @@ const CpuOv = ({
   useEffect(() => {
     requestAnimationFrame(() => setPh(1));
   }, []);
+  // name format: "🫧 バブリン" or "コンピュータ🤖" - extract first emoji
   const emoji = (name.match(/[\u{1F300}-\u{1FAD6}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}]/u) || ["🤖"])[0];
-  // ストーリーモードのモンスターか判定
-  const stageMatch = STORY.find(s => name.includes(s.name));
   return /*#__PURE__*/React.createElement("div", {
     style: {
       position: "fixed",
@@ -2319,7 +1887,7 @@ const CpuOv = ({
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      background: ph >= 1 ? "rgba(6,6,18,.96)" : "rgba(0,0,0,0)",
+      background: ph >= 1 ? "rgba(10,30,10,.94)" : "rgba(0,0,0,0)",
       transition: "background .3s"
     }
   }, /*#__PURE__*/React.createElement("div", {
@@ -2328,37 +1896,27 @@ const CpuOv = ({
       animation: ph >= 1 ? "cb .4s ease both" : "none",
       opacity: 0
     }
-  }, stageMatch ? /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", {
     style: {
-      marginBottom: 8,
-      filter: `drop-shadow(0 8px 30px ${stageMatch.color}55)`
-    }
-  }, /*#__PURE__*/React.createElement(MonsterSVG, {
-    id: stageMatch.id,
-    size: 100,
-    color: stageMatch.color
-  })) : /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 56,
-      marginBottom: 8,
-      filter: "drop-shadow(0 4px 20px rgba(167,139,250,.3))"
+      fontSize: 48,
+      marginBottom: 8
     }
   }, emoji), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 18,
       fontWeight: 900,
-      color: stageMatch ? stageMatch.color : "#a78bfa",
+      color: "#66ff66",
       marginBottom: 4
     }
   }, name), action === "bond" && comp && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 15,
-      color: "#4ade80",
+      color: "#66ff66",
       fontWeight: 800
     }
   }, t("cpuB")), /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 40,
+      fontSize: 36,
       marginTop: 4
     }
   }, comp.e), /*#__PURE__*/React.createElement("div", {
@@ -2371,88 +1929,20 @@ const CpuOv = ({
   }, t(comp.k)), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 14,
-      color: "#fbbf24",
+      color: "#ffcc00",
       fontWeight: 800
     }
   }, "+", comp.p, t("pt"))), action === "pass" && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 15,
-      color: "rgba(255,255,255,.35)"
+      color: "rgba(255,255,255,.4)"
     }
   }, t("cpuT"))));
 };
 
-/* ── パス画面 ─── */
-const Pass = ({
-  pn,
-  onReady,
-  info
-}) => {
-  const t = useT();
-  return /*#__PURE__*/React.createElement("div", {
-    style: {
-      minHeight: "100dvh",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "calc(24px + env(safe-area-inset-top)) 24px 24px 24px",
-      background: BG,
-      position: "relative"
-    }
-  }, /*#__PURE__*/React.createElement(Orbs, null), /*#__PURE__*/React.createElement(NoiseOverlay, null), /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: "relative",
-      zIndex: 2,
-      textAlign: "center"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 64,
-      marginBottom: 16,
-      animation: "fl 2s ease-in-out infinite",
-      filter: "drop-shadow(0 4px 20px rgba(167,139,250,.3))"
-    }
-  }, "\uD83D\uDCF1"), /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontSize: 22,
-      fontWeight: 900,
-      color: "#fff",
-      margin: "0 0 8px",
-      textAlign: "center"
-    }
-  }, t("passD")), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: 18,
-      color: "rgba(255,255,255,.5)",
-      margin: "0 0 4px"
-    }
-  }, t("next"), " ", /*#__PURE__*/React.createElement("strong", {
-    style: {
-      color: "#a78bfa",
-      fontSize: 22
-    }
-  }, pn), " ", t("trn")), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: 13,
-      color: "rgba(255,255,255,.25)",
-      margin: "0 0 28px"
-    }
-  }, info), /*#__PURE__*/React.createElement(PremBtn, {
-    onClick: onReady,
-    gradient: "linear-gradient(135deg,#7c3aed,#a78bfa)",
-    shadow: "rgba(124,58,237,.4)",
-    style: {
-      padding: "18px 48px",
-      fontSize: 20,
-      borderRadius: 20
-    }
-  }, t("ready"))));
-};
-
-/* ═══════════════════════════════════════════════════════════
-   📱 タイトル画面 - PREMIUM
-   ═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════ */
+/*  タイトル画面                                               */
+/* ═══════════════════════════════════════════════════════════ */
 function Title({
   onStart,
   onStartCpu,
@@ -2473,31 +1963,29 @@ function Title({
   const [cd, setCd] = useState("normal");
   const [hl, setHL] = useState(7);
   const [storySt, setStorySt] = useState(null);
-  const [prologueSeen, setPrologueSeen] = useState(false);
   const [bgmOn, setBgmOn] = useState(BGM.on());
   const [seOn, setSeOn] = useState(SE.isEnabled());
   const Stg = () => /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 18,
-      padding: 18,
-      borderRadius: 20,
-      background: "rgba(255,255,255,.02)",
-      border: "1px solid rgba(255,255,255,.06)",
+      padding: 16,
+      borderRadius: 16,
+      background: "rgba(255,255,255,.04)",
+      border: "1px solid rgba(255,255,255,.08)",
       maxWidth: 300,
-      width: "100%",
-      backdropFilter: "blur(8px)"
+      width: "100%"
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 14,
       fontWeight: 900,
-      color: "#fbbf24",
-      marginBottom: 12
+      color: "#ffcc00",
+      marginBottom: 10
     }
   }, "\u2699\uFE0F ", t("settings")), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 13,
-      color: "rgba(255,255,255,.4)",
+      color: "rgba(255,255,255,.5)",
       fontWeight: 700,
       marginBottom: 6
     }
@@ -2506,22 +1994,22 @@ function Title({
       display: "flex",
       gap: 6,
       justifyContent: "center",
-      marginBottom: 14
+      marginBottom: 12
     }
   }, /*#__PURE__*/React.createElement(SBtn, {
     l: t("langH"),
     a: lang === "hiragana",
-    co: "#a78bfa",
+    co: "#b388ff",
     onClick: () => setLang("hiragana")
   }), /*#__PURE__*/React.createElement(SBtn, {
     l: t("langK"),
     a: lang === "kanji",
-    co: "#a78bfa",
+    co: "#b388ff",
     onClick: () => setLang("kanji")
   })), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 13,
-      color: "rgba(255,255,255,.4)",
+      color: "rgba(255,255,255,.5)",
       fontWeight: 700,
       marginBottom: 6
     }
@@ -2540,12 +2028,12 @@ function Title({
   }, /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 12,
-      color: "rgba(255,255,255,.3)"
+      color: "rgba(255,255,255,.4)"
     }
   }, t("bgmLabel")), /*#__PURE__*/React.createElement(SBtn, {
     l: t("onLabel"),
     a: bgmOn,
-    co: "#4ade80",
+    co: "#66ff66",
     onClick: () => {
       BGM.start();
       setBgmOn(true);
@@ -2553,7 +2041,7 @@ function Title({
   }), /*#__PURE__*/React.createElement(SBtn, {
     l: t("offLabel"),
     a: !bgmOn,
-    co: "#ef4444",
+    co: "#ff6666",
     onClick: () => {
       BGM.stop();
       setBgmOn(false);
@@ -2567,12 +2055,12 @@ function Title({
   }, /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 12,
-      color: "rgba(255,255,255,.3)"
+      color: "rgba(255,255,255,.4)"
     }
   }, t("seLabel")), /*#__PURE__*/React.createElement(SBtn, {
     l: t("onLabel"),
     a: seOn,
-    co: "#4ade80",
+    co: "#66ff66",
     onClick: () => {
       SE.setEnabled(true);
       setSeOn(true);
@@ -2580,7 +2068,7 @@ function Title({
   }), /*#__PURE__*/React.createElement(SBtn, {
     l: t("offLabel"),
     a: !seOn,
-    co: "#ef4444",
+    co: "#ff6666",
     onClick: () => {
       SE.setEnabled(false);
       setSeOn(false);
@@ -2589,31 +2077,30 @@ function Title({
   const PremPanel = () => /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 12,
-      padding: 18,
-      borderRadius: 20,
-      background: premium ? "rgba(74,222,128,.03)" : "linear-gradient(135deg,rgba(251,191,36,.04),rgba(249,115,22,.04))",
-      border: premium ? "1px solid rgba(74,222,128,.15)" : "1.5px solid rgba(251,191,36,.15)",
+      padding: 16,
+      borderRadius: 16,
+      background: premium ? "rgba(102,255,102,.04)" : "linear-gradient(135deg,rgba(255,204,0,.06),rgba(255,112,67,.06))",
+      border: premium ? "1px solid rgba(102,255,102,.2)" : "2px solid rgba(255,204,0,.2)",
       maxWidth: 300,
-      width: "100%",
-      backdropFilter: "blur(8px)"
+      width: "100%"
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 15,
       fontWeight: 900,
-      color: premium ? "#4ade80" : "#fbbf24",
+      color: premium ? "#66ff66" : "#ffcc00",
       marginBottom: 6
     }
   }, t("premTitle")), premium ? /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 13,
-      color: "#4ade80",
+      color: "#66ff66",
       fontWeight: 700
     }
   }, t("premDone")) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 13,
-      color: "rgba(255,255,255,.4)",
+      color: "rgba(255,255,255,.5)",
       marginBottom: 10,
       lineHeight: 1.6
     }
@@ -2630,25 +2117,31 @@ function Title({
       fontSize: 11,
       padding: "2px 8px",
       borderRadius: 8,
-      background: "rgba(255,255,255,.04)",
-      border: "1px solid rgba(251,191,36,.15)",
-      color: "rgba(255,255,255,.4)"
+      background: "rgba(255,255,255,.06)",
+      border: "1px solid rgba(255,204,0,.2)",
+      color: "rgba(255,255,255,.5)"
     }
-  }, t("locked"), " ", t(c.k)))), /*#__PURE__*/React.createElement(PremBtn, {
+  }, t("locked"), " ", t(c.k)))), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       SE.gStart();
       setPremium(true);
     },
-    gradient: "linear-gradient(135deg,#f59e0b,#fbbf24)",
-    shadow: "rgba(245,158,11,.3)",
     style: {
       width: "100%",
-      fontSize: 15
+      padding: "12px",
+      borderRadius: 14,
+      border: "none",
+      background: "linear-gradient(135deg,#ff9800,#ffcc00)",
+      color: "#111",
+      fontSize: 15,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: "0 4px 16px rgba(255,152,0,.3)"
     }
   }, t("premBtn")), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 10,
-      color: "rgba(255,255,255,.2)",
+      color: "rgba(255,255,255,.25)",
       marginTop: 6,
       textAlign: "center"
     }
@@ -2660,181 +2153,157 @@ function Title({
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      padding: "calc(24px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom)) 24px",
+      padding: "calc(24px + env(safe-area-inset-top)) 24px 24px 24px",
       background: BG,
       position: "relative"
     }
-  }, /*#__PURE__*/React.createElement(Orbs, null), /*#__PURE__*/React.createElement(NoiseOverlay, null), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(Orbs, null), /*#__PURE__*/React.createElement("div", {
     style: {
       position: "relative",
-      zIndex: 2,
+      zIndex: 1,
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      width: "100%",
-      maxWidth: 340
+      width: "100%"
     }
   }, ch));
-
-  // ─ タイトルトップ ─
   if (mode === null) return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     style: {
+      fontSize: 64,
+      marginBottom: 4,
       animation: "fl 3s ease-in-out infinite",
-      marginBottom: 8
+      filter: "drop-shadow(0 4px 20px rgba(124,77,255,.4))"
     }
-  }, /*#__PURE__*/React.createElement(DrSVG, {
-    size: 90
-  })), /*#__PURE__*/React.createElement("h1", {
+  }, "\uD83E\uDDEA"), /*#__PURE__*/React.createElement("h1", {
     style: {
-      fontSize: 28,
-      fontWeight: 700,
-      color: "#64b5f6",
+      fontSize: 30,
+      fontWeight: 900,
+      color: "#fff",
       textAlign: "center",
-      margin: "0 0 0px",
-      letterSpacing: ".08em",
-      textShadow: "2px 2px 0 #1a237e,0 0 20px rgba(100,180,255,.4)",
-      animation: "titleGlow 4s ease-in-out infinite",
-      fontFamily: "'DotGothic16',monospace"
+      margin: "0 0 2px"
     }
   }, t("title1")), /*#__PURE__*/React.createElement("h2", {
     style: {
-      fontSize: 18,
-      fontWeight: 400,
-      color: "#ce93d8",
-      margin: "0 0 8px",
-      letterSpacing: ".12em",
-      textShadow: "1px 1px 0 #4a148c",
-      fontFamily: "'DotGothic16',monospace"
+      fontSize: 22,
+      fontWeight: 700,
+      color: "#b388ff",
+      margin: "0 0 36px"
     }
-  }, t("title2")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 10,
-      color: "#555",
-      marginBottom: 28,
-      fontFamily: "monospace"
-    }
-  }, "- PRESS START -"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: "100%",
-      display: "flex",
-      flexDirection: "column",
-      gap: 10,
-      maxWidth: 280
-    }
-  }, /*#__PURE__*/React.createElement(PremBtn, {
+  }, t("title2")), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       setMode("story");
       SE.tap();
     },
-    bg: "#c62828",
     style: {
+      width: "100%",
+      maxWidth: 280,
+      padding: 20,
+      borderRadius: 20,
+      border: "none",
+      background: "linear-gradient(135deg,#e91e63,#CE93D8)",
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: "0 4px 30px rgba(233,30,99,.4)",
+      marginBottom: 14,
       display: "flex",
       alignItems: "center",
-      gap: 10,
-      padding: "14px 16px"
-    }
-  }, /*#__PURE__*/React.createElement(MonsterSVG, {
-    id: 1,
-    size: 36,
-    color: "#81D4FA"
-  }), /*#__PURE__*/React.createElement("span", {
-    style: {
-      textAlign: "left",
-      flex: 1
-    }
-  }, t("story"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 10,
-      opacity: .7
-    }
-  }, t("storySub")))), /*#__PURE__*/React.createElement(PremBtn, {
-    onClick: () => {
-      setMode("cpu");
-      SE.tap();
-    },
-    bg: "#e65100",
-    style: {
-      display: "flex",
-      alignItems: "center",
-      gap: 10,
-      padding: "14px 16px"
-    }
-  }, /*#__PURE__*/React.createElement(DrSVG, {
-    size: 36
-  }), /*#__PURE__*/React.createElement("span", {
-    style: {
-      textAlign: "left",
-      flex: 1
-    }
-  }, t("solo"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 10,
-      opacity: .7
-    }
-  }, t("soloSub")))), /*#__PURE__*/React.createElement(PremBtn, {
-    onClick: () => {
-      setMode("multi");
-      SE.tap();
-    },
-    bg: "#4a148c",
-    style: {
-      display: "flex",
-      alignItems: "center",
-      gap: 10,
-      padding: "14px 16px"
+      justifyContent: "center",
+      gap: 10
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 28
     }
-  }, "\uD83D\uDC6B"), /*#__PURE__*/React.createElement("span", {
+  }, "\u2694\uFE0F"), /*#__PURE__*/React.createElement("span", null, t("story"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
     style: {
-      textAlign: "left",
-      flex: 1
+      fontSize: 12,
+      fontWeight: 600,
+      opacity: .9
     }
-  }, t("multi"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
+  }, t("storySub")))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setMode("cpu");
+      SE.tap();
+    },
     style: {
-      fontSize: 10,
-      opacity: .7
-    }
-  }, t("multiSub"))))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginTop: 24,
+      width: "100%",
+      maxWidth: 280,
+      padding: 20,
+      borderRadius: 20,
+      border: "none",
+      background: "linear-gradient(135deg,#ff5722,#ff9800)",
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: "0 4px 30px rgba(255,87,34,.4)",
+      marginBottom: 14,
       display: "flex",
-      gap: 4,
-      opacity: .4
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 10
     }
-  }, [1, 3, 5, 7, 10].map(id => {
-    var _STORY$find;
-    return /*#__PURE__*/React.createElement("div", {
-      key: id,
-      style: {
-        animation: `fl ${2 + id * .3}s ease-in-out infinite`
-      }
-    }, /*#__PURE__*/React.createElement(MonsterSVG, {
-      id: id,
-      size: 28,
-      color: ((_STORY$find = STORY.find(s => s.id === id)) === null || _STORY$find === void 0 ? void 0 : _STORY$find.color) || "#888"
-    }));
-  }))));
-
-  // ─ CPU対戦セットアップ ─
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 28
+    }
+  }, "\uD83E\uDD16"), /*#__PURE__*/React.createElement("span", null, t("solo"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12,
+      fontWeight: 600,
+      opacity: .9
+    }
+  }, t("soloSub")))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setMode("multi");
+      SE.tap();
+    },
+    style: {
+      width: "100%",
+      maxWidth: 280,
+      padding: 20,
+      borderRadius: 20,
+      border: "none",
+      background: "linear-gradient(135deg,#651fff,#b388ff)",
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: "0 4px 30px rgba(101,31,255,.4)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 28
+    }
+  }, "\uD83C\uDFAE"), /*#__PURE__*/React.createElement("span", null, t("multi"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12,
+      fontWeight: 600,
+      opacity: .9
+    }
+  }, t("multiSub"))))));
   if (mode === "cpu") return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 52,
-      marginBottom: 8,
-      filter: "drop-shadow(0 4px 20px rgba(249,115,22,.3))"
+      fontSize: 48,
+      marginBottom: 8
     }
   }, "\uD83E\uDD16"), /*#__PURE__*/React.createElement("h2", {
     style: {
       fontSize: 22,
       fontWeight: 900,
       color: "#fff",
-      margin: "0 0 24px"
+      margin: "0 0 20px"
     }
   }, t("solo")), /*#__PURE__*/React.createElement("div", {
     style: {
       width: "100%",
+      maxWidth: 280,
       marginBottom: 16
     }
   }, /*#__PURE__*/React.createElement("input", {
@@ -2843,21 +2312,20 @@ function Title({
     placeholder: t("name"),
     style: {
       width: "100%",
-      padding: "14px 18px",
+      padding: "12px 16px",
       borderRadius: 14,
-      border: "1.5px solid rgba(255,255,255,.08)",
-      background: "rgba(255,255,255,.04)",
+      border: "2px solid rgba(255,255,255,.12)",
+      background: "rgba(255,255,255,.06)",
       color: "#fff",
       fontSize: 16,
       outline: "none",
       boxSizing: "border-box",
-      fontWeight: 600,
-      backdropFilter: "blur(4px)"
+      fontWeight: 600
     }
   })), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 14,
-      color: "rgba(255,255,255,.4)",
+      color: "rgba(255,255,255,.5)",
       fontWeight: 700,
       marginBottom: 8
     }
@@ -2869,14 +2337,14 @@ function Title({
     }
   }, [1, 2, 3].map(n => /*#__PURE__*/React.createElement(SBtn, {
     key: n,
-    l: `${n}${t("unit")}`,
+    l: "".concat(n).concat(t("unit")),
     a: cc === n,
-    co: "#f97316",
+    co: "#ff7043",
     onClick: () => setCc(n)
   }))), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 14,
-      color: "rgba(255,255,255,.4)",
+      color: "rgba(255,255,255,.5)",
       fontWeight: 700,
       marginBottom: 8
     }
@@ -2890,594 +2358,14 @@ function Title({
     key: d,
     l: t(d),
     a: cd === d,
-    co: "#f97316",
+    co: "#ff7043",
     onClick: () => setCd(d)
   }))), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 14,
-      color: "rgba(255,255,255,.4)",
+      color: "rgba(255,255,255,.5)",
       fontWeight: 700,
       marginBottom: 8
-    }
-  }, "\uD83C\uDCCF ", t("hlLabel")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      gap: 6,
-      marginBottom: 28,
-      flexWrap: "wrap",
-      justifyContent: "center"
-    }
-  }, [7, 8, 9, 10].map(n => /*#__PURE__*/React.createElement(SBtn, {
-    key: n,
-    l: `${n}${t("mai")}${n === 7 ? `（${t("basic")}）` : ""}`,
-    a: hl === n,
-    onClick: () => setHL(n)
-  }))), /*#__PURE__*/React.createElement(PremBtn, {
-    onClick: () => {
-      SE.gStart();
-      onStartCpu(cn.trim() || "あなた", Array.from({
-        length: cc
-      }, (_, i) => CPUN[i % 3]), cd, hl);
-    },
-    gradient: "linear-gradient(135deg,#ea580c,#f97316)",
-    shadow: "rgba(234,88,12,.35)",
-    style: {
-      padding: "16px 48px",
-      fontSize: 20,
-      borderRadius: 20
-    }
-  }, "\uD83C\uDFAE ", t("start")), /*#__PURE__*/React.createElement(Stg, null), /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginTop: 12,
-      padding: 18,
-      borderRadius: 20,
-      background: "rgba(255,255,255,.02)",
-      border: "1px solid rgba(255,255,255,.06)",
-      maxWidth: 300,
-      width: "100%"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 14,
-      fontWeight: 900,
-      color: "#a78bfa",
-      marginBottom: 8
-    }
-  }, "\uD83C\uDFB4 ", t("rules")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 13,
-      color: "rgba(255,255,255,.45)",
-      lineHeight: 2
-    }
-  }, "\u2460 ", t("r1"), /*#__PURE__*/React.createElement("br", null), "\u2461 ", t("r2"), /*#__PURE__*/React.createElement("br", null), "\u2462 ", t("r3"), /*#__PURE__*/React.createElement("br", null), "\u2463 ", t("hand"), hl, t("r4"), /*#__PURE__*/React.createElement("br", null), "\u2464 ", t("r5"), /*#__PURE__*/React.createElement("br", null), t("r6"), /*#__PURE__*/React.createElement("br", null), t("r7"))), /*#__PURE__*/React.createElement("button", {
-    onClick: () => setMode(null),
-    style: {
-      marginTop: 14,
-      padding: "10px 24px",
-      borderRadius: 12,
-      border: "1px solid rgba(255,255,255,.08)",
-      background: "transparent",
-      color: "rgba(255,255,255,.35)",
-      fontSize: 14,
-      fontWeight: 700,
-      cursor: "pointer"
-    }
-  }, t("back"))));
-
-  // ─ ストーリーモード ─
-  if (mode === "story") {
-    // プロローグ（初回のみ）
-    if (!prologueSeen) {
-      return /*#__PURE__*/React.createElement(Prologue, {
-        onDone: () => setPrologueSeen(true)
-      });
-    }
-    if (storySt === null) {
-      const mainStages = STORY.filter(s => !s.ex);
-      const exStages = STORY.filter(s => s.ex);
-      const allMainCleared = cleared.has(10);
-      return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-        style: {
-          display: "flex",
-          alignItems: "center",
-          gap: 12,
-          marginBottom: 20,
-          animation: "fadeScale .4s ease both"
-        }
-      }, /*#__PURE__*/React.createElement("div", {
-        style: {
-          filter: "drop-shadow(0 4px 12px rgba(167,139,250,.3))"
-        }
-      }, /*#__PURE__*/React.createElement(DrSVG, {
-        size: 64
-      })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
-        style: {
-          fontSize: 20,
-          fontWeight: 900,
-          color: "#fff",
-          margin: 0
-        }
-      }, t("story")), /*#__PURE__*/React.createElement("p", {
-        style: {
-          fontSize: 12,
-          color: "rgba(255,255,255,.4)",
-          margin: "2px 0 0",
-          fontWeight: 600
-        }
-      }, "\u30E2\u30F3\u30B9\u30BF\u30FC\u3092\u5012\u3057\u3066\u9032\u3081\uFF01"))), /*#__PURE__*/React.createElement("div", {
-        style: {
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          gap: 8
-        }
-      }, mainStages.map((s, i) => {
-        const unlocked = i === 0 || cleared.has(STORY[i - 1].id);
-        const isCleared = cleared.has(s.id);
-        const diffLabel = {
-          easy: "★☆☆",
-          normal: "★★☆",
-          hard: "★★★"
-        }[s.diff];
-        const diffColor = {
-          easy: "#4ade80",
-          normal: "#fbbf24",
-          hard: "#ef4444"
-        }[s.diff];
-        return /*#__PURE__*/React.createElement("button", {
-          key: s.id,
-          onClick: () => {
-            if (unlocked) {
-              SE.tap();
-              setStorySt(s);
-            }
-          },
-          style: {
-            padding: "12px 14px",
-            borderRadius: 16,
-            border: `1.5px solid ${unlocked ? s.color + '44' : 'rgba(255,255,255,.05)'}`,
-            background: unlocked ? `linear-gradient(135deg,${s.color}08,${s.color}04)` : 'rgba(255,255,255,.01)',
-            color: "#fff",
-            cursor: unlocked ? "pointer" : "default",
-            opacity: unlocked ? 1 : .35,
-            textAlign: "left",
-            position: "relative",
-            overflow: "hidden"
-          }
-        }, isCleared && /*#__PURE__*/React.createElement("div", {
-          style: {
-            position: "absolute",
-            top: 0,
-            right: 0,
-            padding: "3px 10px",
-            borderRadius: "0 14px 0 10px",
-            background: "rgba(74,222,128,.15)",
-            border: "1px solid rgba(74,222,128,.2)"
-          }
-        }, /*#__PURE__*/React.createElement("span", {
-          style: {
-            fontSize: 10,
-            color: "#4ade80",
-            fontWeight: 800
-          }
-        }, "\u2713 ", t("storyClear"))), /*#__PURE__*/React.createElement("div", {
-          style: {
-            display: "flex",
-            alignItems: "center",
-            gap: 10
-          }
-        }, /*#__PURE__*/React.createElement("div", {
-          style: {
-            width: 52,
-            height: 52,
-            borderRadius: 14,
-            background: `${s.color}12`,
-            border: `1px solid ${s.color}33`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            overflow: "hidden",
-            flexShrink: 0
-          }
-        }, unlocked ? /*#__PURE__*/React.createElement(MonsterSVG, {
-          id: s.id,
-          size: 48,
-          color: s.color
-        }) : /*#__PURE__*/React.createElement("span", {
-          style: {
-            fontSize: 24,
-            opacity: .5
-          }
-        }, "\uD83D\uDD12")), /*#__PURE__*/React.createElement("div", {
-          style: {
-            flex: 1
-          }
-        }, /*#__PURE__*/React.createElement("div", {
-          style: {
-            fontSize: 15,
-            fontWeight: 900
-          }
-        }, unlocked ? `${t("storyStage")} ${s.id}  ${s.name}` : t("storyLocked")), /*#__PURE__*/React.createElement("div", {
-          style: {
-            fontSize: 12,
-            color: diffColor,
-            fontWeight: 700,
-            marginTop: 2
-          }
-        }, diffLabel))), unlocked && /*#__PURE__*/React.createElement("div", {
-          style: {
-            position: "absolute",
-            inset: 0,
-            background: "linear-gradient(90deg,transparent,rgba(255,255,255,.02),transparent)",
-            backgroundSize: "200% 100%",
-            animation: "shimmer 4s linear infinite"
-          }
-        }));
-      }), allMainCleared && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-        style: {
-          textAlign: "center",
-          margin: "12px 0 4px",
-          fontSize: 13,
-          fontWeight: 800,
-          color: "#c084fc",
-          letterSpacing: ".06em"
-        }
-      }, "\u2014 EX STAGES \u2014"), exStages.map((s, i) => {
-        const prev = i === 0 ? 10 : exStages[i - 1].id;
-        const unlocked = cleared.has(prev);
-        const isCleared = cleared.has(s.id);
-        return /*#__PURE__*/React.createElement("button", {
-          key: s.id,
-          onClick: () => {
-            if (unlocked) {
-              SE.tap();
-              setStorySt(s);
-            }
-          },
-          style: {
-            padding: "12px 14px",
-            borderRadius: 16,
-            border: `1.5px solid ${unlocked ? s.color + '44' : 'rgba(255,255,255,.05)'}`,
-            background: unlocked ? `linear-gradient(135deg,${s.color}0a,${s.color}04)` : 'rgba(255,255,255,.01)',
-            color: "#fff",
-            cursor: unlocked ? "pointer" : "default",
-            opacity: unlocked ? 1 : .35,
-            textAlign: "left",
-            position: "relative",
-            overflow: "hidden"
-          }
-        }, isCleared && /*#__PURE__*/React.createElement("div", {
-          style: {
-            position: "absolute",
-            top: 0,
-            right: 0,
-            padding: "3px 10px",
-            borderRadius: "0 14px 0 10px",
-            background: "rgba(74,222,128,.15)",
-            border: "1px solid rgba(74,222,128,.2)"
-          }
-        }, /*#__PURE__*/React.createElement("span", {
-          style: {
-            fontSize: 10,
-            color: "#4ade80",
-            fontWeight: 800
-          }
-        }, "\u2713 ", t("storyClear"))), /*#__PURE__*/React.createElement("div", {
-          style: {
-            display: "flex",
-            alignItems: "center",
-            gap: 10
-          }
-        }, /*#__PURE__*/React.createElement("div", {
-          style: {
-            width: 52,
-            height: 52,
-            borderRadius: 14,
-            background: `${s.color}12`,
-            border: `1px solid ${s.color}33`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            overflow: "hidden",
-            flexShrink: 0
-          }
-        }, unlocked ? /*#__PURE__*/React.createElement(MonsterSVG, {
-          id: s.id,
-          size: 48,
-          color: s.color
-        }) : /*#__PURE__*/React.createElement("span", {
-          style: {
-            fontSize: 24,
-            opacity: .5
-          }
-        }, "\uD83D\uDD12")), /*#__PURE__*/React.createElement("div", {
-          style: {
-            flex: 1
-          }
-        }, /*#__PURE__*/React.createElement("div", {
-          style: {
-            fontSize: 15,
-            fontWeight: 900
-          }
-        }, unlocked ? `EX${s.id - 10}  ${s.name}` : t("storyLocked")), /*#__PURE__*/React.createElement("div", {
-          style: {
-            fontSize: 12,
-            color: "#ef4444",
-            fontWeight: 700,
-            marginTop: 2
-          }
-        }, "\u2605\u2605\u2605"))));
-      }))), /*#__PURE__*/React.createElement("button", {
-        onClick: () => setMode(null),
-        style: {
-          marginTop: 18,
-          padding: "10px 24px",
-          borderRadius: 12,
-          border: "1px solid rgba(255,255,255,.08)",
-          background: "transparent",
-          color: "rgba(255,255,255,.35)",
-          fontSize: 14,
-          fontWeight: 700,
-          cursor: "pointer"
-        }
-      }, t("back"))));
-    }
-    // ステージ詳細（モンスターイラスト大表示 + 博士の会話）
-    return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-      style: {
-        position: "relative",
-        marginBottom: 12,
-        animation: "fadeScale .5s ease both"
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        filter: `drop-shadow(0 8px 40px ${storySt.color}66)`,
-        animation: "fl 3s ease-in-out infinite"
-      }
-    }, /*#__PURE__*/React.createElement(MonsterSVG, {
-      id: storySt.id,
-      size: 140,
-      color: storySt.color
-    })), /*#__PURE__*/React.createElement("div", {
-      style: {
-        position: "absolute",
-        inset: "-30px",
-        borderRadius: "50%",
-        background: `radial-gradient(circle,${storySt.color}22,transparent 70%)`,
-        zIndex: -1,
-        animation: "pulseRing 3s ease-in-out infinite"
-      }
-    })), /*#__PURE__*/React.createElement("h2", {
-      style: {
-        fontSize: 28,
-        fontWeight: 900,
-        color: "#fff",
-        margin: "0 0 2px",
-        textShadow: `0 0 20px ${storySt.color}44`
-      }
-    }, storySt.name), /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 14,
-        color: storySt.color,
-        fontWeight: 700,
-        marginBottom: 16
-      }
-    }, storySt.ex ? `EX ${t("storyStage")} ${storySt.id - 10}` : `${t("storyStage")} ${storySt.id}`), /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: "flex",
-        gap: 12,
-        alignItems: "flex-start",
-        maxWidth: 320,
-        width: "100%",
-        marginBottom: 20,
-        animation: "slideUp .5s .2s ease both",
-        opacity: 0
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        flexShrink: 0,
-        filter: "drop-shadow(0 4px 10px rgba(167,139,250,.2))"
-      }
-    }, /*#__PURE__*/React.createElement(DrSVG, {
-      size: 56
-    })), /*#__PURE__*/React.createElement("div", {
-      style: {
-        flex: 1,
-        padding: 14,
-        borderRadius: "4px 16px 16px 16px",
-        background: "rgba(255,255,255,.05)",
-        border: "1px solid rgba(255,255,255,.08)",
-        backdropFilter: "blur(4px)",
-        position: "relative"
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        position: "absolute",
-        left: -6,
-        top: 12,
-        width: 0,
-        height: 0,
-        borderTop: "6px solid transparent",
-        borderBottom: "6px solid transparent",
-        borderRight: "6px solid rgba(255,255,255,.08)"
-      }
-    }), /*#__PURE__*/React.createElement("p", {
-      style: {
-        fontSize: 14,
-        color: "rgba(255,255,255,.7)",
-        lineHeight: 1.8,
-        margin: 0
-      }
-    }, storySt.intro))), /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: "flex",
-        gap: 12,
-        marginBottom: 20,
-        animation: "slideUp .5s .35s ease both",
-        opacity: 0
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        padding: "8px 14px",
-        borderRadius: 12,
-        background: "rgba(255,255,255,.03)",
-        border: "1px solid rgba(255,255,255,.06)",
-        textAlign: "center"
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 10,
-        color: "rgba(255,255,255,.3)",
-        fontWeight: 700
-      }
-    }, "\u96E3\u6613\u5EA6"), /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 14,
-        fontWeight: 900,
-        color: {
-          easy: "#4ade80",
-          normal: "#fbbf24",
-          hard: "#ef4444"
-        }[storySt.diff]
-      }
-    }, {
-      easy: "★☆☆",
-      normal: "★★☆",
-      hard: "★★★"
-    }[storySt.diff])), /*#__PURE__*/React.createElement("div", {
-      style: {
-        padding: "8px 14px",
-        borderRadius: 12,
-        background: "rgba(255,255,255,.03)",
-        border: "1px solid rgba(255,255,255,.06)",
-        textAlign: "center"
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 10,
-        color: "rgba(255,255,255,.3)",
-        fontWeight: 700
-      }
-    }, "\u624B\u672D\u4E0A\u9650"), /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 14,
-        fontWeight: 900,
-        color: "#a78bfa"
-      }
-    }, storySt.hl, "\u679A")), storySt.deckSize && /*#__PURE__*/React.createElement("div", {
-      style: {
-        padding: "8px 14px",
-        borderRadius: 12,
-        background: "rgba(255,255,255,.03)",
-        border: "1px solid rgba(255,255,255,.06)",
-        textAlign: "center"
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 10,
-        color: "rgba(255,255,255,.3)",
-        fontWeight: 700
-      }
-    }, "\u5C71\u672D"), /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 14,
-        fontWeight: 900,
-        color: "#ef4444"
-      }
-    }, storySt.deckSize, "\u679A"))), /*#__PURE__*/React.createElement(PremBtn, {
-      onClick: () => {
-        SE.gStart();
-        onStartStory(storySt);
-      },
-      gradient: `linear-gradient(135deg,${storySt.color}cc,${storySt.color})`,
-      shadow: `${storySt.color}44`,
-      style: {
-        padding: "16px 48px",
-        fontSize: 20,
-        borderRadius: 20,
-        animation: "slideUp .5s .5s ease both",
-        opacity: 0
-      }
-    }, "\u2694\uFE0F ", t("storyFight")), /*#__PURE__*/React.createElement("button", {
-      onClick: () => setStorySt(null),
-      style: {
-        marginTop: 14,
-        padding: "10px 24px",
-        borderRadius: 12,
-        border: "1px solid rgba(255,255,255,.08)",
-        background: "transparent",
-        color: "rgba(255,255,255,.35)",
-        fontSize: 14,
-        fontWeight: 700,
-        cursor: "pointer"
-      }
-    }, t("storyBack"))));
-  }
-
-  // ─ マルチプレイヤーセットアップ ─
-  if (mode === "multi") return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 52,
-      marginBottom: 8
-    }
-  }, "\uD83D\uDC6B"), /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontSize: 22,
-      fontWeight: 900,
-      color: "#fff",
-      margin: "0 0 24px"
-    }
-  }, t("multi")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 14,
-      color: "rgba(255,255,255,.4)",
-      fontWeight: 700,
-      marginBottom: 8
-    }
-  }, t("howMany")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      gap: 8,
-      marginBottom: 16
-    }
-  }, [2, 3, 4].map(n => /*#__PURE__*/React.createElement(SBtn, {
-    key: n,
-    l: `${n}${t("unitP")}`,
-    a: pc === n,
-    co: "#8b5cf6",
-    onClick: () => setPc(n)
-  }))), Array.from({
-    length: pc
-  }).map((_, i) => /*#__PURE__*/React.createElement("input", {
-    key: i,
-    value: names[i],
-    onChange: e => {
-      const nn = [...names];
-      nn[i] = e.target.value;
-      setNames(nn);
-    },
-    placeholder: `${i + 1}${t("pn")}`,
-    style: {
-      width: "100%",
-      maxWidth: 280,
-      padding: "12px 16px",
-      borderRadius: 14,
-      border: "1.5px solid rgba(255,255,255,.08)",
-      background: "rgba(255,255,255,.04)",
-      color: "#fff",
-      fontSize: 15,
-      outline: "none",
-      fontWeight: 600,
-      marginBottom: 8,
-      boxSizing: "border-box"
-    }
-  })), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 14,
-      color: "rgba(255,255,255,.4)",
-      fontWeight: 700,
-      marginBottom: 8,
-      marginTop: 4
     }
   }, "\uD83C\uDCCF ", t("hlLabel")), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -3489,31 +2377,34 @@ function Title({
     }
   }, [7, 8, 9, 10].map(n => /*#__PURE__*/React.createElement(SBtn, {
     key: n,
-    l: `${n}${t("mai")}${n === 7 ? `（${t("basic")}）` : ""}`,
+    l: "".concat(n).concat(t("mai")).concat(n === 7 ? "\uFF08".concat(t("basic"), "\uFF09") : ""),
     a: hl === n,
     onClick: () => setHL(n)
-  }))), /*#__PURE__*/React.createElement(PremBtn, {
+  }))), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       SE.gStart();
-      const pn = Array.from({
-        length: pc
-      }, (_, i) => names[i].trim() || `P${i + 1}`);
-      onStart(pn, hl);
+      onStartCpu(cn.trim() || "あなた", Array.from({
+        length: cc
+      }, (_, i) => CPUN[i % 3]), cd, hl);
     },
-    gradient: "linear-gradient(135deg,#6d28d9,#8b5cf6)",
-    shadow: "rgba(109,40,217,.35)",
     style: {
       padding: "16px 48px",
+      borderRadius: 20,
+      border: "none",
+      background: "linear-gradient(135deg,#ff5722,#ff9800)",
+      color: "#fff",
       fontSize: 20,
-      borderRadius: 20
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: "0 4px 30px rgba(255,87,34,.4)"
     }
-  }, "\uD83C\uDFAE ", t("gstart")), /*#__PURE__*/React.createElement(Stg, null), /*#__PURE__*/React.createElement("div", {
+  }, "\uD83C\uDFAE ", t("start")), /*#__PURE__*/React.createElement(Stg, null), /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 12,
-      padding: 18,
-      borderRadius: 20,
-      background: "rgba(255,255,255,.02)",
-      border: "1px solid rgba(255,255,255,.06)",
+      padding: 16,
+      borderRadius: 16,
+      background: "rgba(255,255,255,.04)",
+      border: "1px solid rgba(255,255,255,.08)",
       maxWidth: 300,
       width: "100%"
     }
@@ -3521,24 +2412,480 @@ function Title({
     style: {
       fontSize: 14,
       fontWeight: 900,
-      color: "#a78bfa",
+      color: "#b388ff",
       marginBottom: 8
     }
   }, "\uD83C\uDFB4 ", t("rules")), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 13,
-      color: "rgba(255,255,255,.45)",
+      color: "rgba(255,255,255,.6)",
       lineHeight: 2
     }
-  }, "\u2460 ", t("r1"), /*#__PURE__*/React.createElement("br", null), "\u2461 ", t("r2"), /*#__PURE__*/React.createElement("br", null), "\u2462 ", t("r3"), /*#__PURE__*/React.createElement("br", null), "\u2463 ", t("hand"), hl, t("r4"), /*#__PURE__*/React.createElement("br", null), "\u2464 ", t("r5"), /*#__PURE__*/React.createElement("br", null), t("r6"), /*#__PURE__*/React.createElement("br", null), t("r7"))), /*#__PURE__*/React.createElement(PremPanel, null), /*#__PURE__*/React.createElement("button", {
+  }, "\u2460 ", t("r1"), /*#__PURE__*/React.createElement("br", null), "\u2461 ", t("r2"), /*#__PURE__*/React.createElement("br", null), "\u2462 ", t("r3"), /*#__PURE__*/React.createElement("br", null), "\u2463 ", t("hand"), hl, t("r4"), /*#__PURE__*/React.createElement("br", null), "\u2464 ", t("r5"), /*#__PURE__*/React.createElement("br", null), t("r6"), /*#__PURE__*/React.createElement("br", null), t("r7"))), /*#__PURE__*/React.createElement("button", {
     onClick: () => setMode(null),
     style: {
       marginTop: 14,
       padding: "10px 24px",
       borderRadius: 12,
-      border: "1px solid rgba(255,255,255,.08)",
+      border: "1px solid rgba(255,255,255,.1)",
       background: "transparent",
-      color: "rgba(255,255,255,.35)",
+      color: "rgba(255,255,255,.4)",
+      fontSize: 14,
+      fontWeight: 700,
+      cursor: "pointer"
+    }
+  }, t("back"))));
+  if (mode === "story") {
+    if (storySt === null) {
+      const mainStages = STORY.filter(s => !s.ex);
+      const exStages = STORY.filter(s => s.ex);
+      const allMainCleared = cleared.has(10);
+      return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+        style: {
+          fontSize: 48,
+          marginBottom: 8
+        }
+      }, "\u2694\uFE0F"), /*#__PURE__*/React.createElement("h2", {
+        style: {
+          fontSize: 22,
+          fontWeight: 900,
+          color: "#fff",
+          margin: "0 0 20px"
+        }
+      }, t("story")), /*#__PURE__*/React.createElement("div", {
+        style: {
+          width: "100%",
+          maxWidth: 320,
+          display: "flex",
+          flexDirection: "column",
+          gap: 10
+        }
+      }, mainStages.map((s, i) => {
+        const unlocked = i === 0 || cleared.has(STORY[i - 1].id);
+        const diffLabel = {
+          easy: "★☆☆",
+          normal: "★★☆",
+          hard: "★★★"
+        }[s.diff];
+        const diffColor = {
+          easy: "#66ff66",
+          normal: "#ffcc00",
+          hard: "#ff4444"
+        }[s.diff];
+        return /*#__PURE__*/React.createElement("button", {
+          key: s.id,
+          onClick: () => {
+            if (unlocked) {
+              SE.tap();
+              setStorySt(s);
+            }
+          },
+          style: {
+            padding: "16px",
+            borderRadius: 18,
+            border: "2px solid ".concat(unlocked ? s.color + '66' : 'rgba(255,255,255,.08)'),
+            background: unlocked ? "".concat(s.color, "0a") : 'rgba(255,255,255,.02)',
+            color: "#fff",
+            cursor: unlocked ? "pointer" : "default",
+            opacity: unlocked ? 1 : .4,
+            textAlign: "left"
+          }
+        }, /*#__PURE__*/React.createElement("div", {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between"
+          }
+        }, /*#__PURE__*/React.createElement("div", {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            gap: 12
+          }
+        }, /*#__PURE__*/React.createElement("span", {
+          style: {
+            fontSize: 36
+          }
+        }, unlocked ? s.emoji : "🔒"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+          style: {
+            fontSize: 12,
+            color: s.color,
+            fontWeight: 700
+          }
+        }, t("storyStage"), " ", s.id), /*#__PURE__*/React.createElement("div", {
+          style: {
+            fontSize: 16,
+            fontWeight: 900
+          }
+        }, s.name), unlocked && /*#__PURE__*/React.createElement("div", {
+          style: {
+            fontSize: 10,
+            color: diffColor
+          }
+        }, diffLabel))), cleared.has(s.id) && /*#__PURE__*/React.createElement("span", {
+          style: {
+            fontSize: 12,
+            color: "#66ff66",
+            fontWeight: 700,
+            padding: "4px 10px",
+            borderRadius: 10,
+            background: "rgba(102,255,102,.1)"
+          }
+        }, t("storyClear"))));
+      }), allMainCleared && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+        style: {
+          marginTop: 16,
+          padding: "10px 0",
+          borderTop: "2px solid rgba(255,23,68,.3)",
+          textAlign: "center"
+        }
+      }, /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontSize: 14,
+          fontWeight: 900,
+          color: "#FF1744"
+        }
+      }, "\uD83C\uDF1F \u96A0\u3057\u30B9\u30C6\u30FC\u30B8\u89E3\u653E\uFF01")), exStages.map((s, i) => {
+        const prevEx = i === 0 ? 10 : exStages[i - 1].id;
+        const unlocked = cleared.has(prevEx);
+        return /*#__PURE__*/React.createElement("button", {
+          key: s.id,
+          onClick: () => {
+            if (unlocked) {
+              SE.tap();
+              setStorySt(s);
+            }
+          },
+          style: {
+            padding: "16px",
+            borderRadius: 18,
+            border: "2px solid ".concat(unlocked ? s.color + '66' : 'rgba(255,255,255,.08)'),
+            background: unlocked ? "".concat(s.color, "0a") : 'rgba(255,255,255,.02)',
+            color: "#fff",
+            cursor: unlocked ? "pointer" : "default",
+            opacity: unlocked ? 1 : .4,
+            textAlign: "left"
+          }
+        }, /*#__PURE__*/React.createElement("div", {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between"
+          }
+        }, /*#__PURE__*/React.createElement("div", {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            gap: 12
+          }
+        }, /*#__PURE__*/React.createElement("span", {
+          style: {
+            fontSize: 36
+          }
+        }, unlocked ? s.emoji : "🔒"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+          style: {
+            fontSize: 12,
+            color: s.color,
+            fontWeight: 700
+          }
+        }, "EX ", s.id - 10), /*#__PURE__*/React.createElement("div", {
+          style: {
+            fontSize: 16,
+            fontWeight: 900
+          }
+        }, unlocked ? s.name : "???"), unlocked && s.hl && /*#__PURE__*/React.createElement("div", {
+          style: {
+            fontSize: 10,
+            color: "#ff4444"
+          }
+        }, "\u26A0\uFE0F \u624B\u672D", s.hl, "\u679A"), unlocked && s.deckSize && /*#__PURE__*/React.createElement("div", {
+          style: {
+            fontSize: 10,
+            color: "#ff4444"
+          }
+        }, "\u26A0\uFE0F \u5C71\u672D", s.deckSize, "\u679A"))), cleared.has(s.id) && /*#__PURE__*/React.createElement("span", {
+          style: {
+            fontSize: 12,
+            color: "#66ff66",
+            fontWeight: 700,
+            padding: "4px 10px",
+            borderRadius: 10,
+            background: "rgba(102,255,102,.1)"
+          }
+        }, t("storyClear"))));
+      })), !allMainCleared && /*#__PURE__*/React.createElement("div", {
+        style: {
+          marginTop: 12,
+          textAlign: "center",
+          fontSize: 13,
+          color: "rgba(255,255,255,.25)"
+        }
+      }, " \u30B9\u30C6\u30FC\u30B810\u30AF\u30EA\u30A2\u3067\u96A0\u3057\u30B9\u30C6\u30FC\u30B8\u89E3\u653E\uFF01")), /*#__PURE__*/React.createElement("button", {
+        onClick: () => setMode(null),
+        style: {
+          marginTop: 20,
+          padding: "10px 24px",
+          borderRadius: 12,
+          border: "1px solid rgba(255,255,255,.1)",
+          background: "transparent",
+          color: "rgba(255,255,255,.4)",
+          fontSize: 14,
+          fontWeight: 700,
+          cursor: "pointer"
+        }
+      }, t("storyBack")), /*#__PURE__*/React.createElement("button", {
+        onClick: () => {
+          setCleared(new Set(STORY.map(s => s.id)));
+          SE.tap();
+        },
+        style: {
+          marginTop: 10,
+          padding: "8px 20px",
+          borderRadius: 12,
+          border: "2px dashed rgba(255,204,0,.3)",
+          background: "rgba(255,204,0,.05)",
+          color: "rgba(255,204,0,.6)",
+          fontSize: 12,
+          fontWeight: 700,
+          cursor: "pointer"
+        }
+      }, "\uD83D\uDD13 \u5168\u30B9\u30C6\u30FC\u30B8\u89E3\u653E\uFF08\u30C6\u30B9\u30C8\u7528\uFF09")));
+    } else {
+      const s = storySt;
+      const diffLabel = {
+        easy: "★☆☆ やさしい",
+        normal: "★★☆ ふつう",
+        hard: "★★★ つよい"
+      }[s.diff];
+      const diffColor = {
+        easy: "#66ff66",
+        normal: "#ffcc00",
+        hard: "#ff4444"
+      }[s.diff];
+      return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+        style: {
+          fontSize: 80,
+          marginBottom: 12,
+          animation: "fl 2s ease-in-out infinite",
+          filter: "drop-shadow(0 8px 30px ".concat(s.color, "66)")
+        }
+      }, s.emoji), /*#__PURE__*/React.createElement("div", {
+        style: {
+          fontSize: 14,
+          color: s.color,
+          fontWeight: 700,
+          marginBottom: 4
+        }
+      }, s.ex ? "EX " + (s.id - 10) : t("storyStage") + " " + s.id), /*#__PURE__*/React.createElement("h2", {
+        style: {
+          fontSize: 26,
+          fontWeight: 900,
+          color: "#fff",
+          margin: "0 0 8px",
+          textAlign: "center"
+        }
+      }, s.name), /*#__PURE__*/React.createElement("div", {
+        style: {
+          fontSize: 14,
+          color: diffColor,
+          fontWeight: 700,
+          marginBottom: 8
+        }
+      }, diffLabel), (s.hl || s.deckSize) && /*#__PURE__*/React.createElement("div", {
+        style: {
+          padding: "8px 16px",
+          borderRadius: 12,
+          background: "rgba(255,68,68,.08)",
+          border: "1px solid rgba(255,68,68,.2)",
+          marginBottom: 12,
+          textAlign: "center"
+        }
+      }, s.hl && /*#__PURE__*/React.createElement("div", {
+        style: {
+          fontSize: 13,
+          color: "#ff4444",
+          fontWeight: 700
+        }
+      }, "\u26A0\uFE0F \u624B\u672D\u4E0A\u9650 ", s.hl, "\u679A"), s.deckSize && /*#__PURE__*/React.createElement("div", {
+        style: {
+          fontSize: 13,
+          color: "#ff4444",
+          fontWeight: 700
+        }
+      }, "\u26A0\uFE0F \u5C71\u672D ", s.deckSize, "\u679A")), /*#__PURE__*/React.createElement("p", {
+        style: {
+          fontSize: 15,
+          color: "rgba(255,255,255,.6)",
+          margin: "0 0 28px",
+          textAlign: "center",
+          lineHeight: 1.6,
+          maxWidth: 280
+        }
+      }, s.intro), /*#__PURE__*/React.createElement("button", {
+        onClick: () => {
+          SE.gStart();
+          onStartStory(s);
+        },
+        style: {
+          padding: "18px 48px",
+          borderRadius: 20,
+          border: "none",
+          background: "linear-gradient(135deg,".concat(s.color, ",").concat(s.color, "88)"),
+          color: "#fff",
+          fontSize: 20,
+          fontWeight: 900,
+          cursor: "pointer",
+          boxShadow: "0 4px 30px ".concat(s.color, "44")
+        }
+      }, "\u2694\uFE0F ", t("storyFight")), /*#__PURE__*/React.createElement("button", {
+        onClick: () => setStorySt(null),
+        style: {
+          marginTop: 14,
+          padding: "10px 24px",
+          borderRadius: 12,
+          border: "1px solid rgba(255,255,255,.1)",
+          background: "transparent",
+          color: "rgba(255,255,255,.4)",
+          fontSize: 14,
+          fontWeight: 700,
+          cursor: "pointer"
+        }
+      }, t("storyBack"))));
+    }
+  }
+
+  // multi
+  return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 48,
+      marginBottom: 8
+    }
+  }, "\uD83C\uDFAE"), /*#__PURE__*/React.createElement("h2", {
+    style: {
+      fontSize: 22,
+      fontWeight: 900,
+      color: "#fff",
+      margin: "0 0 20px"
+    }
+  }, t("multi")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      color: "rgba(255,255,255,.5)",
+      fontWeight: 700,
+      marginBottom: 8
+    }
+  }, t("howMany")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8,
+      marginBottom: 20
+    }
+  }, [2, 3, 4].map(n => /*#__PURE__*/React.createElement(SBtn, {
+    key: n,
+    l: "".concat(n).concat(t("unitP")),
+    a: pc === n,
+    co: "#b388ff",
+    onClick: () => setPc(n)
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: "100%",
+      maxWidth: 280,
+      display: "flex",
+      flexDirection: "column",
+      gap: 10,
+      marginBottom: 16
+    }
+  }, Array.from({
+    length: pc
+  }).map((_, i) => /*#__PURE__*/React.createElement("input", {
+    key: i,
+    value: names[i],
+    onChange: e => {
+      const n = [...names];
+      n[i] = e.target.value;
+      setNames(n);
+    },
+    placeholder: "".concat(i + 1).concat(t("pn")),
+    style: {
+      width: "100%",
+      padding: "12px 16px",
+      borderRadius: 14,
+      border: "2px solid rgba(255,255,255,.12)",
+      background: "rgba(255,255,255,.06)",
+      color: "#fff",
+      fontSize: 16,
+      outline: "none",
+      boxSizing: "border-box",
+      fontWeight: 600
+    }
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      color: "rgba(255,255,255,.5)",
+      fontWeight: 700,
+      marginBottom: 8
+    }
+  }, "\uD83C\uDCCF ", t("hlLabel")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 6,
+      marginBottom: 24,
+      flexWrap: "wrap",
+      justifyContent: "center"
+    }
+  }, [7, 8, 9, 10].map(n => /*#__PURE__*/React.createElement(SBtn, {
+    key: n,
+    l: "".concat(n).concat(t("mai")).concat(n === 7 ? "\uFF08".concat(t("basic"), "\uFF09") : ""),
+    a: hl === n,
+    onClick: () => setHL(n)
+  }))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      SE.gStart();
+      onStart(names.slice(0, pc).map((n, i) => n.trim() || "".concat(i + 1, "\u3070\u3093")), hl);
+    },
+    style: {
+      padding: "16px 48px",
+      borderRadius: 20,
+      border: "none",
+      background: "linear-gradient(135deg,#651fff,#b388ff)",
+      color: "#fff",
+      fontSize: 20,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: "0 4px 30px rgba(101,31,255,.4)"
+    }
+  }, "\uD83C\uDFAE ", t("gstart")), /*#__PURE__*/React.createElement(Stg, null), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 12,
+      padding: 16,
+      borderRadius: 16,
+      background: "rgba(255,255,255,.04)",
+      border: "1px solid rgba(255,255,255,.08)",
+      maxWidth: 300,
+      width: "100%"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      fontWeight: 900,
+      color: "#b388ff",
+      marginBottom: 8
+    }
+  }, "\uD83C\uDFB4 ", t("rules")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: "rgba(255,255,255,.6)",
+      lineHeight: 2
+    }
+  }, "\u2460 ", t("r1"), /*#__PURE__*/React.createElement("br", null), "\u2461 ", t("r2"), /*#__PURE__*/React.createElement("br", null), "\u2462 ", t("r3"), /*#__PURE__*/React.createElement("br", null), "\u2463 ", t("hand"), hl, t("r4"), /*#__PURE__*/React.createElement("br", null), "\u2464 ", t("r5"), /*#__PURE__*/React.createElement("br", null), t("r6"), /*#__PURE__*/React.createElement("br", null), t("r7"))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setMode(null),
+    style: {
+      marginTop: 14,
+      padding: "10px 24px",
+      borderRadius: 12,
+      border: "1px solid rgba(255,255,255,.1)",
+      background: "transparent",
+      color: "rgba(255,255,255,.4)",
       fontSize: 14,
       fontWeight: 700,
       cursor: "pointer"
@@ -3546,9 +2893,78 @@ function Title({
   }, t("back"))));
 }
 
-/* ═══════════════════════════════════════════════════════════
-   🎮 ゲーム画面 - PREMIUM
-   ═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════ */
+/*  パス画面                                                   */
+/* ═══════════════════════════════════════════════════════════ */
+const Pass = ({
+  pn,
+  onReady,
+  info
+}) => {
+  const t = useT();
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      minHeight: "100dvh",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "calc(24px + env(safe-area-inset-top)) 24px 24px 24px",
+      background: "radial-gradient(ellipse at 50% 50%,rgba(124,77,255,.1) 0%,transparent 60%),linear-gradient(180deg,#0a0a1a,#0f1628)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 56,
+      marginBottom: 16,
+      animation: "fl 2s ease-in-out infinite"
+    }
+  }, "\uD83D\uDCF1"), /*#__PURE__*/React.createElement("h2", {
+    style: {
+      fontSize: 22,
+      fontWeight: 900,
+      color: "#fff",
+      margin: "0 0 8px",
+      textAlign: "center"
+    }
+  }, t("passD")), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 18,
+      color: "rgba(255,255,255,.6)",
+      margin: "0 0 4px"
+    }
+  }, t("next"), " ", /*#__PURE__*/React.createElement("strong", {
+    style: {
+      color: "#b388ff",
+      fontSize: 22
+    }
+  }, pn), " ", t("trn")), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 13,
+      color: "rgba(255,255,255,.3)",
+      margin: "0 0 28px"
+    }
+  }, info), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      SE.tap();
+      onReady();
+    },
+    style: {
+      padding: "18px 48px",
+      borderRadius: 20,
+      border: "none",
+      background: "linear-gradient(135deg,#651fff,#b388ff)",
+      color: "#fff",
+      fontSize: 20,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: "0 4px 30px rgba(101,31,255,.4)"
+    }
+  }, t("ready")));
+};
+
+/* ═══════════════════════════════════════════════════════════ */
+/*  ゲーム画面                                                 */
+/* ═══════════════════════════════════════════════════════════ */
 function Game({
   state,
   pi,
@@ -3565,25 +2981,25 @@ function Game({
   const pl = state.pl[pi],
     hand = pl.hand;
   const PLCOLORS = [{
-    bg: "linear-gradient(180deg,#060612,#0c0c24)",
-    accent: "#a78bfa",
-    headerBg: "rgba(167,139,250,.05)",
-    border: "rgba(167,139,250,.1)"
+    bg: "linear-gradient(180deg,#0a0a1a,#0a1628)",
+    accent: "#b388ff",
+    headerBg: "rgba(124,77,255,.06)",
+    border: "rgba(124,77,255,.15)"
   }, {
-    bg: "linear-gradient(180deg,#060e12,#0a1c10)",
-    accent: "#4ade80",
-    headerBg: "rgba(74,222,128,.05)",
-    border: "rgba(74,222,128,.1)"
+    bg: "linear-gradient(180deg,#0a1a0a,#0a2810)",
+    accent: "#66ff66",
+    headerBg: "rgba(102,255,102,.06)",
+    border: "rgba(102,255,102,.15)"
   }, {
-    bg: "linear-gradient(180deg,#120606,#241010)",
-    accent: "#fb923c",
-    headerBg: "rgba(251,146,60,.05)",
-    border: "rgba(251,146,60,.1)"
+    bg: "linear-gradient(180deg,#1a0a0a,#281010)",
+    accent: "#ff8a65",
+    headerBg: "rgba(255,138,101,.06)",
+    border: "rgba(255,138,101,.15)"
   }, {
-    bg: "linear-gradient(180deg,#121206,#242010)",
-    accent: "#fbbf24",
-    headerBg: "rgba(251,191,36,.05)",
-    border: "rgba(251,191,36,.1)"
+    bg: "linear-gradient(180deg,#1a1a0a,#282010)",
+    accent: "#ffcc00",
+    headerBg: "rgba(255,204,0,.06)",
+    border: "rgba(255,204,0,.15)"
   }];
   const pco = PLCOLORS[pi % PLCOLORS.length];
   const [sel, setSel] = useState(new Set());
@@ -3653,13 +3069,13 @@ function Game({
     onDone: () => setCel(null)
   }), /*#__PURE__*/React.createElement("div", {
     style: {
-      padding: "max(14px, env(safe-area-inset-top)) 16px 12px 16px",
+      paddingTop: "max(14px, env(safe-area-inset-top))",
+      padding: "max(14px, env(safe-area-inset-top)) 16px 10px 16px",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
       background: pco.headerBg,
-      borderBottom: `1px solid ${pco.border}`,
-      backdropFilter: "blur(12px)"
+      borderBottom: "1px solid ".concat(pco.border)
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -3675,11 +3091,11 @@ function Game({
       }
     },
     style: {
-      padding: "5px 10px",
-      borderRadius: 10,
-      border: "1px solid rgba(255,255,255,.1)",
-      background: "rgba(255,255,255,.04)",
-      color: "rgba(255,255,255,.35)",
+      padding: "4px 10px",
+      borderRadius: 14,
+      border: "1px solid rgba(255,255,255,.15)",
+      background: "rgba(255,255,255,.06)",
+      color: "rgba(255,255,255,.4)",
       fontSize: 11,
       fontWeight: 700,
       cursor: "pointer"
@@ -3693,12 +3109,13 @@ function Game({
   }, pl.name), /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 12,
-      color: "rgba(255,255,255,.25)"
+      color: "rgba(255,255,255,.3)",
+      marginLeft: 4
     }
   }, t("tl"))), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
-      gap: 14,
+      gap: 10,
       alignItems: "center"
     }
   }, /*#__PURE__*/React.createElement("div", {
@@ -3708,16 +3125,14 @@ function Game({
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 9,
-      color: "rgba(255,255,255,.25)",
-      fontWeight: 700,
-      letterSpacing: ".05em"
+      color: "rgba(255,255,255,.3)",
+      fontWeight: 700
     }
   }, t("sc")), /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 20,
+      fontSize: 18,
       fontWeight: 900,
-      color: "#fbbf24",
-      textShadow: "0 0 12px rgba(251,191,36,.3)"
+      color: "#ffcc00"
     }
   }, psc)), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -3726,16 +3141,14 @@ function Game({
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 9,
-      color: "rgba(255,255,255,.25)",
-      fontWeight: 700,
-      letterSpacing: ".05em"
+      color: "rgba(255,255,255,.3)",
+      fontWeight: 700
     }
   }, t("dk")), /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 20,
+      fontSize: 18,
       fontWeight: 900,
-      color: state.deck.length > 20 ? pco.accent : "#ef4444",
-      textShadow: state.deck.length <= 10 ? "0 0 12px rgba(239,68,68,.3)" : "none"
+      color: state.deck.length > 20 ? "#b388ff" : "#ff4444"
     }
   }, state.deck.length)))), pl.bonds.length > 0 && /*#__PURE__*/React.createElement("div", {
     style: {
@@ -3743,8 +3156,7 @@ function Game({
       display: "flex",
       flexWrap: "wrap",
       gap: 6,
-      background: "rgba(255,255,255,.01)",
-      borderBottom: "1px solid rgba(255,255,255,.04)"
+      background: "rgba(255,255,255,.02)"
     }
   }, pl.bonds.map((b, i) => /*#__PURE__*/React.createElement(Badge, {
     key: i,
@@ -3755,54 +3167,51 @@ function Game({
       display: "flex",
       alignItems: "center",
       gap: 10,
-      background: `${pco.accent}08`,
-      borderBottom: `1px solid ${pco.accent}11`,
+      background: "rgba(124,77,255,.08)",
       animation: "su .3s ease"
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 13,
-      color: pco.accent,
+      color: "#b388ff",
       fontWeight: 700
     }
   }, t("drawn")), /*#__PURE__*/React.createElement(Card, {
     card: drawnC
   })), bonded && !cel && /*#__PURE__*/React.createElement("div", {
     style: {
-      padding: "10px 16px",
+      padding: "12px 16px",
       textAlign: "center",
-      background: "rgba(74,222,128,.06)",
-      borderBottom: "1px solid rgba(74,222,128,.1)"
+      background: "rgba(102,255,102,.08)"
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 14,
-      color: "#4ade80",
+      color: "#66ff66",
       fontWeight: 800
     }
   }, t("bondOk"))), overLimit && /*#__PURE__*/React.createElement("div", {
     style: {
-      padding: "10px 16px",
+      padding: "12px 16px",
       textAlign: "center",
-      background: "rgba(239,68,68,.06)",
-      borderBottom: "1px solid rgba(239,68,68,.1)"
+      background: "rgba(255,68,68,.08)"
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 14,
-      color: "#ef4444",
+      color: "#ff4444",
       fontWeight: 800
     }
   }, "\u26A0\uFE0F ", t("hand"), hl, t("discW"))), /*#__PURE__*/React.createElement("div", {
     style: {
       flex: 1,
-      padding: "14px 12px",
+      padding: "14px 10px",
       overflowY: "auto"
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 13,
-      color: "rgba(255,255,255,.3)",
+      color: "rgba(255,255,255,.35)",
       marginBottom: 8,
       paddingLeft: 4,
       fontWeight: 700
@@ -3815,7 +3224,7 @@ function Game({
       style: {
         display: "flex",
         flexWrap: "wrap",
-        gap: 7,
+        gap: 6,
         justifyContent: "center"
       }
     }, sorted.map((c, i) => {
@@ -3825,7 +3234,7 @@ function Game({
         key: c.id,
         style: {
           position: "relative",
-          marginLeft: gap ? 10 : 0
+          marginLeft: gap ? 8 : 0
         }
       }, /*#__PURE__*/React.createElement(Card, {
         card: c,
@@ -3842,7 +3251,7 @@ function Game({
           height: 24,
           borderRadius: 12,
           border: "none",
-          background: "linear-gradient(135deg,#ef4444,#dc2626)",
+          background: "#ff4444",
           color: "#fff",
           fontSize: 14,
           fontWeight: 900,
@@ -3850,7 +3259,7 @@ function Game({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          boxShadow: "0 2px 8px rgba(239,68,68,.5)",
+          boxShadow: "0 2px 8px rgba(255,68,68,.5)",
           lineHeight: 1,
           zIndex: 2
         }
@@ -3858,25 +3267,24 @@ function Game({
     }));
   })(), match && !cel && /*#__PURE__*/React.createElement("div", {
     style: {
-      marginTop: 18,
-      padding: 18,
-      borderRadius: 18,
-      background: "rgba(74,222,128,.04)",
-      border: "1.5px solid rgba(74,222,128,.15)",
+      marginTop: 16,
+      padding: 16,
+      borderRadius: 16,
+      background: "rgba(102,255,102,.06)",
+      border: "2px solid rgba(102,255,102,.2)",
       textAlign: "center",
-      animation: "fadeScale .3s ease",
-      backdropFilter: "blur(4px)"
+      animation: "su .3s ease"
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 13,
-      color: "#4ade80",
+      fontSize: 14,
+      color: "#66ff66",
       fontWeight: 700,
-      marginBottom: 4
+      marginBottom: 2
     }
   }, t("canB")), /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 36
+      fontSize: 32
     }
   }, match.e), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -3887,23 +3295,28 @@ function Game({
   }, t(match.k)), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 14,
-      color: "rgba(255,255,255,.4)"
+      color: "rgba(255,255,255,.5)"
     }
   }, match.f, "\uFF08+", match.p, t("pt"), "\uFF09"), match.sp && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 12,
-      color: "#c084fc",
+      color: "#CE93D8",
       fontWeight: 800,
       marginTop: 2
     }
-  }, "\uD83D\uDC8E ", t("sp")), /*#__PURE__*/React.createElement(PremBtn, {
+  }, "\uD83D\uDC8E ", t("sp")), /*#__PURE__*/React.createElement("button", {
     onClick: doBond,
-    gradient: "linear-gradient(135deg,#059669,#34d399)",
-    shadow: "rgba(5,150,105,.35)",
     style: {
-      marginTop: 12,
+      marginTop: 10,
       padding: "12px 36px",
-      fontSize: 18
+      borderRadius: 16,
+      border: "none",
+      background: "linear-gradient(135deg,#00c853,#69f0ae)",
+      color: "#003d00",
+      fontSize: 18,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: "0 4px 20px rgba(0,200,83,.4)"
     }
   }, t("bBtn"))), /*#__PURE__*/React.createElement(Inv, {
     state: state,
@@ -3921,10 +3334,10 @@ function Game({
       width: "100%",
       padding: 12,
       borderRadius: 14,
-      border: "1px solid rgba(255,255,255,.06)",
-      background: "rgba(255,255,255,.03)",
-      color: "rgba(255,255,255,.4)",
-      fontSize: 13,
+      border: "1px solid rgba(255,255,255,.1)",
+      background: "rgba(255,255,255,.05)",
+      color: "rgba(255,255,255,.5)",
+      fontSize: 14,
       fontWeight: 700,
       cursor: "pointer"
     }
@@ -3933,8 +3346,8 @@ function Game({
       marginTop: 6,
       padding: 12,
       borderRadius: 14,
-      background: "rgba(255,255,255,.02)",
-      border: "1px solid rgba(255,255,255,.04)",
+      background: "rgba(255,255,255,.03)",
+      border: "1px solid rgba(255,255,255,.06)",
       maxHeight: 350,
       overflowY: "auto",
       animation: "su .3s ease"
@@ -3946,7 +3359,7 @@ function Game({
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 13,
-      color: "#4ade80",
+      color: "#66ff66",
       fontWeight: 900,
       marginBottom: 6
     }
@@ -3956,8 +3369,8 @@ function Game({
       padding: "8px 6px",
       marginBottom: 6,
       borderRadius: 10,
-      background: "rgba(74,222,128,.03)",
-      border: c.sp ? "1.5px solid #c084fc" : "1px solid rgba(74,222,128,.1)"
+      background: "rgba(102,255,102,.05)",
+      border: c.sp ? "2px solid #CE93D8" : "1px solid rgba(102,255,102,.15)"
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -3968,15 +3381,15 @@ function Game({
   }, /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 14,
-      color: "#4ade80",
+      color: "#66ff66",
       fontWeight: 800
     }
   }, c.e, " ", t(c.k)), /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 14,
       fontWeight: 900,
-      color: "#000",
-      background: c.sp ? "#c084fc" : "#4ade80",
+      color: "#111",
+      background: c.sp ? "#CE93D8" : "#66ff66",
       borderRadius: 8,
       padding: "2px 8px"
     }
@@ -3992,13 +3405,13 @@ function Game({
     return Array.from({
       length: n
     }).map((_, j) => /*#__PURE__*/React.createElement("div", {
-      key: `${s}${j}`,
+      key: "".concat(s).concat(j),
       style: {
         width: 32,
         height: 38,
         borderRadius: 7,
-        background: "rgba(255,255,255,.04)",
-        border: `1.5px solid ${inf.g}33`,
+        background: "rgba(255,255,255,.06)",
+        border: "2px solid ".concat(inf.g, "44"),
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -4017,18 +3430,18 @@ function Game({
     }, s)));
   }), /*#__PURE__*/React.createElement("span", {
     style: {
-      color: "rgba(74,222,128,.3)"
+      color: "rgba(102,255,102,.4)"
     }
   }, "\u2192"), /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 12,
-      color: "#4ade80",
+      color: "#66ff66",
       fontWeight: 600
     }
   }, c.f))))), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 13,
-      color: "rgba(255,255,255,.25)",
+      color: "rgba(255,255,255,.3)",
       fontWeight: 900,
       marginBottom: 6
     }
@@ -4040,9 +3453,9 @@ function Game({
         padding: "8px 6px",
         marginBottom: 6,
         borderRadius: 10,
-        background: isLocked ? "rgba(255,255,255,.005)" : "rgba(255,255,255,.015)",
-        border: c.sp ? "1.5px solid #c084fc" : isLocked ? "1px solid rgba(255,255,255,.02)" : "1px solid rgba(255,255,255,.04)",
-        opacity: isLocked ? .45 : 1
+        background: isLocked ? "rgba(255,255,255,.01)" : "rgba(255,255,255,.02)",
+        border: c.sp ? "2px solid #CE93D8" : isLocked ? "1px solid rgba(255,255,255,.03)" : "1px solid rgba(255,255,255,.05)",
+        opacity: isLocked ? .5 : 1
       }
     }, /*#__PURE__*/React.createElement("div", {
       style: {
@@ -4053,21 +3466,21 @@ function Game({
     }, /*#__PURE__*/React.createElement("span", {
       style: {
         fontSize: 13,
-        color: isLocked ? "rgba(255,255,255,.25)" : "rgba(255,255,255,.55)",
+        color: isLocked ? "rgba(255,255,255,.3)" : "rgba(255,255,255,.6)",
         fontWeight: 700
       }
     }, isLocked ? "🔒 " : "", c.e, " ", t(c.k), c.sp && /*#__PURE__*/React.createElement("span", {
       style: {
         marginLeft: 4,
         fontSize: 10,
-        color: "#c084fc"
+        color: "#CE93D8"
       }
     }, t("sp"))), /*#__PURE__*/React.createElement("span", {
       style: {
         fontSize: 14,
         fontWeight: 900,
-        color: isLocked ? "rgba(255,255,255,.25)" : "#000",
-        background: isLocked ? "rgba(255,255,255,.06)" : c.sp ? "#c084fc" : c.p >= 8 ? "#f97316" : c.p >= 5 ? "#fbbf24" : c.p >= 4 ? "#fb923c" : "#4ade80",
+        color: isLocked ? "rgba(255,255,255,.3)" : "#111",
+        background: isLocked ? "rgba(255,255,255,.08)" : c.sp ? "#CE93D8" : c.p >= 8 ? "#ff6633" : c.p >= 5 ? "#ffcc00" : c.p >= 4 ? "#ff9800" : "#66ff66",
         borderRadius: 8,
         padding: "2px 8px",
         minWidth: 40,
@@ -4085,13 +3498,13 @@ function Game({
       return Array.from({
         length: n
       }).map((_, j) => /*#__PURE__*/React.createElement("div", {
-        key: `${s}${j}`,
+        key: "".concat(s).concat(j),
         style: {
           width: 32,
           height: 38,
           borderRadius: 7,
-          background: isLocked ? "rgba(255,255,255,.015)" : "rgba(255,255,255,.03)",
-          border: `1.5px solid ${isLocked ? 'rgba(255,255,255,.04)' : inf.g + '22'}`,
+          background: isLocked ? "rgba(255,255,255,.02)" : "rgba(255,255,255,.04)",
+          border: "2px solid ".concat(isLocked ? 'rgba(255,255,255,.06)' : inf.g + '33'),
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -4106,17 +3519,17 @@ function Game({
         style: {
           fontSize: 11,
           fontWeight: 900,
-          color: isLocked ? "rgba(255,255,255,.15)" : inf.g
+          color: isLocked ? "rgba(255,255,255,.2)" : inf.g
         }
       }, s)));
     }), /*#__PURE__*/React.createElement("span", {
       style: {
-        color: "rgba(255,255,255,.1)"
+        color: "rgba(255,255,255,.15)"
       }
     }, "\u2192"), /*#__PURE__*/React.createElement("span", {
       style: {
         fontSize: 12,
-        color: isLocked ? "rgba(255,255,255,.15)" : "rgba(255,255,255,.35)",
+        color: isLocked ? "rgba(255,255,255,.2)" : "rgba(255,255,255,.4)",
         fontWeight: 600
       }
     }, c.f)));
@@ -4127,7 +3540,7 @@ function Game({
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 13,
-      color: "rgba(255,255,255,.3)",
+      color: "rgba(255,255,255,.35)",
       marginBottom: 4,
       paddingLeft: 4,
       fontWeight: 700
@@ -4143,53 +3556,60 @@ function Game({
     style: {
       padding: "8px 14px",
       borderRadius: 12,
-      background: i === pi ? `${pco.accent}0a` : "rgba(255,255,255,.02)",
-      border: i === pi ? `1.5px solid ${pco.accent}33` : "1px solid rgba(255,255,255,.04)"
+      background: i === pi ? "rgba(124,77,255,.12)" : "rgba(255,255,255,.03)",
+      border: i === pi ? "2px solid rgba(179,136,255,.4)" : "1px solid rgba(255,255,255,.06)"
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 13,
-      color: i === pi ? pco.accent : "rgba(255,255,255,.35)",
+      color: i === pi ? "#b388ff" : "rgba(255,255,255,.4)",
       fontWeight: 700
     }
   }, p.name), /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 15,
-      color: "#fbbf24",
+      color: "#ffcc00",
       fontWeight: 900,
       marginLeft: 6
     }
   }, p.bonds.reduce((s, b) => s + b.p, 0), t("pt"))))))), /*#__PURE__*/React.createElement("div", {
     style: {
       padding: "12px 16px max(28px, env(safe-area-inset-bottom))",
-      borderTop: "1px solid rgba(255,255,255,.05)",
+      borderTop: "1px solid rgba(255,255,255,.06)",
       display: "flex",
       gap: 10,
-      background: "rgba(6,6,18,.97)",
-      backdropFilter: "blur(12px)"
+      background: "rgba(10,10,26,.95)"
     }
-  }, !drew && !bonded ? state.deck.length > 0 ? /*#__PURE__*/React.createElement(PremBtn, {
+  }, !drew && !bonded ? state.deck.length > 0 ? /*#__PURE__*/React.createElement("button", {
     onClick: doDraw,
     disabled: !!cel,
-    gradient: `linear-gradient(135deg,#6d28d9,${pco.accent})`,
-    shadow: "rgba(109,40,217,.35)",
     style: {
       flex: 1,
       padding: 16,
-      fontSize: 18,
-      borderRadius: 18
-    }
-  }, t("drB")) : /*#__PURE__*/React.createElement(PremBtn, {
-    onClick: onFinish,
-    gradient: "linear-gradient(135deg,#ea580c,#f97316)",
-    shadow: "rgba(234,88,12,.35)",
-    style: {
-      flex: 1,
-      padding: 16,
-      fontSize: 18,
       borderRadius: 18,
-      "--g": "rgba(249,115,22,.4)",
-      animation: "pg 1.5s ease-in-out infinite"
+      border: "none",
+      background: "linear-gradient(135deg,#651fff,#b388ff)",
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: 900,
+      cursor: cel ? "default" : "pointer",
+      boxShadow: "0 4px 20px rgba(101,31,255,.4)"
+    }
+  }, t("drB")) : /*#__PURE__*/React.createElement("button", {
+    onClick: onFinish,
+    style: {
+      flex: 1,
+      padding: 16,
+      borderRadius: 18,
+      border: "none",
+      background: "linear-gradient(135deg,#ff5722,#ff9800)",
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: "0 4px 20px rgba(255,87,34,.4)",
+      animation: "pg 1.5s ease-in-out infinite",
+      "--g": "rgba(255,87,34,.5)"
     }
   }, t("fin")) : !overLimit && !cel && /*#__PURE__*/React.createElement("button", {
     onClick: doPass,
@@ -4198,19 +3618,18 @@ function Game({
       padding: 16,
       borderRadius: 18,
       border: "none",
-      background: "linear-gradient(135deg,#334155,#475569)",
+      background: "linear-gradient(135deg,#37474f,#546e7a)",
       color: "#fff",
       fontSize: 18,
       fontWeight: 900,
-      cursor: "pointer",
-      boxShadow: "0 4px 16px rgba(0,0,0,.3)"
+      cursor: "pointer"
     }
   }, bonded ? t("tEnd") : poss.length > 0 ? t("exp") : t("tEnd"))));
 }
 
-/* ═══════════════════════════════════════════════════════════
-   🏆 結果画面 - PREMIUM
-   ═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════ */
+/*  🏆 派手な結果画面                                          */
+/* ═══════════════════════════════════════════════════════════ */
 function Result({
   state,
   onRestart,
@@ -4228,6 +3647,7 @@ function Result({
   const win = ranks[0];
   const isDraw = ranks.length > 1 && ranks[0].sc === ranks[1].sc;
   const diff = ranks.length > 1 ? ranks[0].sc - ranks[1].sc : 0;
+  const med = ["🥇", "🥈", "🥉", "4️⃣"];
   const playerLost = isCpu && !isDraw && ranks[0].idx !== 0;
   const playerWon = !isDraw && (!isCpu || ranks[0].idx === 0);
   useEffect(() => {
@@ -4240,7 +3660,10 @@ function Result({
     const t2 = setTimeout(() => setPh(2), 2800);
     const t3 = setTimeout(() => setPh(3), 3600);
     const t4 = setTimeout(() => setPh(4), 4200);
-    if (storyStage && playerWon && onStoryWin) setTimeout(() => onStoryWin(), 100);
+    // ストーリーモードで勝った場合、クリア処理
+    if (storyStage && playerWon && onStoryWin) {
+      setTimeout(() => onStoryWin(), 100);
+    }
     return () => {
       [t1, t2, t3, t4].forEach(clearTimeout);
     };
@@ -4252,7 +3675,7 @@ function Result({
     x: Math.random() * 100,
     dl: Math.random() * 3,
     dur: 2 + Math.random() * 3,
-    co: ["#ef4444", "#fbbf24", "#4ade80", "#38bdf8", "#a78bfa", "#f97316", "#22d3ee", "#c084fc"][i % 8],
+    co: ["#ff4444", "#ffcc00", "#66ff66", "#448aff", "#b388ff", "#ff9800", "#00e5ff", "#CE93D8"][i % 8],
     sz: 6 + Math.random() * 8
   }))).current;
   const fws = useRef(Array.from({
@@ -4263,7 +3686,7 @@ function Result({
     y: 10 + Math.random() * 40,
     dl: .5 + Math.random() * 2.5,
     sz: 40 + Math.random() * 60,
-    co: ["#ef4444", "#fbbf24", "#4ade80", "#a78bfa", "#22d3ee", "#f97316"][i % 6]
+    co: ["#ff4444", "#ffcc00", "#66ff66", "#b388ff", "#00e5ff", "#ff9800"][i % 6]
   }))).current;
   const raindrops = useRef(Array.from({
     length: 30
@@ -4274,62 +3697,65 @@ function Result({
     dur: 1.5 + Math.random() * 2,
     sz: 2 + Math.random() * 3
   }))).current;
+  const bgWin = "radial-gradient(ellipse at 50% 30%,rgba(255,204,0,.1) 0%,transparent 50%),linear-gradient(180deg,#0a0a1a,#0f1628)";
+  const bgLose = "radial-gradient(ellipse at 50% 30%,rgba(100,100,180,.08) 0%,transparent 50%),linear-gradient(180deg,#08081a,#0a0e20)";
+  const bgTie = "radial-gradient(ellipse at 50% 30%,rgba(180,180,180,.08) 0%,transparent 50%),linear-gradient(180deg,#0a0a1a,#0f1628)";
   return /*#__PURE__*/React.createElement("div", {
     style: {
       minHeight: "100dvh",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      padding: "24px 20px",
+      padding: 24,
       paddingTop: 20,
-      background: playerLost ? "radial-gradient(ellipse at 50% 30%,rgba(100,100,180,.06) 0%,transparent 50%),linear-gradient(180deg,#060612,#0a0e20)" : isDraw ? "radial-gradient(ellipse at 50% 30%,rgba(180,180,180,.05) 0%,transparent 50%),linear-gradient(180deg,#060612,#0c0c24)" : "radial-gradient(ellipse at 50% 30%,rgba(251,191,36,.08) 0%,transparent 50%),linear-gradient(180deg,#060612,#0c0c24)",
+      background: playerLost ? bgLose : isDraw ? bgTie : bgWin,
       position: "relative",
       overflow: "hidden"
     }
   }, /*#__PURE__*/React.createElement(Orbs, {
     n: 10,
-    co: playerLost ? "rgba(100,130,200,.03)" : "rgba(251,191,36,.03)"
-  }), /*#__PURE__*/React.createElement(NoiseOverlay, null), ph >= 1 && playerWon && conf.map(c => /*#__PURE__*/React.createElement("div", {
+    co: playerLost ? "rgba(100,130,200,.04)" : "rgba(255,204,0,.04)"
+  }), ph >= 1 && playerWon && conf.map(c => /*#__PURE__*/React.createElement("div", {
     key: c.id,
     style: {
       position: "fixed",
-      left: `${c.x}%`,
+      left: "".concat(c.x, "%"),
       top: -20,
       width: c.sz,
       height: c.sz * 1.4,
       background: c.co,
       borderRadius: 2,
       opacity: 0,
-      animation: `cf ${c.dur}s ${c.dl}s linear infinite`,
+      animation: "cf ".concat(c.dur, "s ").concat(c.dl, "s linear infinite"),
       zIndex: 5
     }
   })), ph >= 1 && playerWon && fws.map(f => /*#__PURE__*/React.createElement("div", {
     key: f.id,
     style: {
       position: "fixed",
-      left: `${f.x}%`,
-      top: `${f.y}%`,
+      left: "".concat(f.x, "%"),
+      top: "".concat(f.y, "%"),
       width: f.sz,
       height: f.sz,
       borderRadius: "50%",
-      border: `2px solid ${f.co}`,
+      border: "3px solid ".concat(f.co),
       opacity: 0,
-      animation: `fw 1.2s ${f.dl}s ease-out infinite`,
-      boxShadow: `0 0 20px ${f.co}`,
+      animation: "fw 1.2s ".concat(f.dl, "s ease-out infinite"),
+      boxShadow: "0 0 20px ".concat(f.co),
       zIndex: 4
     }
   })), ph >= 1 && playerLost && raindrops.map(r => /*#__PURE__*/React.createElement("div", {
     key: r.id,
     style: {
       position: "fixed",
-      left: `${r.x}%`,
+      left: "".concat(r.x, "%"),
       top: 0,
       width: r.sz,
       height: r.sz * 8,
-      background: "linear-gradient(180deg,transparent,rgba(150,180,220,.3))",
+      background: "linear-gradient(180deg,transparent,rgba(150,180,220,.4))",
       borderRadius: "0 0 2px 2px",
       opacity: 0,
-      animation: `rain ${r.dur}s ${r.dl}s linear infinite`,
+      animation: "rain ".concat(r.dur, "s ").concat(r.dl, "s linear infinite"),
       zIndex: 5
     }
   })), /*#__PURE__*/React.createElement("div", {
@@ -4356,15 +3782,15 @@ function Result({
     style: {
       fontSize: 20,
       fontWeight: 900,
-      color: "rgba(255,255,255,.5)",
+      color: "rgba(255,255,255,.6)",
       marginTop: 12,
       animation: "kt .5s ease-in-out infinite"
     }
   }, t("res"))), ph >= 1 && playerWon && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 88,
+      fontSize: 80,
       animation: "crb .8s cubic-bezier(.34,1.56,.64,1) both",
-      filter: "drop-shadow(0 8px 40px rgba(251,191,36,.5))",
+      filter: "drop-shadow(0 8px 30px rgba(255,204,0,.5))",
       marginBottom: 8
     }
   }, "\uD83D\uDC51"), /*#__PURE__*/React.createElement("div", {
@@ -4372,17 +3798,17 @@ function Result({
       fontSize: 36,
       fontWeight: 900,
       color: "#fff",
-      "--gc": "rgba(251,191,36,.5)",
+      "--gc": "rgba(255,204,0,.6)",
       animation: "gp 2s ease-in-out infinite",
       textAlign: "center"
     }
   }, win.name, /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
     style: {
-      color: "#fbbf24"
+      color: "#ffcc00"
     }
   }, t("win")))), ph >= 1 && playerLost && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 88,
+      fontSize: 80,
       animation: "sadBounce .8s ease both",
       filter: "drop-shadow(0 4px 15px rgba(100,130,200,.3))",
       marginBottom: 8
@@ -4391,21 +3817,21 @@ function Result({
     style: {
       fontSize: 30,
       fontWeight: 900,
-      color: "rgba(150,180,220,.85)",
+      color: "rgba(150,180,220,.9)",
       textAlign: "center",
       animation: "su .5s ease both"
     }
   }, t("loseMsg")), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 16,
-      color: "rgba(150,180,220,.45)",
+      color: "rgba(150,180,220,.5)",
       marginTop: 6,
       animation: "su .5s .2s ease both",
       opacity: 0
     }
   }, win.name, t("win"))), ph >= 1 && isDraw && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 88,
+      fontSize: 80,
       animation: "crb .8s cubic-bezier(.34,1.56,.64,1) both",
       marginBottom: 8
     }
@@ -4413,7 +3839,7 @@ function Result({
     style: {
       fontSize: 36,
       fontWeight: 900,
-      color: "rgba(200,200,200,.85)",
+      color: "rgba(200,200,200,.9)",
       textAlign: "center"
     }
   }, t("tie"))), ph >= 2 && /*#__PURE__*/React.createElement("div", {
@@ -4425,8 +3851,8 @@ function Result({
     style: {
       fontSize: 64,
       fontWeight: 900,
-      color: playerLost ? "rgba(150,180,220,.65)" : "#fbbf24",
-      textShadow: playerLost ? "none" : "0 0 40px rgba(251,191,36,.4),0 0 80px rgba(251,191,36,.2)",
+      color: playerLost ? "rgba(150,180,220,.7)" : "#ffcc00",
+      textShadow: playerLost ? "none" : "0 0 40px rgba(255,204,0,.5),0 0 80px rgba(255,204,0,.3)",
       textAlign: "center"
     }
   }, win.sc, /*#__PURE__*/React.createElement("span", {
@@ -4438,17 +3864,17 @@ function Result({
       textAlign: "center",
       marginTop: 4,
       fontSize: 16,
-      color: playerLost ? "rgba(150,180,220,.4)" : "#f97316",
+      color: playerLost ? "rgba(150,180,220,.5)" : "#ff9800",
       fontWeight: 800,
       animation: "su .4s .3s ease both",
       opacity: 0
     }
-  }, playerLost ? `📉 ${diff}${t("pdif")}` : `🔥 ${diff}${t("more")}`)), ph >= 3 && /*#__PURE__*/React.createElement("div", {
+  }, playerLost ? "\uD83D\uDCC9 ".concat(diff).concat(t("pdif")) : "\uD83D\uDD25 ".concat(diff).concat(t("more")))), ph >= 3 && /*#__PURE__*/React.createElement("div", {
     style: {
       width: "100%",
       display: "flex",
       flexDirection: "column",
-      gap: 10,
+      gap: 12,
       marginTop: 20
     }
   }, ranks.map((p, r) => /*#__PURE__*/React.createElement("div", {
@@ -4456,10 +3882,10 @@ function Result({
     style: {
       padding: 16,
       borderRadius: 18,
-      background: r === 0 ? playerLost ? "rgba(100,130,200,.04)" : "rgba(251,191,36,.05)" : "rgba(255,255,255,.02)",
-      border: r === 0 ? playerLost ? "1.5px solid rgba(100,130,200,.15)" : "1.5px solid rgba(251,191,36,.2)" : "1px solid rgba(255,255,255,.04)",
-      boxShadow: r === 0 ? playerLost ? "0 4px 20px rgba(100,130,200,.08)" : "0 4px 30px rgba(251,191,36,.15)" : "none",
-      animation: `slideUp .4s ${r * .15}s ease both`,
+      background: r === 0 ? playerLost ? "rgba(100,130,200,.06)" : "rgba(255,204,0,.08)" : "rgba(255,255,255,.03)",
+      border: r === 0 ? playerLost ? "2px solid rgba(100,130,200,.2)" : "2px solid rgba(255,204,0,.3)" : "1px solid rgba(255,255,255,.06)",
+      boxShadow: r === 0 ? playerLost ? "0 4px 20px rgba(100,130,200,.1)" : "0 4px 30px rgba(255,204,0,.2)" : "none",
+      animation: "su .4s ".concat(r * .15, "s ease both"),
       opacity: 0
     }
   }, /*#__PURE__*/React.createElement("div", {
@@ -4467,131 +3893,122 @@ function Result({
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
-      marginBottom: p.bonds.length > 0 ? 8 : 0
+      marginBottom: 8
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       alignItems: "center",
-      gap: 8
+      gap: 10
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 24
+      fontSize: 28
     }
-  }, "🥇🥈🥉4️⃣"[r] ? ["🥇", "🥈", "🥉", "4️⃣"][r] : "4️⃣"), /*#__PURE__*/React.createElement("span", {
+  }, med[r] || ""), /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 16,
+      fontSize: 20,
       fontWeight: 900,
       color: "#fff"
     }
-  }, p.name)), /*#__PURE__*/React.createElement("span", {
+  }, p.name)), /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 22,
+      fontSize: 26,
       fontWeight: 900,
-      color: r === 0 ? playerLost ? "rgba(150,180,220,.7)" : "#fbbf24" : "rgba(255,255,255,.5)"
+      color: r === 0 ? playerLost ? "rgba(150,180,220,.7)" : "#ffcc00" : "rgba(255,255,255,.6)",
+      textShadow: r === 0 && !playerLost ? "0 0 16px rgba(255,204,0,.5)" : "none"
     }
   }, p.sc, /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: 14
     }
-  }, t("pt")))), p.bonds.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }, t("pt")))), r > 0 && !isDraw && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: playerLost ? "rgba(150,180,220,.4)" : "#ff6633",
+      fontWeight: 700,
+      marginBottom: 6
+    }
+  }, "\uD83D\uDCCA ", t("pdif"), ": ", ranks[0].sc - p.sc, t("pt")), p.bonds.length > 0 ? /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       flexWrap: "wrap",
       gap: 4
     }
-  }, p.bonds.map((b, bi) => /*#__PURE__*/React.createElement(Badge, {
-    key: bi,
+  }, p.bonds.map((b, i) => /*#__PURE__*/React.createElement(Badge, {
+    key: i,
     comp: b
-  }))), p.bonds.length === 0 && /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 12,
-      color: "rgba(255,255,255,.2)"
-    }
-  }, t("noB"))))), ph >= 4 && /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginTop: 24,
-      animation: "su .4s ease both",
-      width: "100%",
-      display: "flex",
-      flexDirection: "column",
-      gap: 10,
-      alignItems: "center"
-    }
-  }, storyStage && /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: 18,
-      borderRadius: 16,
-      background: "rgba(255,255,255,.03)",
-      border: "1px solid rgba(255,255,255,.06)",
-      width: "100%",
-      marginBottom: 4
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      gap: 12,
-      alignItems: "flex-start"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      flexShrink: 0,
-      filter: "drop-shadow(0 4px 10px rgba(167,139,250,.2))"
-    }
-  }, /*#__PURE__*/React.createElement(DrSVG, {
-    size: 52
-  })), /*#__PURE__*/React.createElement("div", {
-    style: {
-      flex: 1,
-      padding: 12,
-      borderRadius: "4px 14px 14px 14px",
-      background: "rgba(255,255,255,.04)",
-      border: "1px solid rgba(255,255,255,.06)",
-      position: "relative"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: "absolute",
-      left: -6,
-      top: 10,
-      width: 0,
-      height: 0,
-      borderTop: "6px solid transparent",
-      borderBottom: "6px solid transparent",
-      borderRight: "6px solid rgba(255,255,255,.06)"
-    }
-  }), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: 14,
-      color: "rgba(255,255,255,.65)",
-      lineHeight: 1.8,
-      margin: 0
-    }
-  }, playerWon ? storyStage.win : storyStage.lose))), playerLost && /*#__PURE__*/React.createElement("div", {
+  }))) : /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 13,
-      color: "rgba(255,255,255,.35)",
-      marginTop: 8,
+      color: "rgba(255,255,255,.2)"
+    }
+  }, t("noB"))))), ph >= 4 && /*#__PURE__*/React.createElement(React.Fragment, null, storyStage && playerWon && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 16,
+      padding: 16,
+      borderRadius: 16,
+      background: "".concat(storyStage.color, "11"),
+      border: "2px solid ".concat(storyStage.color, "33"),
+      maxWidth: 320,
+      textAlign: "center",
+      animation: "su .4s ease both"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      color: storyStage.color,
+      fontWeight: 700,
+      lineHeight: 1.6
+    }
+  }, storyStage.win)), storyStage && playerLost && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 16,
+      padding: 16,
+      borderRadius: 16,
+      background: "rgba(150,180,220,.05)",
+      border: "1px solid rgba(150,180,220,.15)",
+      maxWidth: 320,
+      textAlign: "center",
+      animation: "su .4s ease both"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      color: "rgba(150,180,220,.7)",
+      fontWeight: 700,
+      lineHeight: 1.6
+    }
+  }, storyStage.lose)), !storyStage && playerLost && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 16,
+      fontSize: 16,
+      color: "rgba(150,180,220,.6)",
+      fontWeight: 700,
+      animation: "su .4s ease both",
       textAlign: "center"
     }
-  }, t("retry"))), /*#__PURE__*/React.createElement(PremBtn, {
+  }, t("retry")), /*#__PURE__*/React.createElement("button", {
     onClick: onRestart,
-    gradient: "linear-gradient(135deg,#ea580c,#f97316)",
-    shadow: "rgba(234,88,12,.35)",
     style: {
+      marginTop: storyStage ? 16 : playerLost ? 12 : 28,
       padding: "16px 48px",
-      fontSize: 20,
       borderRadius: 20,
-      width: "100%",
-      maxWidth: 280
+      border: "none",
+      background: playerLost ? "linear-gradient(135deg,#37474f,#546e7a)" : "linear-gradient(135deg,#651fff,#b388ff)",
+      color: "#fff",
+      fontSize: 20,
+      fontWeight: 900,
+      cursor: "pointer",
+      boxShadow: playerLost ? "0 4px 20px rgba(55,71,79,.4)" : "0 4px 30px rgba(101,31,255,.4)",
+      animation: "su .4s ease both"
     }
-  }, t("again")))));
+  }, storyStage ? "🗺️ ステージ選択へ" : t("again")))));
 }
 
-/* ═══════════════════════════════════════════════════════════
-   🎮 App
-   ═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════ */
+/*  メインアプリ                                               */
+/* ═══════════════════════════════════════════════════════════ */
 window.__App = function App() {
   const [scr, setScr] = useState("title");
   const [gs, setGS] = useState(null);
@@ -4606,9 +4023,11 @@ window.__App = function App() {
   const [cpuOv, setCpuOv] = useState(null);
   const [hl, setHL] = useState(7);
   const [lang, setLang] = useState("kanji");
-  const [premium, setPremium] = useState(true);
-  const [cleared, setCleared] = useState(new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]));
-  const [storyStage, setStoryStage] = useState(null);
+  const [premium, setPremium] = useState(true); // App Store公開時にfalseに戻す
+  const [cleared, setCleared] = useState(new Set()); // ストーリークリア済みステージ
+  const [storyStage, setStoryStage] = useState(null); // 現在のストーリーステージ
+
+  // ゲーム中にブラウザの更新ボタンで戻るのを防止
   useEffect(() => {
     const handler = e => {
       if (scr === "game") {
@@ -4887,9 +4306,9 @@ window.__App = function App() {
   })), scr === "game" && !cpuOv && sp && !isCpu && gs && /*#__PURE__*/React.createElement(Pass, {
     pn: gs.pl[cp].name,
     onReady: () => setSP(false),
-    info: gs.deck.length > 0 ? `${tx.dkRem} ${gs.deck.length} ${tx.mai}` : tx.lastR
+    info: gs.deck.length > 0 ? "".concat(tx.dkRem, " ").concat(gs.deck.length, " ").concat(tx.mai) : tx.lastR
   }), scr === "game" && !cpuOv && !(sp && !isCpu) && gs && /*#__PURE__*/React.createElement(Game, {
-    key: `${cp}-${tc}`,
+    key: "".concat(cp, "-").concat(tc),
     state: gs,
     pi: cp,
     onDraw: draw,
@@ -4905,6 +4324,7 @@ window.__App = function App() {
     }
   }));
 };
+
 
 var root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(React.createElement(window.__App));
