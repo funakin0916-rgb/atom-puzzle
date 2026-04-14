@@ -1202,6 +1202,1420 @@ const STORY = [{
   lose: "博士「この敵は…次元が違うようじゃ…でもキミなら…！」"
 }];
 
+/* ── キャラクターSVGイラスト ─── */
+const DrSVG = ({
+  size = 120
+}) => /*#__PURE__*/React.createElement("svg", {
+  width: size,
+  height: size,
+  viewBox: "0 0 120 120",
+  fill: "none"
+}, /*#__PURE__*/React.createElement("rect", {
+  x: "30",
+  y: "55",
+  width: "60",
+  height: "50",
+  rx: "8",
+  fill: "#e8e8f0",
+  stroke: "#bbb",
+  strokeWidth: "1.5"
+}), /*#__PURE__*/React.createElement("rect", {
+  x: "38",
+  y: "55",
+  width: "44",
+  height: "6",
+  rx: "3",
+  fill: "#d0d0e0"
+}), /*#__PURE__*/React.createElement("polygon", {
+  points: "60,61 56,80 60,85 64,80",
+  fill: "#4a6cf7"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "60",
+  cy: "38",
+  r: "22",
+  fill: "#ffdcb5"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "60",
+  cy: "38",
+  r: "22",
+  fill: "none",
+  stroke: "#e8b88a",
+  strokeWidth: "1"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "51",
+  cy: "36",
+  r: "7",
+  fill: "none",
+  stroke: "#555",
+  strokeWidth: "2"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "69",
+  cy: "36",
+  r: "7",
+  fill: "none",
+  stroke: "#555",
+  strokeWidth: "2"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "58",
+  y1: "36",
+  x2: "62",
+  y2: "36",
+  stroke: "#555",
+  strokeWidth: "2"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "44",
+  y1: "36",
+  x2: "36",
+  y2: "33",
+  stroke: "#555",
+  strokeWidth: "1.5"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "76",
+  y1: "36",
+  x2: "84",
+  y2: "33",
+  stroke: "#555",
+  strokeWidth: "1.5"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "51",
+  cy: "36",
+  r: "2.5",
+  fill: "#333"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "69",
+  cy: "36",
+  r: "2.5",
+  fill: "#333"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "52",
+  cy: "35",
+  r: "1",
+  fill: "#fff"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "70",
+  cy: "35",
+  r: "1",
+  fill: "#fff"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M46 30 Q51 27 56 30",
+  stroke: "#555",
+  strokeWidth: "1.5",
+  fill: "none"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M64 30 Q69 27 74 30",
+  stroke: "#555",
+  strokeWidth: "1.5",
+  fill: "none"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M54 46 Q60 52 66 46",
+  stroke: "#c77",
+  strokeWidth: "1.5",
+  fill: "none",
+  strokeLinecap: "round"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M50 43 Q55 46 60 43 Q65 46 70 43",
+  stroke: "#ccc",
+  strokeWidth: "2",
+  fill: "none",
+  strokeLinecap: "round"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M38 30 Q35 18 45 15 Q52 10 60 12 Q68 10 75 15 Q85 18 82 30",
+  fill: "#ddd",
+  stroke: "#bbb",
+  strokeWidth: "1"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M36 28 Q33 22 38 20",
+  stroke: "#ccc",
+  strokeWidth: "2",
+  fill: "none"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M84 28 Q87 22 82 20",
+  stroke: "#ccc",
+  strokeWidth: "2",
+  fill: "none"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "42",
+  y1: "62",
+  x2: "42",
+  y2: "72",
+  stroke: "#e53935",
+  strokeWidth: "2",
+  strokeLinecap: "round"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "46",
+  y1: "62",
+  x2: "46",
+  y2: "70",
+  stroke: "#1e88e5",
+  strokeWidth: "2",
+  strokeLinecap: "round"
+}), /*#__PURE__*/React.createElement("rect", {
+  x: "82",
+  y: "50",
+  width: "8",
+  height: "24",
+  rx: "4",
+  fill: "none",
+  stroke: "#4fc3f7",
+  strokeWidth: "1.5"
+}), /*#__PURE__*/React.createElement("rect", {
+  x: "83",
+  y: "62",
+  width: "6",
+  height: "10",
+  rx: "3",
+  fill: "#4fc3f7",
+  opacity: ".5"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "86",
+  cy: "58",
+  r: "2",
+  fill: "#4fc3f7",
+  opacity: ".6"
+}));
+const MonsterSVG = ({
+  id,
+  size = 100,
+  color = "#81D4FA"
+}) => {
+  const c = color;
+  const d = color + "88";
+  // 各モンスターの個別SVG
+  const monsters = {
+    // バブリン - 泡のモンスター
+    1: /*#__PURE__*/React.createElement("svg", {
+      width: size,
+      height: size,
+      viewBox: "0 0 100 100",
+      fill: "none"
+    }, /*#__PURE__*/React.createElement("circle", {
+      cx: "50",
+      cy: "52",
+      r: "30",
+      fill: c,
+      opacity: ".3"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "50",
+      cy: "52",
+      r: "25",
+      fill: c,
+      opacity: ".5"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "50",
+      cy: "50",
+      r: "20",
+      fill: c,
+      opacity: ".7",
+      stroke: "#fff",
+      strokeWidth: "1",
+      strokeOpacity: ".4"
+    }), /*#__PURE__*/React.createElement("ellipse", {
+      cx: "42",
+      cy: "46",
+      rx: "5",
+      ry: "6",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("ellipse", {
+      cx: "58",
+      cy: "46",
+      rx: "5",
+      ry: "6",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "43",
+      cy: "46",
+      r: "3",
+      fill: "#333"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "59",
+      cy: "46",
+      r: "3",
+      fill: "#333"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "44",
+      cy: "45",
+      r: "1.2",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "60",
+      cy: "45",
+      r: "1.2",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("ellipse", {
+      cx: "50",
+      cy: "58",
+      rx: "6",
+      ry: "4",
+      fill: "#fff",
+      opacity: ".8"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "30",
+      cy: "35",
+      r: "6",
+      fill: c,
+      opacity: ".4",
+      stroke: "#fff",
+      strokeWidth: ".5",
+      strokeOpacity: ".3"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "72",
+      cy: "38",
+      r: "5",
+      fill: c,
+      opacity: ".35"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "25",
+      cy: "55",
+      r: "4",
+      fill: c,
+      opacity: ".3"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "78",
+      cy: "58",
+      r: "3",
+      fill: c,
+      opacity: ".25"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "38",
+      cy: "25",
+      r: "3.5",
+      fill: c,
+      opacity: ".3"
+    }), /*#__PURE__*/React.createElement("ellipse", {
+      cx: "44",
+      cy: "38",
+      rx: "8",
+      ry: "4",
+      fill: "#fff",
+      opacity: ".2",
+      transform: "rotate(-20,44,38)"
+    })),
+    // アクアン - 水のモンスター
+    2: /*#__PURE__*/React.createElement("svg", {
+      width: size,
+      height: size,
+      viewBox: "0 0 100 100",
+      fill: "none"
+    }, /*#__PURE__*/React.createElement("path", {
+      d: "M50 20 Q30 45 30 60 Q30 80 50 82 Q70 80 70 60 Q70 45 50 20Z",
+      fill: c,
+      opacity: ".6"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M50 25 Q35 45 35 58 Q35 75 50 77 Q65 75 65 58 Q65 45 50 25Z",
+      fill: c,
+      opacity: ".8"
+    }), /*#__PURE__*/React.createElement("ellipse", {
+      cx: "43",
+      cy: "55",
+      rx: "4",
+      ry: "5",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("ellipse", {
+      cx: "57",
+      cy: "55",
+      rx: "4",
+      ry: "5",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "44",
+      cy: "55",
+      r: "2.5",
+      fill: "#1a237e"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "58",
+      cy: "55",
+      r: "2.5",
+      fill: "#1a237e"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "44.5",
+      cy: "54",
+      r: "1",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "58.5",
+      cy: "54",
+      r: "1",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M44 65 Q47 68 50 65 Q53 68 56 65",
+      stroke: "#1565c0",
+      strokeWidth: "1.5",
+      fill: "none"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M25 50 Q23 55 25 57 Q27 55 25 50Z",
+      fill: c,
+      opacity: ".5"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M76 48 Q74 52 76 54 Q78 52 76 48Z",
+      fill: c,
+      opacity: ".4"
+    }), /*#__PURE__*/React.createElement("ellipse", {
+      cx: "45",
+      cy: "38",
+      rx: "6",
+      ry: "3",
+      fill: "#fff",
+      opacity: ".25",
+      transform: "rotate(-15,45,38)"
+    })),
+    // ソルティ - 塩の結晶モンスター
+    3: /*#__PURE__*/React.createElement("svg", {
+      width: size,
+      height: size,
+      viewBox: "0 0 100 100",
+      fill: "none"
+    }, /*#__PURE__*/React.createElement("rect", {
+      x: "30",
+      y: "30",
+      width: "40",
+      height: "40",
+      rx: "4",
+      fill: c,
+      opacity: ".7",
+      transform: "rotate(15,50,50)"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "33",
+      y: "33",
+      width: "34",
+      height: "34",
+      rx: "3",
+      fill: c,
+      opacity: ".9",
+      transform: "rotate(15,50,50)"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "43",
+      cy: "48",
+      r: "4",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "57",
+      cy: "48",
+      r: "4",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "44",
+      cy: "48",
+      r: "2.5",
+      fill: "#5d4037"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "58",
+      cy: "48",
+      r: "2.5",
+      fill: "#5d4037"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M46 58 L50 62 L54 58",
+      stroke: "#8d6e63",
+      strokeWidth: "2",
+      fill: "none",
+      strokeLinecap: "round"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "20",
+      y: "45",
+      width: "8",
+      height: "8",
+      rx: "1",
+      fill: c,
+      opacity: ".4",
+      transform: "rotate(30,24,49)"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "72",
+      y: "40",
+      width: "7",
+      height: "7",
+      rx: "1",
+      fill: c,
+      opacity: ".35",
+      transform: "rotate(-20,75,43)"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "60",
+      y: "25",
+      width: "6",
+      height: "6",
+      rx: "1",
+      fill: c,
+      opacity: ".3",
+      transform: "rotate(45,63,28)"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M38 32 L40 28 L42 32 L38 32",
+      fill: "#fff",
+      opacity: ".5"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M62 68 L64 64 L66 68 L62 68",
+      fill: "#fff",
+      opacity: ".4"
+    })),
+    // エアロン - 空気のモンスター
+    4: /*#__PURE__*/React.createElement("svg", {
+      width: size,
+      height: size,
+      viewBox: "0 0 100 100",
+      fill: "none"
+    }, /*#__PURE__*/React.createElement("ellipse", {
+      cx: "50",
+      cy: "50",
+      rx: "28",
+      ry: "22",
+      fill: c,
+      opacity: ".3"
+    }), /*#__PURE__*/React.createElement("ellipse", {
+      cx: "50",
+      cy: "50",
+      rx: "22",
+      ry: "18",
+      fill: c,
+      opacity: ".5"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M40 50 Q45 40 55 42 Q65 44 60 52 Q55 58 48 55 Q42 52 46 48",
+      stroke: "#fff",
+      strokeWidth: "1.5",
+      fill: "none",
+      opacity: ".3"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M38 46 Q42 42 46 46",
+      stroke: "#2e7d32",
+      strokeWidth: "2.5",
+      fill: "none",
+      strokeLinecap: "round"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M54 46 Q58 42 62 46",
+      stroke: "#2e7d32",
+      strokeWidth: "2.5",
+      fill: "none",
+      strokeLinecap: "round"
+    }), /*#__PURE__*/React.createElement("ellipse", {
+      cx: "50",
+      cy: "57",
+      rx: "5",
+      ry: "3",
+      fill: "#fff",
+      opacity: ".5"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M15 45 Q25 42 35 45",
+      stroke: c,
+      strokeWidth: "1.5",
+      fill: "none",
+      opacity: ".4"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M65 42 Q75 38 85 42",
+      stroke: c,
+      strokeWidth: "1.5",
+      fill: "none",
+      opacity: ".4"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M20 58 Q28 55 36 58",
+      stroke: c,
+      strokeWidth: "1",
+      fill: "none",
+      opacity: ".3"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M68 55 Q76 52 84 55",
+      stroke: c,
+      strokeWidth: "1",
+      fill: "none",
+      opacity: ".3"
+    })),
+    // コッパー - 銅のヨロイ
+    5: /*#__PURE__*/React.createElement("svg", {
+      width: size,
+      height: size,
+      viewBox: "0 0 100 100",
+      fill: "none"
+    }, /*#__PURE__*/React.createElement("rect", {
+      x: "32",
+      y: "45",
+      width: "36",
+      height: "35",
+      rx: "6",
+      fill: c,
+      stroke: "#bf360c",
+      strokeWidth: "1.5"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M30 45 Q30 22 50 20 Q70 22 70 45Z",
+      fill: c,
+      stroke: "#bf360c",
+      strokeWidth: "1.5"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "28",
+      y: "42",
+      width: "44",
+      height: "6",
+      rx: "3",
+      fill: "#e65100"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "38",
+      y: "34",
+      width: "8",
+      height: "4",
+      rx: "2",
+      fill: "#fff200"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "54",
+      y: "34",
+      width: "8",
+      height: "4",
+      rx: "2",
+      fill: "#fff200"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "22",
+      y: "50",
+      width: "10",
+      height: "22",
+      rx: "5",
+      fill: c,
+      stroke: "#bf360c",
+      strokeWidth: "1"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "68",
+      y: "50",
+      width: "10",
+      height: "22",
+      rx: "5",
+      fill: c,
+      stroke: "#bf360c",
+      strokeWidth: "1"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "50",
+      cy: "58",
+      r: "6",
+      fill: "none",
+      stroke: "#fff200",
+      strokeWidth: "1.5",
+      opacity: ".6"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "50",
+      cy: "58",
+      r: "3",
+      fill: "#fff200",
+      opacity: ".4"
+    })),
+    // シルバーグ - 銀の騎士
+    6: /*#__PURE__*/React.createElement("svg", {
+      width: size,
+      height: size,
+      viewBox: "0 0 100 100",
+      fill: "none"
+    }, /*#__PURE__*/React.createElement("path", {
+      d: "M30 40 L25 85 Q50 90 75 85 L70 40Z",
+      fill: "#78909c",
+      opacity: ".5"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "35",
+      y: "42",
+      width: "30",
+      height: "38",
+      rx: "5",
+      fill: c,
+      stroke: "#78909c",
+      strokeWidth: "1.5"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M33 42 Q33 18 50 15 Q67 18 67 42Z",
+      fill: c,
+      stroke: "#78909c",
+      strokeWidth: "1.5"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "37",
+      y: "30",
+      width: "26",
+      height: "10",
+      rx: "3",
+      fill: "#455a64"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "40",
+      y: "32",
+      width: "8",
+      height: "5",
+      rx: "1",
+      fill: "#e0e0e0",
+      opacity: ".8"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "52",
+      y: "32",
+      width: "8",
+      height: "5",
+      rx: "1",
+      fill: "#e0e0e0",
+      opacity: ".8"
+    }), /*#__PURE__*/React.createElement("line", {
+      x1: "75",
+      y1: "30",
+      x2: "75",
+      y2: "70",
+      stroke: "#cfd8dc",
+      strokeWidth: "3",
+      strokeLinecap: "round"
+    }), /*#__PURE__*/React.createElement("line", {
+      x1: "70",
+      y1: "42",
+      x2: "80",
+      y2: "42",
+      stroke: "#90a4ae",
+      strokeWidth: "3",
+      strokeLinecap: "round"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M50 15 Q48 5 45 3 Q50 8 50 15",
+      fill: "#e0e0e0"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M50 15 Q52 5 55 3 Q50 8 50 15",
+      fill: "#cfd8dc"
+    })),
+    // アイアンX - 鉄の巨人
+    7: /*#__PURE__*/React.createElement("svg", {
+      width: size,
+      height: size,
+      viewBox: "0 0 100 100",
+      fill: "none"
+    }, /*#__PURE__*/React.createElement("rect", {
+      x: "28",
+      y: "38",
+      width: "44",
+      height: "45",
+      rx: "8",
+      fill: c,
+      stroke: "#5d4037",
+      strokeWidth: "2"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "34",
+      y: "18",
+      width: "32",
+      height: "24",
+      rx: "6",
+      fill: c,
+      stroke: "#5d4037",
+      strokeWidth: "2"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "40",
+      y: "26",
+      width: "7",
+      height: "5",
+      rx: "2",
+      fill: "#ff1744"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "53",
+      y: "26",
+      width: "7",
+      height: "5",
+      rx: "2",
+      fill: "#ff1744"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "42",
+      y: "35",
+      width: "16",
+      height: "3",
+      rx: "1",
+      fill: "#3e2723"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "18",
+      y: "42",
+      width: "12",
+      height: "28",
+      rx: "6",
+      fill: c,
+      stroke: "#5d4037",
+      strokeWidth: "1.5"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "70",
+      y: "42",
+      width: "12",
+      height: "28",
+      rx: "6",
+      fill: c,
+      stroke: "#5d4037",
+      strokeWidth: "1.5"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "36",
+      cy: "44",
+      r: "3",
+      fill: "#5d4037"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "64",
+      cy: "44",
+      r: "3",
+      fill: "#5d4037"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M44 52 L56 66 M56 52 L44 66",
+      stroke: "#ff1744",
+      strokeWidth: "2.5",
+      strokeLinecap: "round"
+    })),
+    // サルファー - 硫黄の毒モンスター
+    8: /*#__PURE__*/React.createElement("svg", {
+      width: size,
+      height: size,
+      viewBox: "0 0 100 100",
+      fill: "none"
+    }, /*#__PURE__*/React.createElement("ellipse", {
+      cx: "50",
+      cy: "55",
+      rx: "25",
+      ry: "22",
+      fill: c,
+      opacity: ".7"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "35",
+      cy: "30",
+      r: "8",
+      fill: c,
+      opacity: ".3"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "65",
+      cy: "28",
+      r: "6",
+      fill: c,
+      opacity: ".25"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "28",
+      cy: "42",
+      r: "5",
+      fill: c,
+      opacity: ".2"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "72",
+      cy: "45",
+      r: "4",
+      fill: c,
+      opacity: ".2"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M38 48 L42 44 L46 48",
+      stroke: "#f57f17",
+      strokeWidth: "2.5",
+      fill: c
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M54 48 L58 44 L62 48",
+      stroke: "#f57f17",
+      strokeWidth: "2.5",
+      fill: c
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "42",
+      cy: "47",
+      r: "1.5",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "58",
+      cy: "47",
+      r: "1.5",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M42 60 Q46 65 50 60 Q54 65 58 60",
+      stroke: "#f57f17",
+      strokeWidth: "2",
+      fill: "none"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "50",
+      cy: "38",
+      r: "4",
+      fill: "none",
+      stroke: "#f57f17",
+      strokeWidth: "1.5"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M48 36 L52 40 M52 36 L48 40",
+      stroke: "#f57f17",
+      strokeWidth: "1.5"
+    })),
+    // ドクターカオス - 暴走科学者
+    9: /*#__PURE__*/React.createElement("svg", {
+      width: size,
+      height: size,
+      viewBox: "0 0 100 100",
+      fill: "none"
+    }, /*#__PURE__*/React.createElement("path", {
+      d: "M30 55 L28 95 L72 95 L70 55Z",
+      fill: "#e0e0e0",
+      stroke: "#aaa",
+      strokeWidth: "1",
+      strokeDasharray: "3,2"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "50",
+      cy: "38",
+      r: "18",
+      fill: "#e8d5b7"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "43",
+      cy: "35",
+      r: "5",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "57",
+      cy: "35",
+      r: "5",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "44",
+      cy: "35",
+      r: "3",
+      fill: "#e91e63"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "58",
+      cy: "35",
+      r: "2",
+      fill: "#e91e63"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "44.5",
+      cy: "34",
+      r: "1",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M37 28 L48 30",
+      stroke: "#555",
+      strokeWidth: "2",
+      strokeLinecap: "round"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M63 28 L52 30",
+      stroke: "#555",
+      strokeWidth: "2",
+      strokeLinecap: "round"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M40 46 Q45 54 50 46 Q55 54 60 46",
+      stroke: "#c62828",
+      strokeWidth: "2",
+      fill: "none"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M32 30 Q30 15 40 10 L38 25",
+      fill: "#555"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M42 28 Q42 8 50 5 L48 22",
+      fill: "#444"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M52 22 Q55 5 58 8 L56 28",
+      fill: "#555"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M60 25 Q65 10 68 15 L65 30",
+      fill: "#444"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M22 30 L26 38 L23 38 L28 48",
+      stroke: c,
+      strokeWidth: "2",
+      fill: "none"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M78 28 L74 36 L77 36 L72 46",
+      stroke: c,
+      strokeWidth: "2",
+      fill: "none"
+    })),
+    // ダイヤキング - 最強の結晶モンスター
+    10: /*#__PURE__*/React.createElement("svg", {
+      width: size,
+      height: size,
+      viewBox: "0 0 100 100",
+      fill: "none"
+    }, /*#__PURE__*/React.createElement("polygon", {
+      points: "50,15 75,45 60,85 40,85 25,45",
+      fill: c,
+      opacity: ".6"
+    }), /*#__PURE__*/React.createElement("polygon", {
+      points: "50,20 70,45 58,80 42,80 30,45",
+      fill: c,
+      opacity: ".8"
+    }), /*#__PURE__*/React.createElement("polygon", {
+      points: "50,20 70,45 50,55 30,45",
+      fill: "#fff",
+      opacity: ".15"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M35 18 L40 8 L45 15 L50 5 L55 15 L60 8 L65 18Z",
+      fill: "#ffd700",
+      stroke: "#ff8f00",
+      strokeWidth: "1"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "50",
+      cy: "10",
+      r: "2.5",
+      fill: "#ff1744"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "42",
+      cy: "13",
+      r: "1.5",
+      fill: "#2196f3"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "58",
+      cy: "13",
+      r: "1.5",
+      fill: "#4caf50"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M40 42 L44 38 L48 42",
+      stroke: "#fff",
+      strokeWidth: "2.5",
+      fill: "none"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M52 42 L56 38 L60 42",
+      stroke: "#fff",
+      strokeWidth: "2.5",
+      fill: "none"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "44",
+      cy: "41",
+      r: "1.5",
+      fill: "#ffd700"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "56",
+      cy: "41",
+      r: "1.5",
+      fill: "#ffd700"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M44 52 L50 56 L56 52",
+      stroke: "#fff",
+      strokeWidth: "1.5",
+      fill: "none"
+    }), [0, 45, 90, 135, 180, 225, 270, 315].map((a, i) => /*#__PURE__*/React.createElement("line", {
+      key: i,
+      x1: "50",
+      y1: "50",
+      x2: 50 + Math.cos(a * Math.PI / 180) * 45,
+      y2: 50 + Math.sin(a * Math.PI / 180) * 45,
+      stroke: c,
+      strokeWidth: "0.5",
+      opacity: ".3"
+    }))),
+    // EXステージ以降は共通テンプレートで色変え + 特徴追加
+    11: /*#__PURE__*/React.createElement("svg", {
+      width: size,
+      height: size,
+      viewBox: "0 0 100 100",
+      fill: "none"
+    }, /*#__PURE__*/React.createElement("circle", {
+      cx: "50",
+      cy: "50",
+      r: "28",
+      fill: c,
+      opacity: ".4"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "50",
+      cy: "50",
+      r: "22",
+      fill: c,
+      opacity: ".6",
+      stroke: "#fff",
+      strokeWidth: "1",
+      strokeOpacity: ".3"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "50",
+      cy: "50",
+      r: "16",
+      fill: c,
+      opacity: ".8"
+    }), /*#__PURE__*/React.createElement("ellipse", {
+      cx: "42",
+      cy: "46",
+      rx: "4",
+      ry: "5",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("ellipse", {
+      cx: "58",
+      cy: "46",
+      rx: "4",
+      ry: "5",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "43",
+      cy: "46",
+      r: "2.5",
+      fill: "#e91e63"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "59",
+      cy: "46",
+      r: "2.5",
+      fill: "#e91e63"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M44 58 Q50 64 56 58",
+      stroke: "#e91e63",
+      strokeWidth: "2",
+      fill: "none"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M30 30 Q35 22 42 28",
+      stroke: c,
+      strokeWidth: "2",
+      fill: "none",
+      opacity: ".5"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M70 30 Q65 22 58 28",
+      stroke: c,
+      strokeWidth: "2",
+      fill: "none",
+      opacity: ".5"
+    }), /*#__PURE__*/React.createElement("text", {
+      x: "50",
+      y: "38",
+      textAnchor: "middle",
+      fill: "#fff",
+      fontSize: "8",
+      fontWeight: "900",
+      opacity: ".6"
+    }, "NEO")),
+    12: /*#__PURE__*/React.createElement("svg", {
+      width: size,
+      height: size,
+      viewBox: "0 0 100 100",
+      fill: "none"
+    }, /*#__PURE__*/React.createElement("rect", {
+      x: "25",
+      y: "35",
+      width: "22",
+      height: "40",
+      rx: "6",
+      fill: "#FF8A65",
+      stroke: "#bf360c",
+      strokeWidth: "1.5"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "53",
+      y: "35",
+      width: "22",
+      height: "40",
+      rx: "6",
+      fill: "#8D6E63",
+      stroke: "#5d4037",
+      strokeWidth: "1.5"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M47 35 L50 25 L53 35",
+      fill: c
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "40",
+      y: "45",
+      width: "20",
+      height: "8",
+      rx: "4",
+      fill: c,
+      opacity: ".6"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "36",
+      cy: "48",
+      r: "3",
+      fill: "#fff200"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "64",
+      cy: "48",
+      r: "3",
+      fill: "#ff1744"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "30",
+      y: "56",
+      width: "12",
+      height: "3",
+      rx: "1",
+      fill: "#bf360c"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "58",
+      y: "56",
+      width: "12",
+      height: "3",
+      rx: "1",
+      fill: "#5d4037"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M45 80 L50 90 L55 80",
+      stroke: c,
+      strokeWidth: "2",
+      fill: "none"
+    })),
+    13: /*#__PURE__*/React.createElement("svg", {
+      width: size,
+      height: size,
+      viewBox: "0 0 100 100",
+      fill: "none"
+    }, /*#__PURE__*/React.createElement("path", {
+      d: "M50 20 Q25 35 30 60 Q35 82 50 85 Q65 82 70 60 Q75 35 50 20Z",
+      fill: c,
+      opacity: ".6"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "50",
+      cy: "28",
+      r: "8",
+      fill: c,
+      opacity: ".3"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M42 15 Q45 8 50 12 Q55 8 58 15",
+      fill: c,
+      opacity: ".4"
+    }), /*#__PURE__*/React.createElement("ellipse", {
+      cx: "43",
+      cy: "46",
+      rx: "5",
+      ry: "6",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("ellipse", {
+      cx: "57",
+      cy: "46",
+      rx: "5",
+      ry: "6",
+      fill: "#fff"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "44",
+      cy: "46",
+      r: "3",
+      fill: "#4a148c"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "58",
+      cy: "46",
+      r: "3",
+      fill: "#4a148c"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M46 44 L42 40",
+      stroke: "#4a148c",
+      strokeWidth: "1.5"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M54 44 L58 40",
+      stroke: "#4a148c",
+      strokeWidth: "1.5"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M44 60 Q50 66 56 60",
+      stroke: "#4a148c",
+      strokeWidth: "1.5",
+      fill: "none"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M28 65 Q25 75 30 80",
+      stroke: c,
+      strokeWidth: "2",
+      fill: "none",
+      opacity: ".4"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M72 65 Q75 75 70 80",
+      stroke: c,
+      strokeWidth: "2",
+      fill: "none",
+      opacity: ".4"
+    })),
+    14: /*#__PURE__*/React.createElement("svg", {
+      width: size,
+      height: size,
+      viewBox: "0 0 100 100",
+      fill: "none"
+    }, /*#__PURE__*/React.createElement("rect", {
+      x: "30",
+      y: "50",
+      width: "40",
+      height: "38",
+      rx: "6",
+      fill: "#3949ab",
+      stroke: "#1a237e",
+      strokeWidth: "1.5"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "50",
+      cy: "35",
+      r: "18",
+      fill: "#e8d5b7"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "36",
+      y: "28",
+      width: "28",
+      height: "10",
+      rx: "2",
+      fill: "none",
+      stroke: "#1a237e",
+      strokeWidth: "2"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "38",
+      y: "30",
+      width: "10",
+      height: "6",
+      rx: "1",
+      fill: "rgba(255,255,255,.8)"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "52",
+      y: "30",
+      width: "10",
+      height: "6",
+      rx: "1",
+      fill: "rgba(255,255,255,.8)"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "43",
+      cy: "33",
+      r: "2",
+      fill: "#1a237e"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "57",
+      cy: "33",
+      r: "2",
+      fill: "#1a237e"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M45 44 Q50 48 55 44",
+      stroke: "#8d6e63",
+      strokeWidth: "1.5",
+      fill: "none"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M32 22 Q38 10 50 8 Q62 10 68 22",
+      fill: "#ccc",
+      stroke: "#aaa",
+      strokeWidth: "1"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M65 60 Q70 55 75 60 L75 72 Q70 68 65 72Z",
+      fill: "#1a237e",
+      opacity: ".6"
+    }), /*#__PURE__*/React.createElement("text", {
+      x: "50",
+      y: "68",
+      textAnchor: "middle",
+      fill: "#7986cb",
+      fontSize: "7",
+      fontWeight: "900"
+    }, "DNA")),
+    15: /*#__PURE__*/React.createElement("svg", {
+      width: size,
+      height: size,
+      viewBox: "0 0 100 100",
+      fill: "none"
+    }, /*#__PURE__*/React.createElement("circle", {
+      cx: "50",
+      cy: "50",
+      r: "30",
+      fill: c,
+      opacity: ".2"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "50",
+      cy: "50",
+      r: "22",
+      fill: c,
+      opacity: ".4"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "50",
+      cy: "50",
+      r: "14",
+      fill: c,
+      opacity: ".7"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "43",
+      cy: "46",
+      r: "4",
+      fill: "#fff",
+      opacity: ".9"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "57",
+      cy: "46",
+      r: "4",
+      fill: "#fff",
+      opacity: ".9"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "44",
+      cy: "46",
+      r: "2.5",
+      fill: c
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "58",
+      cy: "46",
+      r: "2.5",
+      fill: c
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M44 58 Q50 62 56 58",
+      stroke: "#fff",
+      strokeWidth: "1.5",
+      fill: "none",
+      opacity: ".8"
+    }), [0, 60, 120, 180, 240, 300].map((a, i) => /*#__PURE__*/React.createElement("line", {
+      key: i,
+      x1: "50",
+      y1: "50",
+      x2: 50 + Math.cos(a * Math.PI / 180) * 38,
+      y2: 50 + Math.sin(a * Math.PI / 180) * 38,
+      stroke: c,
+      strokeWidth: "1",
+      opacity: ".3"
+    })), /*#__PURE__*/React.createElement("text", {
+      x: "50",
+      y: "38",
+      textAnchor: "middle",
+      fill: "#fff",
+      fontSize: "8",
+      fontWeight: "900",
+      opacity: ".5"
+    }, "???"))
+  };
+  return monsters[id] || monsters[1];
+};
+
+/* ── プロローグ・ストーリー背景 ─── */
+const PROLOGUE = ["ここは、原子科学研究所。", "世界的な化学者・ゲンシ博士が\n日夜研究を続ける場所だ。", "ある日、実験中の事故で\n原子エネルギーが暴走！", "原子の力を持つモンスターたちが\n研究所から逃げ出してしまった！", "博士「大変じゃ！キミの力で\nモンスターを止めてくれ！」", "原子を組み合わせて化合物を作り、\nモンスターたちを倒すのだ！"];
+
+/* ── プロローグ画面コンポーネント ─── */
+const Prologue = ({
+  onDone
+}) => {
+  const [page, setPage] = useState(0);
+  const [fade, setFade] = useState(true);
+  const goNext = () => {
+    if (page >= PROLOGUE.length - 1) {
+      onDone();
+      return;
+    }
+    setFade(false);
+    setTimeout(() => {
+      setPage(p => p + 1);
+      setFade(true);
+    }, 300);
+    SE.tap();
+  };
+  const isLast = page >= PROLOGUE.length - 1;
+  const showDr = page >= 1;
+  return /*#__PURE__*/React.createElement("div", {
+    onClick: goNext,
+    style: {
+      minHeight: "100dvh",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "calc(24px + env(safe-area-inset-top)) 28px 24px",
+      cursor: "pointer",
+      position: "relative",
+      overflow: "hidden",
+      background: "radial-gradient(ellipse at 50% 40%,rgba(167,139,250,.1),transparent 60%),linear-gradient(180deg,#060612,#0c0c24)"
+    }
+  }, /*#__PURE__*/React.createElement(Orbs, {
+    n: 6
+  }), /*#__PURE__*/React.createElement(NoiseOverlay, null), showDr && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 20,
+      animation: "fadeScale .5s ease both",
+      filter: "drop-shadow(0 8px 30px rgba(167,139,250,.3))"
+    }
+  }, /*#__PURE__*/React.createElement(DrSVG, {
+    size: page >= 4 ? 140 : 100
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "relative",
+      zIndex: 2,
+      maxWidth: 300,
+      width: "100%",
+      padding: 24,
+      borderRadius: 20,
+      background: "rgba(255,255,255,.04)",
+      border: "1px solid rgba(255,255,255,.08)",
+      backdropFilter: "blur(8px)",
+      opacity: fade ? 1 : 0,
+      transition: "opacity .3s",
+      animation: fade ? "slideUp .4s ease both" : "none"
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 16,
+      color: "rgba(255,255,255,.8)",
+      lineHeight: 2,
+      textAlign: "center",
+      whiteSpace: "pre-line",
+      fontWeight: 600
+    }
+  }, PROLOGUE[page])), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 6,
+      marginTop: 20,
+      position: "relative",
+      zIndex: 2
+    }
+  }, PROLOGUE.map((_, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      width: i === page ? 20 : 6,
+      height: 6,
+      borderRadius: 3,
+      background: i === page ? "#a78bfa" : "rgba(255,255,255,.15)",
+      transition: "all .3s"
+    }
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 16,
+      fontSize: 13,
+      color: "rgba(255,255,255,.25)",
+      position: "relative",
+      zIndex: 2
+    }
+  }, isLast ? "タップしてはじめる" : "タップでつぎへ ▶"));
+};
+
 /* ── CPU AI ─── */
 const cpuBond = (hand, d, prem) => {
   const p = findP(cntA(hand), prem);
@@ -1922,6 +3336,8 @@ const CpuOv = ({
     requestAnimationFrame(() => setPh(1));
   }, []);
   const emoji = (name.match(/[\u{1F300}-\u{1FAD6}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}]/u) || ["🤖"])[0];
+  // ストーリーモードのモンスターか判定
+  const stageMatch = STORY.find(s => name.includes(s.name));
   return /*#__PURE__*/React.createElement("div", {
     style: {
       position: "fixed",
@@ -1939,7 +3355,16 @@ const CpuOv = ({
       animation: ph >= 1 ? "cb .4s ease both" : "none",
       opacity: 0
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, stageMatch ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 8,
+      filter: `drop-shadow(0 8px 30px ${stageMatch.color}55)`
+    }
+  }, /*#__PURE__*/React.createElement(MonsterSVG, {
+    id: stageMatch.id,
+    size: 100,
+    color: stageMatch.color
+  })) : /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 56,
       marginBottom: 8,
@@ -1949,7 +3374,7 @@ const CpuOv = ({
     style: {
       fontSize: 18,
       fontWeight: 900,
-      color: "#a78bfa",
+      color: stageMatch ? stageMatch.color : "#a78bfa",
       marginBottom: 4
     }
   }, name), action === "bond" && comp && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
@@ -2075,6 +3500,7 @@ function Title({
   const [cd, setCd] = useState("normal");
   const [hl, setHL] = useState(7);
   const [storySt, setStorySt] = useState(null);
+  const [prologueSeen, setPrologueSeen] = useState(false);
   const [bgmOn, setBgmOn] = useState(BGM.on());
   const [seOn, setSeOn] = useState(SE.isEnabled());
   const Stg = () => /*#__PURE__*/React.createElement("div", {
@@ -2610,24 +4036,45 @@ function Title({
 
   // ─ ストーリーモード ─
   if (mode === "story") {
+    // プロローグ（初回のみ）
+    if (!prologueSeen) {
+      return /*#__PURE__*/React.createElement(Prologue, {
+        onDone: () => setPrologueSeen(true)
+      });
+    }
     if (storySt === null) {
       const mainStages = STORY.filter(s => !s.ex);
       const exStages = STORY.filter(s => s.ex);
       const allMainCleared = cleared.has(10);
       return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
         style: {
-          fontSize: 52,
-          marginBottom: 8,
-          filter: "drop-shadow(0 4px 20px rgba(190,24,93,.3))"
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+          marginBottom: 20,
+          animation: "fadeScale .4s ease both"
         }
-      }, "\u2694\uFE0F"), /*#__PURE__*/React.createElement("h2", {
+      }, /*#__PURE__*/React.createElement("div", {
         style: {
-          fontSize: 22,
+          filter: "drop-shadow(0 4px 12px rgba(167,139,250,.3))"
+        }
+      }, /*#__PURE__*/React.createElement(DrSVG, {
+        size: 64
+      })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+        style: {
+          fontSize: 20,
           fontWeight: 900,
           color: "#fff",
-          margin: "0 0 24px"
+          margin: 0
         }
-      }, t("story")), /*#__PURE__*/React.createElement("div", {
+      }, t("story")), /*#__PURE__*/React.createElement("p", {
+        style: {
+          fontSize: 12,
+          color: "rgba(255,255,255,.4)",
+          margin: "2px 0 0",
+          fontWeight: 600
+        }
+      }, "\u30E2\u30F3\u30B9\u30BF\u30FC\u3092\u5012\u3057\u3066\u9032\u3081\uFF01"))), /*#__PURE__*/React.createElement("div", {
         style: {
           width: "100%",
           display: "flex",
@@ -2656,7 +4103,7 @@ function Title({
             }
           },
           style: {
-            padding: "14px 16px",
+            padding: "12px 14px",
             borderRadius: 16,
             border: `1.5px solid ${unlocked ? s.color + '44' : 'rgba(255,255,255,.05)'}`,
             background: unlocked ? `linear-gradient(135deg,${s.color}08,${s.color}04)` : 'rgba(255,255,255,.01)',
@@ -2687,21 +4134,31 @@ function Title({
           style: {
             display: "flex",
             alignItems: "center",
-            gap: 12
+            gap: 10
           }
         }, /*#__PURE__*/React.createElement("div", {
           style: {
-            fontSize: 32,
-            width: 48,
-            height: 48,
+            width: 52,
+            height: 52,
             borderRadius: 14,
-            background: `${s.color}15`,
+            background: `${s.color}12`,
             border: `1px solid ${s.color}33`,
             display: "flex",
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
+            overflow: "hidden",
+            flexShrink: 0
           }
-        }, unlocked ? s.emoji : "🔒"), /*#__PURE__*/React.createElement("div", {
+        }, unlocked ? /*#__PURE__*/React.createElement(MonsterSVG, {
+          id: s.id,
+          size: 48,
+          color: s.color
+        }) : /*#__PURE__*/React.createElement("span", {
+          style: {
+            fontSize: 24,
+            opacity: .5
+          }
+        }, "\uD83D\uDD12")), /*#__PURE__*/React.createElement("div", {
           style: {
             flex: 1
           }
@@ -2748,7 +4205,7 @@ function Title({
             }
           },
           style: {
-            padding: "14px 16px",
+            padding: "12px 14px",
             borderRadius: 16,
             border: `1.5px solid ${unlocked ? s.color + '44' : 'rgba(255,255,255,.05)'}`,
             background: unlocked ? `linear-gradient(135deg,${s.color}0a,${s.color}04)` : 'rgba(255,255,255,.01)',
@@ -2779,21 +4236,31 @@ function Title({
           style: {
             display: "flex",
             alignItems: "center",
-            gap: 12
+            gap: 10
           }
         }, /*#__PURE__*/React.createElement("div", {
           style: {
-            fontSize: 32,
-            width: 48,
-            height: 48,
+            width: 52,
+            height: 52,
             borderRadius: 14,
-            background: `${s.color}15`,
+            background: `${s.color}12`,
             border: `1px solid ${s.color}33`,
             display: "flex",
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
+            overflow: "hidden",
+            flexShrink: 0
           }
-        }, unlocked ? s.emoji : "🔒"), /*#__PURE__*/React.createElement("div", {
+        }, unlocked ? /*#__PURE__*/React.createElement(MonsterSVG, {
+          id: s.id,
+          size: 48,
+          color: s.color
+        }) : /*#__PURE__*/React.createElement("span", {
+          style: {
+            fontSize: 24,
+            opacity: .5
+          }
+        }, "\uD83D\uDD12")), /*#__PURE__*/React.createElement("div", {
           style: {
             flex: 1
           }
@@ -2825,20 +4292,38 @@ function Title({
         }
       }, t("back"))));
     }
-    // ステージ詳細
+    // ステージ詳細（モンスターイラスト大表示 + 博士の会話）
     return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       style: {
-        fontSize: 72,
-        marginBottom: 8,
-        filter: `drop-shadow(0 8px 30px ${storySt.color}55)`,
-        animation: "fl 2s ease-in-out infinite"
+        position: "relative",
+        marginBottom: 12,
+        animation: "fadeScale .5s ease both"
       }
-    }, storySt.emoji), /*#__PURE__*/React.createElement("h2", {
+    }, /*#__PURE__*/React.createElement("div", {
       style: {
-        fontSize: 26,
+        filter: `drop-shadow(0 8px 40px ${storySt.color}66)`,
+        animation: "fl 3s ease-in-out infinite"
+      }
+    }, /*#__PURE__*/React.createElement(MonsterSVG, {
+      id: storySt.id,
+      size: 140,
+      color: storySt.color
+    })), /*#__PURE__*/React.createElement("div", {
+      style: {
+        position: "absolute",
+        inset: "-30px",
+        borderRadius: "50%",
+        background: `radial-gradient(circle,${storySt.color}22,transparent 70%)`,
+        zIndex: -1,
+        animation: "pulseRing 3s ease-in-out infinite"
+      }
+    })), /*#__PURE__*/React.createElement("h2", {
+      style: {
+        fontSize: 28,
         fontWeight: 900,
         color: "#fff",
-        margin: "0 0 4px"
+        margin: "0 0 2px",
+        textShadow: `0 0 20px ${storySt.color}44`
       }
     }, storySt.name), /*#__PURE__*/React.createElement("div", {
       style: {
@@ -2847,24 +4332,129 @@ function Title({
         fontWeight: 700,
         marginBottom: 16
       }
-    }, t("storyStage"), " ", storySt.id), /*#__PURE__*/React.createElement("div", {
+    }, storySt.ex ? `EX ${t("storyStage")} ${storySt.id - 10}` : `${t("storyStage")} ${storySt.id}`), /*#__PURE__*/React.createElement("div", {
       style: {
-        padding: 18,
-        borderRadius: 18,
-        background: "rgba(255,255,255,.03)",
-        border: `1px solid ${storySt.color}22`,
-        maxWidth: 300,
+        display: "flex",
+        gap: 12,
+        alignItems: "flex-start",
+        maxWidth: 320,
         width: "100%",
         marginBottom: 20,
-        backdropFilter: "blur(4px)"
+        animation: "slideUp .5s .2s ease both",
+        opacity: 0
       }
-    }, /*#__PURE__*/React.createElement("p", {
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        flexShrink: 0,
+        filter: "drop-shadow(0 4px 10px rgba(167,139,250,.2))"
+      }
+    }, /*#__PURE__*/React.createElement(DrSVG, {
+      size: 56
+    })), /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1,
+        padding: 14,
+        borderRadius: "4px 16px 16px 16px",
+        background: "rgba(255,255,255,.05)",
+        border: "1px solid rgba(255,255,255,.08)",
+        backdropFilter: "blur(4px)",
+        position: "relative"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        position: "absolute",
+        left: -6,
+        top: 12,
+        width: 0,
+        height: 0,
+        borderTop: "6px solid transparent",
+        borderBottom: "6px solid transparent",
+        borderRight: "6px solid rgba(255,255,255,.08)"
+      }
+    }), /*#__PURE__*/React.createElement("p", {
       style: {
         fontSize: 14,
-        color: "rgba(255,255,255,.65)",
-        lineHeight: 1.8
+        color: "rgba(255,255,255,.7)",
+        lineHeight: 1.8,
+        margin: 0
       }
-    }, storySt.intro)), /*#__PURE__*/React.createElement(PremBtn, {
+    }, storySt.intro))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        gap: 12,
+        marginBottom: 20,
+        animation: "slideUp .5s .35s ease both",
+        opacity: 0
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        padding: "8px 14px",
+        borderRadius: 12,
+        background: "rgba(255,255,255,.03)",
+        border: "1px solid rgba(255,255,255,.06)",
+        textAlign: "center"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        color: "rgba(255,255,255,.3)",
+        fontWeight: 700
+      }
+    }, "\u96E3\u6613\u5EA6"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 14,
+        fontWeight: 900,
+        color: {
+          easy: "#4ade80",
+          normal: "#fbbf24",
+          hard: "#ef4444"
+        }[storySt.diff]
+      }
+    }, {
+      easy: "★☆☆",
+      normal: "★★☆",
+      hard: "★★★"
+    }[storySt.diff])), /*#__PURE__*/React.createElement("div", {
+      style: {
+        padding: "8px 14px",
+        borderRadius: 12,
+        background: "rgba(255,255,255,.03)",
+        border: "1px solid rgba(255,255,255,.06)",
+        textAlign: "center"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        color: "rgba(255,255,255,.3)",
+        fontWeight: 700
+      }
+    }, "\u624B\u672D\u4E0A\u9650"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 14,
+        fontWeight: 900,
+        color: "#a78bfa"
+      }
+    }, storySt.hl, "\u679A")), storySt.deckSize && /*#__PURE__*/React.createElement("div", {
+      style: {
+        padding: "8px 14px",
+        borderRadius: 12,
+        background: "rgba(255,255,255,.03)",
+        border: "1px solid rgba(255,255,255,.06)",
+        textAlign: "center"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        color: "rgba(255,255,255,.3)",
+        fontWeight: 700
+      }
+    }, "\u5C71\u672D"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 14,
+        fontWeight: 900,
+        color: "#ef4444"
+      }
+    }, storySt.deckSize, "\u679A"))), /*#__PURE__*/React.createElement(PremBtn, {
       onClick: () => {
         SE.gStart();
         onStartStory(storySt);
@@ -2874,7 +4464,9 @@ function Title({
       style: {
         padding: "16px 48px",
         fontSize: 20,
-        borderRadius: 20
+        borderRadius: 20,
+        animation: "slideUp .5s .5s ease both",
+        opacity: 0
       }
     }, "\u2694\uFE0F ", t("storyFight")), /*#__PURE__*/React.createElement("button", {
       onClick: () => setStorySt(null),
@@ -3999,25 +5591,59 @@ function Result({
     }
   }, storyStage && /*#__PURE__*/React.createElement("div", {
     style: {
-      padding: 14,
+      padding: 18,
       borderRadius: 16,
       background: "rgba(255,255,255,.03)",
       border: "1px solid rgba(255,255,255,.06)",
       width: "100%",
-      textAlign: "center",
       marginBottom: 4
     }
-  }, /*#__PURE__*/React.createElement("p", {
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 12,
+      alignItems: "flex-start"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flexShrink: 0,
+      filter: "drop-shadow(0 4px 10px rgba(167,139,250,.2))"
+    }
+  }, /*#__PURE__*/React.createElement(DrSVG, {
+    size: 52
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      padding: 12,
+      borderRadius: "4px 14px 14px 14px",
+      background: "rgba(255,255,255,.04)",
+      border: "1px solid rgba(255,255,255,.06)",
+      position: "relative"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "absolute",
+      left: -6,
+      top: 10,
+      width: 0,
+      height: 0,
+      borderTop: "6px solid transparent",
+      borderBottom: "6px solid transparent",
+      borderRight: "6px solid rgba(255,255,255,.06)"
+    }
+  }), /*#__PURE__*/React.createElement("p", {
     style: {
       fontSize: 14,
-      color: "rgba(255,255,255,.6)",
-      lineHeight: 1.8
+      color: "rgba(255,255,255,.65)",
+      lineHeight: 1.8,
+      margin: 0
     }
-  }, playerWon ? storyStage.win : storyStage.lose), playerLost && /*#__PURE__*/React.createElement("div", {
+  }, playerWon ? storyStage.win : storyStage.lose))), playerLost && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 13,
       color: "rgba(255,255,255,.35)",
-      marginTop: 4
+      marginTop: 8,
+      textAlign: "center"
     }
   }, t("retry"))), /*#__PURE__*/React.createElement(PremBtn, {
     onClick: onRestart,

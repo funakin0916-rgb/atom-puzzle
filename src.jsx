@@ -288,6 +288,368 @@ const STORY = [
   {id:15,name:"???",emoji:"🌌",diff:"hard",color:"#FF1744",ex:true,hl:7,deckSize:40,intro:"🧑‍🔬博士「最後の敵は…な、なんじゃこれは！？正体不明のモンスターじゃ！手札7枚＋山札少なめの最凶ハンデ！」",win:"🌟博士「…あの姿は…若い頃のワシじゃったか！？キミは完全なる化学マスターじゃ！！！おめでとう！！！」",lose:"博士「この敵は…次元が違うようじゃ…でもキミなら…！」"}
 ];
 
+/* ── キャラクターSVGイラスト ─── */
+const DrSVG = ({size=120}) => <svg width={size} height={size} viewBox="0 0 120 120" fill="none">
+  {/* 白衣 */}
+  <rect x="30" y="55" width="60" height="50" rx="8" fill="#e8e8f0" stroke="#bbb" strokeWidth="1.5"/>
+  <rect x="38" y="55" width="44" height="6" rx="3" fill="#d0d0e0"/>
+  {/* ネクタイ */}
+  <polygon points="60,61 56,80 60,85 64,80" fill="#4a6cf7"/>
+  {/* 顔 */}
+  <circle cx="60" cy="38" r="22" fill="#ffdcb5"/>
+  <circle cx="60" cy="38" r="22" fill="none" stroke="#e8b88a" strokeWidth="1"/>
+  {/* メガネ */}
+  <circle cx="51" cy="36" r="7" fill="none" stroke="#555" strokeWidth="2"/>
+  <circle cx="69" cy="36" r="7" fill="none" stroke="#555" strokeWidth="2"/>
+  <line x1="58" y1="36" x2="62" y2="36" stroke="#555" strokeWidth="2"/>
+  <line x1="44" y1="36" x2="36" y2="33" stroke="#555" strokeWidth="1.5"/>
+  <line x1="76" y1="36" x2="84" y2="33" stroke="#555" strokeWidth="1.5"/>
+  {/* 目 */}
+  <circle cx="51" cy="36" r="2.5" fill="#333"/>
+  <circle cx="69" cy="36" r="2.5" fill="#333"/>
+  <circle cx="52" cy="35" r="1" fill="#fff"/>
+  <circle cx="70" cy="35" r="1" fill="#fff"/>
+  {/* 眉 */}
+  <path d="M46 30 Q51 27 56 30" stroke="#555" strokeWidth="1.5" fill="none"/>
+  <path d="M64 30 Q69 27 74 30" stroke="#555" strokeWidth="1.5" fill="none"/>
+  {/* 口 - ニッコリ */}
+  <path d="M54 46 Q60 52 66 46" stroke="#c77" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+  {/* ひげ（白い口ひげ） */}
+  <path d="M50 43 Q55 46 60 43 Q65 46 70 43" stroke="#ccc" strokeWidth="2" fill="none" strokeLinecap="round"/>
+  {/* 髪（白髪・ボサボサ） */}
+  <path d="M38 30 Q35 18 45 15 Q52 10 60 12 Q68 10 75 15 Q85 18 82 30" fill="#ddd" stroke="#bbb" strokeWidth="1"/>
+  <path d="M36 28 Q33 22 38 20" stroke="#ccc" strokeWidth="2" fill="none"/>
+  <path d="M84 28 Q87 22 82 20" stroke="#ccc" strokeWidth="2" fill="none"/>
+  {/* ポケットのペン */}
+  <line x1="42" y1="62" x2="42" y2="72" stroke="#e53935" strokeWidth="2" strokeLinecap="round"/>
+  <line x1="46" y1="62" x2="46" y2="70" stroke="#1e88e5" strokeWidth="2" strokeLinecap="round"/>
+  {/* 試験管（手に持っている） */}
+  <rect x="82" y="50" width="8" height="24" rx="4" fill="none" stroke="#4fc3f7" strokeWidth="1.5"/>
+  <rect x="83" y="62" width="6" height="10" rx="3" fill="#4fc3f7" opacity=".5"/>
+  <circle cx="86" cy="58" r="2" fill="#4fc3f7" opacity=".6"/>
+</svg>;
+
+const MonsterSVG = ({id,size=100,color="#81D4FA"}) => {
+  const c = color;
+  const d = color + "88";
+  // 各モンスターの個別SVG
+  const monsters = {
+    // バブリン - 泡のモンスター
+    1: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="52" r="30" fill={c} opacity=".3"/>
+      <circle cx="50" cy="52" r="25" fill={c} opacity=".5"/>
+      <circle cx="50" cy="50" r="20" fill={c} opacity=".7" stroke="#fff" strokeWidth="1" strokeOpacity=".4"/>
+      {/* 目 */}
+      <ellipse cx="42" cy="46" rx="5" ry="6" fill="#fff"/>
+      <ellipse cx="58" cy="46" rx="5" ry="6" fill="#fff"/>
+      <circle cx="43" cy="46" r="3" fill="#333"/>
+      <circle cx="59" cy="46" r="3" fill="#333"/>
+      <circle cx="44" cy="45" r="1.2" fill="#fff"/>
+      <circle cx="60" cy="45" r="1.2" fill="#fff"/>
+      {/* 口 */}
+      <ellipse cx="50" cy="58" rx="6" ry="4" fill="#fff" opacity=".8"/>
+      {/* 泡 */}
+      <circle cx="30" cy="35" r="6" fill={c} opacity=".4" stroke="#fff" strokeWidth=".5" strokeOpacity=".3"/>
+      <circle cx="72" cy="38" r="5" fill={c} opacity=".35"/>
+      <circle cx="25" cy="55" r="4" fill={c} opacity=".3"/>
+      <circle cx="78" cy="58" r="3" fill={c} opacity=".25"/>
+      <circle cx="38" cy="25" r="3.5" fill={c} opacity=".3"/>
+      {/* ハイライト */}
+      <ellipse cx="44" cy="38" rx="8" ry="4" fill="#fff" opacity=".2" transform="rotate(-20,44,38)"/>
+    </svg>,
+    // アクアン - 水のモンスター
+    2: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      <path d="M50 20 Q30 45 30 60 Q30 80 50 82 Q70 80 70 60 Q70 45 50 20Z" fill={c} opacity=".6"/>
+      <path d="M50 25 Q35 45 35 58 Q35 75 50 77 Q65 75 65 58 Q65 45 50 25Z" fill={c} opacity=".8"/>
+      {/* 目 */}
+      <ellipse cx="43" cy="55" rx="4" ry="5" fill="#fff"/>
+      <ellipse cx="57" cy="55" rx="4" ry="5" fill="#fff"/>
+      <circle cx="44" cy="55" r="2.5" fill="#1a237e"/>
+      <circle cx="58" cy="55" r="2.5" fill="#1a237e"/>
+      <circle cx="44.5" cy="54" r="1" fill="#fff"/>
+      <circle cx="58.5" cy="54" r="1" fill="#fff"/>
+      {/* 口 - 波型 */}
+      <path d="M44 65 Q47 68 50 65 Q53 68 56 65" stroke="#1565c0" strokeWidth="1.5" fill="none"/>
+      {/* 水滴 */}
+      <path d="M25 50 Q23 55 25 57 Q27 55 25 50Z" fill={c} opacity=".5"/>
+      <path d="M76 48 Q74 52 76 54 Q78 52 76 48Z" fill={c} opacity=".4"/>
+      <ellipse cx="45" cy="38" rx="6" ry="3" fill="#fff" opacity=".25" transform="rotate(-15,45,38)"/>
+    </svg>,
+    // ソルティ - 塩の結晶モンスター
+    3: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      <rect x="30" y="30" width="40" height="40" rx="4" fill={c} opacity=".7" transform="rotate(15,50,50)"/>
+      <rect x="33" y="33" width="34" height="34" rx="3" fill={c} opacity=".9" transform="rotate(15,50,50)"/>
+      {/* 目 */}
+      <circle cx="43" cy="48" r="4" fill="#fff"/>
+      <circle cx="57" cy="48" r="4" fill="#fff"/>
+      <circle cx="44" cy="48" r="2.5" fill="#5d4037"/>
+      <circle cx="58" cy="48" r="2.5" fill="#5d4037"/>
+      {/* 口 */}
+      <path d="M46 58 L50 62 L54 58" stroke="#8d6e63" strokeWidth="2" fill="none" strokeLinecap="round"/>
+      {/* 小結晶 */}
+      <rect x="20" y="45" width="8" height="8" rx="1" fill={c} opacity=".4" transform="rotate(30,24,49)"/>
+      <rect x="72" y="40" width="7" height="7" rx="1" fill={c} opacity=".35" transform="rotate(-20,75,43)"/>
+      <rect x="60" y="25" width="6" height="6" rx="1" fill={c} opacity=".3" transform="rotate(45,63,28)"/>
+      {/* キラキラ */}
+      <path d="M38 32 L40 28 L42 32 L38 32" fill="#fff" opacity=".5"/>
+      <path d="M62 68 L64 64 L66 68 L62 68" fill="#fff" opacity=".4"/>
+    </svg>,
+    // エアロン - 空気のモンスター
+    4: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      <ellipse cx="50" cy="50" rx="28" ry="22" fill={c} opacity=".3"/>
+      <ellipse cx="50" cy="50" rx="22" ry="18" fill={c} opacity=".5"/>
+      {/* 渦巻き模様 */}
+      <path d="M40 50 Q45 40 55 42 Q65 44 60 52 Q55 58 48 55 Q42 52 46 48" stroke="#fff" strokeWidth="1.5" fill="none" opacity=".3"/>
+      {/* 目（風っぽく細い） */}
+      <path d="M38 46 Q42 42 46 46" stroke="#2e7d32" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+      <path d="M54 46 Q58 42 62 46" stroke="#2e7d32" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+      {/* 口 */}
+      <ellipse cx="50" cy="57" rx="5" ry="3" fill="#fff" opacity=".5"/>
+      {/* 風の線 */}
+      <path d="M15 45 Q25 42 35 45" stroke={c} strokeWidth="1.5" fill="none" opacity=".4"/>
+      <path d="M65 42 Q75 38 85 42" stroke={c} strokeWidth="1.5" fill="none" opacity=".4"/>
+      <path d="M20 58 Q28 55 36 58" stroke={c} strokeWidth="1" fill="none" opacity=".3"/>
+      <path d="M68 55 Q76 52 84 55" stroke={c} strokeWidth="1" fill="none" opacity=".3"/>
+    </svg>,
+    // コッパー - 銅のヨロイ
+    5: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      {/* 体 */}
+      <rect x="32" y="45" width="36" height="35" rx="6" fill={c} stroke="#bf360c" strokeWidth="1.5"/>
+      {/* 頭（兜） */}
+      <path d="M30 45 Q30 22 50 20 Q70 22 70 45Z" fill={c} stroke="#bf360c" strokeWidth="1.5"/>
+      <rect x="28" y="42" width="44" height="6" rx="3" fill="#e65100"/>
+      {/* 目（光るスリット） */}
+      <rect x="38" y="34" width="8" height="4" rx="2" fill="#fff200"/>
+      <rect x="54" y="34" width="8" height="4" rx="2" fill="#fff200"/>
+      {/* 腕 */}
+      <rect x="22" y="50" width="10" height="22" rx="5" fill={c} stroke="#bf360c" strokeWidth="1"/>
+      <rect x="68" y="50" width="10" height="22" rx="5" fill={c} stroke="#bf360c" strokeWidth="1"/>
+      {/* 装飾 */}
+      <circle cx="50" cy="58" r="6" fill="none" stroke="#fff200" strokeWidth="1.5" opacity=".6"/>
+      <circle cx="50" cy="58" r="3" fill="#fff200" opacity=".4"/>
+    </svg>,
+    // シルバーグ - 銀の騎士
+    6: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      {/* マント */}
+      <path d="M30 40 L25 85 Q50 90 75 85 L70 40Z" fill="#78909c" opacity=".5"/>
+      {/* 体 */}
+      <rect x="35" y="42" width="30" height="38" rx="5" fill={c} stroke="#78909c" strokeWidth="1.5"/>
+      {/* 頭（騎士の兜） */}
+      <path d="M33 42 Q33 18 50 15 Q67 18 67 42Z" fill={c} stroke="#78909c" strokeWidth="1.5"/>
+      {/* バイザー */}
+      <rect x="37" y="30" width="26" height="10" rx="3" fill="#455a64"/>
+      <rect x="40" y="32" width="8" height="5" rx="1" fill="#e0e0e0" opacity=".8"/>
+      <rect x="52" y="32" width="8" height="5" rx="1" fill="#e0e0e0" opacity=".8"/>
+      {/* 剣 */}
+      <line x1="75" y1="30" x2="75" y2="70" stroke="#cfd8dc" strokeWidth="3" strokeLinecap="round"/>
+      <line x1="70" y1="42" x2="80" y2="42" stroke="#90a4ae" strokeWidth="3" strokeLinecap="round"/>
+      {/* 羽飾り */}
+      <path d="M50 15 Q48 5 45 3 Q50 8 50 15" fill="#e0e0e0"/>
+      <path d="M50 15 Q52 5 55 3 Q50 8 50 15" fill="#cfd8dc"/>
+    </svg>,
+    // アイアンX - 鉄の巨人
+    7: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      {/* 巨大な体 */}
+      <rect x="28" y="38" width="44" height="45" rx="8" fill={c} stroke="#5d4037" strokeWidth="2"/>
+      {/* 頭 */}
+      <rect x="34" y="18" width="32" height="24" rx="6" fill={c} stroke="#5d4037" strokeWidth="2"/>
+      {/* 目（赤く光る） */}
+      <rect x="40" y="26" width="7" height="5" rx="2" fill="#ff1744"/>
+      <rect x="53" y="26" width="7" height="5" rx="2" fill="#ff1744"/>
+      {/* 口 */}
+      <rect x="42" y="35" width="16" height="3" rx="1" fill="#3e2723"/>
+      {/* 腕（太い） */}
+      <rect x="18" y="42" width="12" height="28" rx="6" fill={c} stroke="#5d4037" strokeWidth="1.5"/>
+      <rect x="70" y="42" width="12" height="28" rx="6" fill={c} stroke="#5d4037" strokeWidth="1.5"/>
+      {/* ボルト */}
+      <circle cx="36" cy="44" r="3" fill="#5d4037"/>
+      <circle cx="64" cy="44" r="3" fill="#5d4037"/>
+      {/* X マーク */}
+      <path d="M44 52 L56 66 M56 52 L44 66" stroke="#ff1744" strokeWidth="2.5" strokeLinecap="round"/>
+    </svg>,
+    // サルファー - 硫黄の毒モンスター
+    8: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      <ellipse cx="50" cy="55" rx="25" ry="22" fill={c} opacity=".7"/>
+      {/* 毒々しいガス */}
+      <circle cx="35" cy="30" r="8" fill={c} opacity=".3"/>
+      <circle cx="65" cy="28" r="6" fill={c} opacity=".25"/>
+      <circle cx="28" cy="42" r="5" fill={c} opacity=".2"/>
+      <circle cx="72" cy="45" r="4" fill={c} opacity=".2"/>
+      {/* 目（邪悪） */}
+      <path d="M38 48 L42 44 L46 48" stroke="#f57f17" strokeWidth="2.5" fill={c}/>
+      <path d="M54 48 L58 44 L62 48" stroke="#f57f17" strokeWidth="2.5" fill={c}/>
+      <circle cx="42" cy="47" r="1.5" fill="#fff"/>
+      <circle cx="58" cy="47" r="1.5" fill="#fff"/>
+      {/* 口 */}
+      <path d="M42 60 Q46 65 50 60 Q54 65 58 60" stroke="#f57f17" strokeWidth="2" fill="none"/>
+      {/* 毒マーク */}
+      <circle cx="50" cy="38" r="4" fill="none" stroke="#f57f17" strokeWidth="1.5"/>
+      <path d="M48 36 L52 40 M52 36 L48 40" stroke="#f57f17" strokeWidth="1.5"/>
+    </svg>,
+    // ドクターカオス - 暴走科学者
+    9: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      {/* 白衣（ボロボロ） */}
+      <path d="M30 55 L28 95 L72 95 L70 55Z" fill="#e0e0e0" stroke="#aaa" strokeWidth="1" strokeDasharray="3,2"/>
+      {/* 顔 */}
+      <circle cx="50" cy="38" r="18" fill="#e8d5b7"/>
+      {/* 狂気の目 */}
+      <circle cx="43" cy="35" r="5" fill="#fff"/>
+      <circle cx="57" cy="35" r="5" fill="#fff"/>
+      <circle cx="44" cy="35" r="3" fill="#e91e63"/>
+      <circle cx="58" cy="35" r="2" fill="#e91e63"/>
+      <circle cx="44.5" cy="34" r="1" fill="#fff"/>
+      {/* 眉（つり上がり） */}
+      <path d="M37 28 L48 30" stroke="#555" strokeWidth="2" strokeLinecap="round"/>
+      <path d="M63 28 L52 30" stroke="#555" strokeWidth="2" strokeLinecap="round"/>
+      {/* 口（狂笑） */}
+      <path d="M40 46 Q45 54 50 46 Q55 54 60 46" stroke="#c62828" strokeWidth="2" fill="none"/>
+      {/* 髪（逆立ち） */}
+      <path d="M32 30 Q30 15 40 10 L38 25" fill="#555"/>
+      <path d="M42 28 Q42 8 50 5 L48 22" fill="#444"/>
+      <path d="M52 22 Q55 5 58 8 L56 28" fill="#555"/>
+      <path d="M60 25 Q65 10 68 15 L65 30" fill="#444"/>
+      {/* 稲妻エフェクト */}
+      <path d="M22 30 L26 38 L23 38 L28 48" stroke={c} strokeWidth="2" fill="none"/>
+      <path d="M78 28 L74 36 L77 36 L72 46" stroke={c} strokeWidth="2" fill="none"/>
+    </svg>,
+    // ダイヤキング - 最強の結晶モンスター
+    10: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      {/* ダイヤモンド型ボディ */}
+      <polygon points="50,15 75,45 60,85 40,85 25,45" fill={c} opacity=".6"/>
+      <polygon points="50,20 70,45 58,80 42,80 30,45" fill={c} opacity=".8"/>
+      {/* キラキラ面 */}
+      <polygon points="50,20 70,45 50,55 30,45" fill="#fff" opacity=".15"/>
+      {/* 王冠 */}
+      <path d="M35 18 L40 8 L45 15 L50 5 L55 15 L60 8 L65 18Z" fill="#ffd700" stroke="#ff8f00" strokeWidth="1"/>
+      <circle cx="50" cy="10" r="2.5" fill="#ff1744"/>
+      <circle cx="42" cy="13" r="1.5" fill="#2196f3"/>
+      <circle cx="58" cy="13" r="1.5" fill="#4caf50"/>
+      {/* 目（威圧） */}
+      <path d="M40 42 L44 38 L48 42" stroke="#fff" strokeWidth="2.5" fill="none"/>
+      <path d="M52 42 L56 38 L60 42" stroke="#fff" strokeWidth="2.5" fill="none"/>
+      <circle cx="44" cy="41" r="1.5" fill="#ffd700"/>
+      <circle cx="56" cy="41" r="1.5" fill="#ffd700"/>
+      {/* 口 */}
+      <path d="M44 52 L50 56 L56 52" stroke="#fff" strokeWidth="1.5" fill="none"/>
+      {/* 放射光 */}
+      {[0,45,90,135,180,225,270,315].map((a,i)=><line key={i} x1="50" y1="50" x2={50+Math.cos(a*Math.PI/180)*45} y2={50+Math.sin(a*Math.PI/180)*45} stroke={c} strokeWidth="0.5" opacity=".3"/>)}
+    </svg>,
+    // EXステージ以降は共通テンプレートで色変え + 特徴追加
+    11: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="28" fill={c} opacity=".4"/>
+      <circle cx="50" cy="50" r="22" fill={c} opacity=".6" stroke="#fff" strokeWidth="1" strokeOpacity=".3"/>
+      <circle cx="50" cy="50" r="16" fill={c} opacity=".8"/>
+      <ellipse cx="42" cy="46" rx="4" ry="5" fill="#fff"/>
+      <ellipse cx="58" cy="46" rx="4" ry="5" fill="#fff"/>
+      <circle cx="43" cy="46" r="2.5" fill="#e91e63"/>
+      <circle cx="59" cy="46" r="2.5" fill="#e91e63"/>
+      <path d="M44 58 Q50 64 56 58" stroke="#e91e63" strokeWidth="2" fill="none"/>
+      <path d="M30 30 Q35 22 42 28" stroke={c} strokeWidth="2" fill="none" opacity=".5"/>
+      <path d="M70 30 Q65 22 58 28" stroke={c} strokeWidth="2" fill="none" opacity=".5"/>
+      <text x="50" y="38" textAnchor="middle" fill="#fff" fontSize="8" fontWeight="900" opacity=".6">NEO</text>
+    </svg>,
+    12: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      <rect x="25" y="35" width="22" height="40" rx="6" fill="#FF8A65" stroke="#bf360c" strokeWidth="1.5"/>
+      <rect x="53" y="35" width="22" height="40" rx="6" fill="#8D6E63" stroke="#5d4037" strokeWidth="1.5"/>
+      <path d="M47 35 L50 25 L53 35" fill={c}/>
+      <rect x="40" y="45" width="20" height="8" rx="4" fill={c} opacity=".6"/>
+      <circle cx="36" cy="48" r="3" fill="#fff200"/><circle cx="64" cy="48" r="3" fill="#ff1744"/>
+      <rect x="30" y="56" width="12" height="3" rx="1" fill="#bf360c"/><rect x="58" y="56" width="12" height="3" rx="1" fill="#5d4037"/>
+      <path d="M45 80 L50 90 L55 80" stroke={c} strokeWidth="2" fill="none"/>
+    </svg>,
+    13: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      <path d="M50 20 Q25 35 30 60 Q35 82 50 85 Q65 82 70 60 Q75 35 50 20Z" fill={c} opacity=".6"/>
+      <circle cx="50" cy="28" r="8" fill={c} opacity=".3"/>
+      <path d="M42 15 Q45 8 50 12 Q55 8 58 15" fill={c} opacity=".4"/>
+      <ellipse cx="43" cy="46" rx="5" ry="6" fill="#fff"/>
+      <ellipse cx="57" cy="46" rx="5" ry="6" fill="#fff"/>
+      <circle cx="44" cy="46" r="3" fill="#4a148c"/><circle cx="58" cy="46" r="3" fill="#4a148c"/>
+      <path d="M46 44 L42 40" stroke="#4a148c" strokeWidth="1.5"/><path d="M54 44 L58 40" stroke="#4a148c" strokeWidth="1.5"/>
+      <path d="M44 60 Q50 66 56 60" stroke="#4a148c" strokeWidth="1.5" fill="none"/>
+      <path d="M28 65 Q25 75 30 80" stroke={c} strokeWidth="2" fill="none" opacity=".4"/>
+      <path d="M72 65 Q75 75 70 80" stroke={c} strokeWidth="2" fill="none" opacity=".4"/>
+    </svg>,
+    14: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      <rect x="30" y="50" width="40" height="38" rx="6" fill="#3949ab" stroke="#1a237e" strokeWidth="1.5"/>
+      <circle cx="50" cy="35" r="18" fill="#e8d5b7"/>
+      <rect x="36" y="28" width="28" height="10" rx="2" fill="none" stroke="#1a237e" strokeWidth="2"/>
+      <rect x="38" y="30" width="10" height="6" rx="1" fill="rgba(255,255,255,.8)"/>
+      <rect x="52" y="30" width="10" height="6" rx="1" fill="rgba(255,255,255,.8)"/>
+      <circle cx="43" cy="33" r="2" fill="#1a237e"/><circle cx="57" cy="33" r="2" fill="#1a237e"/>
+      <path d="M45 44 Q50 48 55 44" stroke="#8d6e63" strokeWidth="1.5" fill="none"/>
+      <path d="M32 22 Q38 10 50 8 Q62 10 68 22" fill="#ccc" stroke="#aaa" strokeWidth="1"/>
+      <path d="M65 60 Q70 55 75 60 L75 72 Q70 68 65 72Z" fill="#1a237e" opacity=".6"/>
+      <text x="50" y="68" textAnchor="middle" fill="#7986cb" fontSize="7" fontWeight="900">DNA</text>
+    </svg>,
+    15: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="30" fill={c} opacity=".2"/>
+      <circle cx="50" cy="50" r="22" fill={c} opacity=".4"/>
+      <circle cx="50" cy="50" r="14" fill={c} opacity=".7"/>
+      <circle cx="43" cy="46" r="4" fill="#fff" opacity=".9"/>
+      <circle cx="57" cy="46" r="4" fill="#fff" opacity=".9"/>
+      <circle cx="44" cy="46" r="2.5" fill={c}/><circle cx="58" cy="46" r="2.5" fill={c}/>
+      <path d="M44 58 Q50 62 56 58" stroke="#fff" strokeWidth="1.5" fill="none" opacity=".8"/>
+      {[0,60,120,180,240,300].map((a,i)=><line key={i} x1="50" y1="50" x2={50+Math.cos(a*Math.PI/180)*38} y2={50+Math.sin(a*Math.PI/180)*38} stroke={c} strokeWidth="1" opacity=".3"/>)}
+      <text x="50" y="38" textAnchor="middle" fill="#fff" fontSize="8" fontWeight="900" opacity=".5">???</text>
+    </svg>
+  };
+  return monsters[id] || monsters[1];
+};
+
+/* ── プロローグ・ストーリー背景 ─── */
+const PROLOGUE = [
+  "ここは、原子科学研究所。",
+  "世界的な化学者・ゲンシ博士が\n日夜研究を続ける場所だ。",
+  "ある日、実験中の事故で\n原子エネルギーが暴走！",
+  "原子の力を持つモンスターたちが\n研究所から逃げ出してしまった！",
+  "博士「大変じゃ！キミの力で\nモンスターを止めてくれ！」",
+  "原子を組み合わせて化合物を作り、\nモンスターたちを倒すのだ！"
+];
+
+/* ── プロローグ画面コンポーネント ─── */
+const Prologue = ({onDone}) => {
+  const [page,setPage] = useState(0);
+  const [fade,setFade] = useState(true);
+  const goNext = () => {
+    if(page >= PROLOGUE.length-1) { onDone(); return; }
+    setFade(false);
+    setTimeout(()=>{ setPage(p=>p+1); setFade(true); },300);
+    SE.tap();
+  };
+  const isLast = page >= PROLOGUE.length-1;
+  const showDr = page >= 1;
+  return <div onClick={goNext} style={{
+    minHeight:"100dvh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",
+    padding:"calc(24px + env(safe-area-inset-top)) 28px 24px",cursor:"pointer",position:"relative",overflow:"hidden",
+    background:"radial-gradient(ellipse at 50% 40%,rgba(167,139,250,.1),transparent 60%),linear-gradient(180deg,#060612,#0c0c24)"
+  }}>
+    <Orbs n={6} />
+    <NoiseOverlay />
+    {/* 博士イラスト */}
+    {showDr && <div style={{marginBottom:20,animation:"fadeScale .5s ease both",filter:"drop-shadow(0 8px 30px rgba(167,139,250,.3))"}}>
+      <DrSVG size={page>=4?140:100} />
+    </div>}
+    {/* テキスト */}
+    <div style={{
+      position:"relative",zIndex:2,maxWidth:300,width:"100%",
+      padding:24,borderRadius:20,
+      background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.08)",
+      backdropFilter:"blur(8px)",
+      opacity:fade?1:0,transition:"opacity .3s",
+      animation:fade?"slideUp .4s ease both":"none"
+    }}>
+      <p style={{fontSize:16,color:"rgba(255,255,255,.8)",lineHeight:2,textAlign:"center",whiteSpace:"pre-line",fontWeight:600}}>{PROLOGUE[page]}</p>
+    </div>
+    {/* ページインジケーター */}
+    <div style={{display:"flex",gap:6,marginTop:20,position:"relative",zIndex:2}}>
+      {PROLOGUE.map((_,i)=><div key={i} style={{width:i===page?20:6,height:6,borderRadius:3,background:i===page?"#a78bfa":"rgba(255,255,255,.15)",transition:"all .3s"}} />)}
+    </div>
+    <div style={{marginTop:16,fontSize:13,color:"rgba(255,255,255,.25)",position:"relative",zIndex:2}}>
+      {isLast?"タップしてはじめる":"タップでつぎへ ▶"}
+    </div>
+  </div>;
+};
+
 /* ── CPU AI ─── */
 const cpuBond = (hand,d,prem) => {
   const p=findP(cntA(hand),prem); if(!p.length) return null;
@@ -540,10 +902,15 @@ const CpuOv = ({name,action,comp}) => {
   const t=useT(); const [ph,setPh]=useState(0);
   useEffect(()=>{requestAnimationFrame(()=>setPh(1));},[]);
   const emoji=(name.match(/[\u{1F300}-\u{1FAD6}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}]/u)||["🤖"])[0];
+  // ストーリーモードのモンスターか判定
+  const stageMatch = STORY.find(s => name.includes(s.name));
   return <div style={{position:"fixed",inset:0,zIndex:9998,display:"flex",alignItems:"center",justifyContent:"center",background:ph>=1?"rgba(6,6,18,.96)":"rgba(0,0,0,0)",transition:"background .3s"}}>
     <div style={{textAlign:"center",animation:ph>=1?"cb .4s ease both":"none",opacity:0}}>
-      <div style={{fontSize:56,marginBottom:8,filter:"drop-shadow(0 4px 20px rgba(167,139,250,.3))"}}>{emoji}</div>
-      <div style={{fontSize:18,fontWeight:900,color:"#a78bfa",marginBottom:4}}>{name}</div>
+      {stageMatch
+        ? <div style={{marginBottom:8,filter:`drop-shadow(0 8px 30px ${stageMatch.color}55)`}}><MonsterSVG id={stageMatch.id} size={100} color={stageMatch.color} /></div>
+        : <div style={{fontSize:56,marginBottom:8,filter:"drop-shadow(0 4px 20px rgba(167,139,250,.3))"}}>{emoji}</div>
+      }
+      <div style={{fontSize:18,fontWeight:900,color:stageMatch?stageMatch.color:"#a78bfa",marginBottom:4}}>{name}</div>
       {action==="bond"&&comp&&<>
         <div style={{fontSize:15,color:"#4ade80",fontWeight:800}}>{t("cpuB")}</div>
         <div style={{fontSize:40,marginTop:4}}>{comp.e}</div>
@@ -583,6 +950,7 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
   const [cd,setCd]=useState("normal");
   const [hl,setHL]=useState(7);
   const [storySt,setStorySt]=useState(null);
+  const [prologueSeen,setPrologueSeen]=useState(false);
   const [bgmOn,setBgmOn]=useState(BGM.on());
   const [seOn,setSeOn]=useState(SE.isEnabled());
   
@@ -693,13 +1061,25 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
 
   // ─ ストーリーモード ─
   if(mode==="story") {
+    // プロローグ（初回のみ）
+    if(!prologueSeen) {
+      return <Prologue onDone={()=>setPrologueSeen(true)} />;
+    }
     if(storySt===null) {
       const mainStages=STORY.filter(s=>!s.ex);
       const exStages=STORY.filter(s=>s.ex);
       const allMainCleared=cleared.has(10);
       return wrap(<>
-        <div style={{fontSize:52,marginBottom:8,filter:"drop-shadow(0 4px 20px rgba(190,24,93,.3))"}}>⚔️</div>
-        <h2 style={{fontSize:22,fontWeight:900,color:"#fff",margin:"0 0 24px"}}>{t("story")}</h2>
+        {/* 博士ヘッダー */}
+        <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:20,animation:"fadeScale .4s ease both"}}>
+          <div style={{filter:"drop-shadow(0 4px 12px rgba(167,139,250,.3))"}}>
+            <DrSVG size={64} />
+          </div>
+          <div>
+            <h2 style={{fontSize:20,fontWeight:900,color:"#fff",margin:0}}>{t("story")}</h2>
+            <p style={{fontSize:12,color:"rgba(255,255,255,.4)",margin:"2px 0 0",fontWeight:600}}>モンスターを倒して進め！</p>
+          </div>
+        </div>
         <div style={{width:"100%",display:"flex",flexDirection:"column",gap:8}}>
           {mainStages.map((s,i)=>{
             const unlocked=i===0||cleared.has(STORY[i-1].id);
@@ -707,7 +1087,7 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
             const diffLabel={easy:"★☆☆",normal:"★★☆",hard:"★★★"}[s.diff];
             const diffColor={easy:"#4ade80",normal:"#fbbf24",hard:"#ef4444"}[s.diff];
             return <button key={s.id} onClick={()=>{if(unlocked){SE.tap();setStorySt(s);}}} style={{
-              padding:"14px 16px",borderRadius:16,
+              padding:"12px 14px",borderRadius:16,
               border:`1.5px solid ${unlocked?s.color+'44':'rgba(255,255,255,.05)'}`,
               background:unlocked?`linear-gradient(135deg,${s.color}08,${s.color}04)`:'rgba(255,255,255,.01)',
               color:"#fff",cursor:unlocked?"pointer":"default",opacity:unlocked?1:.35,textAlign:"left",
@@ -716,8 +1096,11 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
               {isCleared && <div style={{position:"absolute",top:0,right:0,padding:"3px 10px",borderRadius:"0 14px 0 10px",background:"rgba(74,222,128,.15)",border:"1px solid rgba(74,222,128,.2)"}}>
                 <span style={{fontSize:10,color:"#4ade80",fontWeight:800}}>✓ {t("storyClear")}</span>
               </div>}
-              <div style={{display:"flex",alignItems:"center",gap:12}}>
-                <div style={{fontSize:32,width:48,height:48,borderRadius:14,background:`${s.color}15`,border:`1px solid ${s.color}33`,display:"flex",alignItems:"center",justifyContent:"center"}}>{unlocked?s.emoji:"🔒"}</div>
+              <div style={{display:"flex",alignItems:"center",gap:10}}>
+                {/* モンスターイラスト */}
+                <div style={{width:52,height:52,borderRadius:14,background:`${s.color}12`,border:`1px solid ${s.color}33`,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",flexShrink:0}}>
+                  {unlocked ? <MonsterSVG id={s.id} size={48} color={s.color} /> : <span style={{fontSize:24,opacity:.5}}>🔒</span>}
+                </div>
                 <div style={{flex:1}}>
                   <div style={{fontSize:15,fontWeight:900}}>{unlocked?`${t("storyStage")} ${s.id}  ${s.name}`:t("storyLocked")}</div>
                   <div style={{fontSize:12,color:diffColor,fontWeight:700,marginTop:2}}>{diffLabel}</div>
@@ -733,7 +1116,7 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
               const unlocked=cleared.has(prev);
               const isCleared=cleared.has(s.id);
               return <button key={s.id} onClick={()=>{if(unlocked){SE.tap();setStorySt(s);}}} style={{
-                padding:"14px 16px",borderRadius:16,
+                padding:"12px 14px",borderRadius:16,
                 border:`1.5px solid ${unlocked?s.color+'44':'rgba(255,255,255,.05)'}`,
                 background:unlocked?`linear-gradient(135deg,${s.color}0a,${s.color}04)`:'rgba(255,255,255,.01)',
                 color:"#fff",cursor:unlocked?"pointer":"default",opacity:unlocked?1:.35,textAlign:"left",
@@ -742,8 +1125,10 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
                 {isCleared && <div style={{position:"absolute",top:0,right:0,padding:"3px 10px",borderRadius:"0 14px 0 10px",background:"rgba(74,222,128,.15)",border:"1px solid rgba(74,222,128,.2)"}}>
                   <span style={{fontSize:10,color:"#4ade80",fontWeight:800}}>✓ {t("storyClear")}</span>
                 </div>}
-                <div style={{display:"flex",alignItems:"center",gap:12}}>
-                  <div style={{fontSize:32,width:48,height:48,borderRadius:14,background:`${s.color}15`,border:`1px solid ${s.color}33`,display:"flex",alignItems:"center",justifyContent:"center"}}>{unlocked?s.emoji:"🔒"}</div>
+                <div style={{display:"flex",alignItems:"center",gap:10}}>
+                  <div style={{width:52,height:52,borderRadius:14,background:`${s.color}12`,border:`1px solid ${s.color}33`,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",flexShrink:0}}>
+                    {unlocked ? <MonsterSVG id={s.id} size={48} color={s.color} /> : <span style={{fontSize:24,opacity:.5}}>🔒</span>}
+                  </div>
                   <div style={{flex:1}}>
                     <div style={{fontSize:15,fontWeight:900}}>{unlocked?`EX${s.id-10}  ${s.name}`:t("storyLocked")}</div>
                     <div style={{fontSize:12,color:"#ef4444",fontWeight:700,marginTop:2}}>★★★</div>
@@ -756,15 +1141,48 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
         <button onClick={()=>setMode(null)} style={{marginTop:18,padding:"10px 24px",borderRadius:12,border:"1px solid rgba(255,255,255,.08)",background:"transparent",color:"rgba(255,255,255,.35)",fontSize:14,fontWeight:700,cursor:"pointer"}}>{t("back")}</button>
       </>);
     }
-    // ステージ詳細
+    // ステージ詳細（モンスターイラスト大表示 + 博士の会話）
     return wrap(<>
-      <div style={{fontSize:72,marginBottom:8,filter:`drop-shadow(0 8px 30px ${storySt.color}55)`,animation:"fl 2s ease-in-out infinite"}}>{storySt.emoji}</div>
-      <h2 style={{fontSize:26,fontWeight:900,color:"#fff",margin:"0 0 4px"}}>{storySt.name}</h2>
-      <div style={{fontSize:14,color:storySt.color,fontWeight:700,marginBottom:16}}>{t("storyStage")} {storySt.id}</div>
-      <div style={{padding:18,borderRadius:18,background:"rgba(255,255,255,.03)",border:`1px solid ${storySt.color}22`,maxWidth:300,width:"100%",marginBottom:20,backdropFilter:"blur(4px)"}}>
-        <p style={{fontSize:14,color:"rgba(255,255,255,.65)",lineHeight:1.8}}>{storySt.intro}</p>
+      {/* モンスターイラスト（大） */}
+      <div style={{position:"relative",marginBottom:12,animation:"fadeScale .5s ease both"}}>
+        <div style={{filter:`drop-shadow(0 8px 40px ${storySt.color}66)`,animation:"fl 3s ease-in-out infinite"}}>
+          <MonsterSVG id={storySt.id} size={140} color={storySt.color} />
+        </div>
+        {/* 背景グロウ */}
+        <div style={{position:"absolute",inset:"-30px",borderRadius:"50%",background:`radial-gradient(circle,${storySt.color}22,transparent 70%)`,zIndex:-1,animation:"pulseRing 3s ease-in-out infinite"}} />
       </div>
-      <PremBtn onClick={()=>{SE.gStart();onStartStory(storySt);}} gradient={`linear-gradient(135deg,${storySt.color}cc,${storySt.color})`} shadow={`${storySt.color}44`} style={{padding:"16px 48px",fontSize:20,borderRadius:20}}>⚔️ {t("storyFight")}</PremBtn>
+      <h2 style={{fontSize:28,fontWeight:900,color:"#fff",margin:"0 0 2px",textShadow:`0 0 20px ${storySt.color}44`}}>{storySt.name}</h2>
+      <div style={{fontSize:14,color:storySt.color,fontWeight:700,marginBottom:16}}>{storySt.ex?`EX ${t("storyStage")} ${storySt.id-10}`:`${t("storyStage")} ${storySt.id}`}</div>
+      
+      {/* 博士の会話ボックス */}
+      <div style={{display:"flex",gap:12,alignItems:"flex-start",maxWidth:320,width:"100%",marginBottom:20,animation:"slideUp .5s .2s ease both",opacity:0}}>
+        <div style={{flexShrink:0,filter:"drop-shadow(0 4px 10px rgba(167,139,250,.2))"}}>
+          <DrSVG size={56} />
+        </div>
+        <div style={{flex:1,padding:14,borderRadius:"4px 16px 16px 16px",background:"rgba(255,255,255,.05)",border:"1px solid rgba(255,255,255,.08)",backdropFilter:"blur(4px)",position:"relative"}}>
+          {/* 吹き出し三角 */}
+          <div style={{position:"absolute",left:-6,top:12,width:0,height:0,borderTop:"6px solid transparent",borderBottom:"6px solid transparent",borderRight:"6px solid rgba(255,255,255,.08)"}} />
+          <p style={{fontSize:14,color:"rgba(255,255,255,.7)",lineHeight:1.8,margin:0}}>{storySt.intro}</p>
+        </div>
+      </div>
+      
+      {/* 難易度・ルール情報 */}
+      <div style={{display:"flex",gap:12,marginBottom:20,animation:"slideUp .5s .35s ease both",opacity:0}}>
+        <div style={{padding:"8px 14px",borderRadius:12,background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.06)",textAlign:"center"}}>
+          <div style={{fontSize:10,color:"rgba(255,255,255,.3)",fontWeight:700}}>難易度</div>
+          <div style={{fontSize:14,fontWeight:900,color:{easy:"#4ade80",normal:"#fbbf24",hard:"#ef4444"}[storySt.diff]}}>{{easy:"★☆☆",normal:"★★☆",hard:"★★★"}[storySt.diff]}</div>
+        </div>
+        <div style={{padding:"8px 14px",borderRadius:12,background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.06)",textAlign:"center"}}>
+          <div style={{fontSize:10,color:"rgba(255,255,255,.3)",fontWeight:700}}>手札上限</div>
+          <div style={{fontSize:14,fontWeight:900,color:"#a78bfa"}}>{storySt.hl}枚</div>
+        </div>
+        {storySt.deckSize && <div style={{padding:"8px 14px",borderRadius:12,background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.06)",textAlign:"center"}}>
+          <div style={{fontSize:10,color:"rgba(255,255,255,.3)",fontWeight:700}}>山札</div>
+          <div style={{fontSize:14,fontWeight:900,color:"#ef4444"}}>{storySt.deckSize}枚</div>
+        </div>}
+      </div>
+      
+      <PremBtn onClick={()=>{SE.gStart();onStartStory(storySt);}} gradient={`linear-gradient(135deg,${storySt.color}cc,${storySt.color})`} shadow={`${storySt.color}44`} style={{padding:"16px 48px",fontSize:20,borderRadius:20,animation:"slideUp .5s .5s ease both",opacity:0}}>⚔️ {t("storyFight")}</PremBtn>
       <button onClick={()=>setStorySt(null)} style={{marginTop:14,padding:"10px 24px",borderRadius:12,border:"1px solid rgba(255,255,255,.08)",background:"transparent",color:"rgba(255,255,255,.35)",fontSize:14,fontWeight:700,cursor:"pointer"}}>{t("storyBack")}</button>
     </>);
   }
@@ -1042,9 +1460,18 @@ function Result({state,onRestart,isCpu,storyStage,onStoryWin}) {
       </div>}
       
       {ph>=4 && <div style={{marginTop:24,animation:"su .4s ease both",width:"100%",display:"flex",flexDirection:"column",gap:10,alignItems:"center"}}>
-        {storyStage && <div style={{padding:14,borderRadius:16,background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.06)",width:"100%",textAlign:"center",marginBottom:4}}>
-          <p style={{fontSize:14,color:"rgba(255,255,255,.6)",lineHeight:1.8}}>{playerWon?storyStage.win:storyStage.lose}</p>
-          {playerLost&&<div style={{fontSize:13,color:"rgba(255,255,255,.35)",marginTop:4}}>{t("retry")}</div>}
+        {storyStage && <div style={{padding:18,borderRadius:16,background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.06)",width:"100%",marginBottom:4}}>
+          {/* 博士の感想 + イラスト */}
+          <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+            <div style={{flexShrink:0,filter:"drop-shadow(0 4px 10px rgba(167,139,250,.2))"}}>
+              <DrSVG size={52} />
+            </div>
+            <div style={{flex:1,padding:12,borderRadius:"4px 14px 14px 14px",background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.06)",position:"relative"}}>
+              <div style={{position:"absolute",left:-6,top:10,width:0,height:0,borderTop:"6px solid transparent",borderBottom:"6px solid transparent",borderRight:"6px solid rgba(255,255,255,.06)"}} />
+              <p style={{fontSize:14,color:"rgba(255,255,255,.65)",lineHeight:1.8,margin:0}}>{playerWon?storyStage.win:storyStage.lose}</p>
+            </div>
+          </div>
+          {playerLost&&<div style={{fontSize:13,color:"rgba(255,255,255,.35)",marginTop:8,textAlign:"center"}}>{t("retry")}</div>}
         </div>}
         <PremBtn onClick={onRestart} gradient="linear-gradient(135deg,#ea580c,#f97316)" shadow="rgba(234,88,12,.35)" style={{padding:"16px 48px",fontSize:20,borderRadius:20,width:"100%",maxWidth:280}}>{t("again")}</PremBtn>
       </div>}
