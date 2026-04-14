@@ -4518,7 +4518,9 @@ function Result({
   onRestart,
   isCpu,
   storyStage,
-  onStoryWin
+  onStoryWin,
+  onStartStory,
+  cleared
 }) {
   const t = useT();
   const [ph, setPh] = useState(0);
@@ -4879,18 +4881,62 @@ function Result({
       marginTop: 8,
       textAlign: "center"
     }
-  }, t("retry"))), /*#__PURE__*/React.createElement(PremBtn, {
-    onClick: onRestart,
-    gradient: "linear-gradient(135deg,#ea580c,#f93)",
-    shadow: "rgba(200,100,0,.35)",
+  }, t("retry"))), storyStage ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PremBtn, {
+    onClick: () => onStartStory(storyStage),
+    bg: "#cc6600",
     style: {
-      padding: "16px 48px",
-      fontSize: 20,
-      borderRadius: 0,
+      padding: "14px 40px",
+      fontSize: 16,
       width: "100%",
       maxWidth: 280
     }
-  }, t("again")))));
+  }, "\uD83D\uDD04 \u3082\u3046\u3044\u3061\u3069\u305F\u305F\u304B\u3046"), playerWon && (() => {
+    const nextStage = STORY.find(s => s.id === storyStage.id + 1);
+    if (nextStage) return /*#__PURE__*/React.createElement(PremBtn, {
+      onClick: () => onStartStory(nextStage),
+      bg: "#cc2222",
+      style: {
+        padding: "14px 40px",
+        fontSize: 16,
+        width: "100%",
+        maxWidth: 280
+      }
+    }, "\u25B6 \u3064\u304E\u306E\u30B9\u30C6\u30FC\u30B8\u3078\uFF08", nextStage.ex ? `EX${nextStage.id - 10}` : `${nextStage.id}`, " ", nextStage.name, "\uFF09");
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        padding: "10px 16px",
+        border: "2px solid rgba(255,200,50,.2)",
+        background: "rgba(255,200,50,.04)",
+        textAlign: "center"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 13,
+        color: "#fc3",
+        fontWeight: 800
+      }
+    }, "\uD83C\uDFC6 \u3059\u3079\u3066\u306E\u30B9\u30C6\u30FC\u30B8\u3092\u30AF\u30EA\u30A2\uFF01"));
+  })(), /*#__PURE__*/React.createElement("button", {
+    onClick: onRestart,
+    style: {
+      padding: "10px 24px",
+      border: "2px solid #334",
+      background: "transparent",
+      color: "rgba(255,255,255,.4)",
+      fontSize: 13,
+      fontWeight: 700,
+      cursor: "pointer"
+    }
+  }, "\uD83C\uDFE0 \u30C8\u30C3\u30D7\u306B\u3082\u3069\u308B")) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PremBtn, {
+    onClick: onRestart,
+    bg: "#cc6600",
+    style: {
+      padding: "16px 48px",
+      fontSize: 20,
+      width: "100%",
+      maxWidth: 280
+    }
+  }, t("again"))))));
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -5207,7 +5253,9 @@ window.__App = function App() {
     onRestart: restart,
     isCpu: isCpu,
     storyStage: storyStage,
-    onStoryWin: storyWin
+    onStoryWin: storyWin,
+    onStartStory: startStory,
+    cleared: cleared
   }), scr === "game" && cpuOv && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(BgmBtn, null), /*#__PURE__*/React.createElement(CpuOv, {
     name: cpuOv.name,
     action: cpuOv.action,

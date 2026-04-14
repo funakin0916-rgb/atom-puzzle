@@ -1537,7 +1537,7 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
 /* ═══════════════════════════════════════════════════════════
    🏆 結果画面 - PREMIUM
    ═══════════════════════════════════════════════════════════ */
-function Result({state,onRestart,isCpu,storyStage,onStoryWin}) {
+function Result({state,onRestart,isCpu,storyStage,onStoryWin,onStartStory,cleared}) {
   const t=useT();
   const [ph,setPh]=useState(0);
   const ranks=state.pl.map((p,i)=>({...p,idx:i,sc:p.bonds.reduce((s,b)=>s+b.p,0)})).sort((a,b)=>b.sc-a.sc);
@@ -1622,7 +1622,25 @@ function Result({state,onRestart,isCpu,storyStage,onStoryWin}) {
           </div>
           {playerLost&&<div style={{fontSize:13,color:"rgba(255,255,255,.35)",marginTop:8,textAlign:"center"}}>{t("retry")}</div>}
         </div>}
-        <PremBtn onClick={onRestart} gradient="linear-gradient(135deg,#ea580c,#f93)" shadow="rgba(200,100,0,.35)" style={{padding:"16px 48px",fontSize:20,borderRadius:0,width:"100%",maxWidth:280}}>{t("again")}</PremBtn>
+        {/* ── ストーリーモード用ボタン群 ── */}
+        {storyStage ? <>
+          {/* もう一度たたかう */}
+          <PremBtn onClick={()=>onStartStory(storyStage)} bg="#cc6600" style={{padding:"14px 40px",fontSize:16,width:"100%",maxWidth:280}}>🔄 もういちどたたかう</PremBtn>
+          {/* 次のステージへ（勝った場合のみ） */}
+          {playerWon && (()=>{
+            const nextStage = STORY.find(s=>s.id===storyStage.id+1);
+            if(nextStage) return <PremBtn onClick={()=>onStartStory(nextStage)} bg="#cc2222" style={{padding:"14px 40px",fontSize:16,width:"100%",maxWidth:280}}>
+              ▶ つぎのステージへ（{nextStage.ex?`EX${nextStage.id-10}`:`${nextStage.id}`} {nextStage.name}）
+            </PremBtn>;
+            return <div style={{padding:"10px 16px",border:"2px solid rgba(255,200,50,.2)",background:"rgba(255,200,50,.04)",textAlign:"center"}}>
+              <span style={{fontSize:13,color:"#fc3",fontWeight:800}}>🏆 すべてのステージをクリア！</span>
+            </div>;
+          })()}
+          {/* トップにもどる */}
+          <button onClick={onRestart} style={{padding:"10px 24px",border:"2px solid #334",background:"transparent",color:"rgba(255,255,255,.4)",fontSize:13,fontWeight:700,cursor:"pointer"}}>🏠 トップにもどる</button>
+        </> : <>
+          <PremBtn onClick={onRestart} bg="#cc6600" style={{padding:"16px 48px",fontSize:20,width:"100%",maxWidth:280}}>{t("again")}</PremBtn>
+        </>}
       </div>}
     </div>
   </div>;
@@ -1691,7 +1709,7 @@ window.__App = function App() {
   return <LangCtx.Provider value={lang}>
     <style>{CSS}</style>
     {scr==="title" && <Title onStart={(n,l)=>init(n,null,null,l)} onStartCpu={(m,c,d,l)=>init([m,...c],new Set(c.map((_,i)=>i+1)),d,l)} onStartStory={startStory} onTest={l=>init(["あなた","コンピュータ🤖"],new Set([1]),"normal",l,6)} lang={lang} setLang={setLang} premium={premium} setPremium={setPremium} cleared={cleared} prologueDone={prologueDone} setPrologueDone={setPrologueDone} />}
-    {scr==="result"&&gs && <Result state={gs} onRestart={restart} isCpu={isCpu} storyStage={storyStage} onStoryWin={storyWin} />}
+    {scr==="result"&&gs && <Result state={gs} onRestart={restart} isCpu={isCpu} storyStage={storyStage} onStoryWin={storyWin} onStartStory={startStory} cleared={cleared} />}
     {scr==="game"&&cpuOv && <><BgmBtn /><CpuOv name={cpuOv.name} action={cpuOv.action} comp={cpuOv.comp} /></>}
     {scr==="game"&&!cpuOv&&sp&&!isCpu&&gs && <Pass pn={gs.pl[cp].name} onReady={()=>setSP(false)} info={gs.deck.length>0?`${tx.dkRem} ${gs.deck.length} ${tx.mai}`:tx.lastR} />}
     {scr==="game"&&!cpuOv&&!(sp&&!isCpu)&&gs && <Game key={`${cp}-${tc}`} state={gs} pi={cp} onDraw={draw} onBond={bond} onPass={advance} onDiscard={disc} hl={hl} onFinish={finishGame} premium={premium} onQuit={()=>{setScr("title");setGS(null);}} />}
