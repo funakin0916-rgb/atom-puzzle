@@ -1995,15 +1995,16 @@ const Badge = ({
   comp
 }) => {
   const t = useT();
+  const isBoosted = comp.mult && comp.mult > 1;
   const ptCol = comp.sp ? "#c9f" : comp.p >= 8 ? "#f93" : comp.p >= 5 ? "#fc3" : "#5f8";
   return /*#__PURE__*/React.createElement("div", {
     style: {
       display: "inline-flex",
       alignItems: "center",
       gap: 3,
-      background: "#111",
+      background: isBoosted ? "rgba(255,200,50,.08)" : "#111",
       padding: "2px 6px",
-      border: comp.sp ? "2px solid #c9f" : "2px solid #334",
+      border: isBoosted ? "2px solid #fc3" : comp.sp ? "2px solid #c9f" : "2px solid #334",
       fontSize: 10,
       imageRendering: "pixelated"
     }
@@ -2016,7 +2017,13 @@ const Badge = ({
       fontWeight: 700,
       color: "#bbb"
     }
-  }, t(comp.k)), /*#__PURE__*/React.createElement("span", {
+  }, t(comp.k)), isBoosted && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 8,
+      color: "#fc3",
+      fontWeight: 900
+    }
+  }, "x1.5"), /*#__PURE__*/React.createElement("span", {
     style: {
       fontWeight: 700,
       color: "#000",
@@ -2338,7 +2345,14 @@ const Celeb = ({
     style: {
       fontSize: 20
     }
-  }, t("pt"))), comp.sp && /*#__PURE__*/React.createElement("div", {
+  }, t("pt"))), comp.mult && comp.mult > 1 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      color: "#fc3",
+      fontWeight: 900,
+      marginTop: 2
+    }
+  }, "\u2328\uFE0F \u30B3\u30DE\u30F3\u30C9\u30DC\u30FC\u30CA\u30B9 \xD7", comp.mult), comp.sp && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 16,
       color: "#c9f",
@@ -3642,6 +3656,9 @@ function Game({
   const [drawnC, setDrC] = useState(null);
   const [bonded, setBon] = useState(false);
   const [cel, setCel] = useState(null);
+  const [cmdOpen, setCmdOpen] = useState(false);
+  const [cmdText, setCmdText] = useState("");
+  const [cmdErr, setCmdErr] = useState("");
   const selC = hand.filter(c => sel.has(c.id));
   const selCnt = cntA(selC);
   const match = COMPS.find(c => (premium || c.free) && Object.entries(c.a).every(([s, n]) => (selCnt[s] || 0) === n) && Object.entries(selCnt).every(([s, n]) => (c.a[s] || 0) === n));
@@ -3689,6 +3706,58 @@ function Game({
     if (cel) return;
     SE.pass();
     onPass();
+  };
+  /* ── コマンド入力で化合物を作る（得点1.5倍） ── */
+  const doCmd = () => {
+    const input = cmdText.trim().toUpperCase().replace(/\s/g, "");
+    if (!input) {
+      setCmdErr("化学式を入力してね");
+      return;
+    }
+    // 化学式 → 化合物マッチ（f フィールドの下付き数字を正規化して比較）
+    const normalize = s => s.replace(/[₂₃₄₅₆₇]/g, m => "₂₃₄₅₆₇".indexOf(m) + 2).replace(/[²³⁴⁵⁶⁷]/g, m => "²³⁴⁵⁶⁷".indexOf(m) + 2).toUpperCase().replace(/\s/g, "");
+    const found = COMPS.find(c => {
+      if (!premium && !c.free) return false;
+      // f: "H₂O" → normalize → "H2O"
+      const nf = normalize(c.f);
+      return input === nf;
+    });
+    if (!found) {
+      setCmdErr("その化学式は見つからないよ");
+      return;
+    }
+    // 手札にあるか確認
+    const canMake = Object.entries(found.a).every(([s, n]) => (hc[s] || 0) >= n);
+    if (!canMake) {
+      setCmdErr("手札が足りないよ");
+      return;
+    }
+    // 手札からカードを自動選択
+    const need = {
+      ...found.a
+    };
+    const ids = [];
+    for (const card of hand) {
+      if (need[card.s] > 0) {
+        ids.push(card.id);
+        need[card.s]--;
+      }
+    }
+    // 1.5倍ボーナスで作成！
+    const boosted = {
+      ...found,
+      p: Math.round(found.p * 1.5),
+      origP: found.p,
+      mult: 1.5
+    };
+    setCel(boosted);
+    onBond(ids, found, 1.5);
+    setSel(new Set());
+    setBon(true);
+    setCmdOpen(false);
+    setCmdText("");
+    setCmdErr("");
+    SE.tap();
   };
   return /*#__PURE__*/React.createElement("div", {
     style: {
@@ -3946,14 +4015,105 @@ function Game({
     }
   }, "\uD83D\uDC8E ", t("sp")), /*#__PURE__*/React.createElement(PremBtn, {
     onClick: doBond,
-    gradient: "linear-gradient(135deg,#059669,#34d399)",
-    shadow: "rgba(5,150,105,.35)",
+    bg: "#228833",
     style: {
       marginTop: 12,
       padding: "12px 36px",
       fontSize: 18
     }
-  }, t("bBtn"))), /*#__PURE__*/React.createElement(Inv, {
+  }, t("bBtn"))), !overLimit && !cel && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 10
+    }
+  }, !cmdOpen ? /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setCmdOpen(true);
+      SE.tap();
+    },
+    style: {
+      width: "100%",
+      padding: 10,
+      border: "2px solid rgba(255,200,50,.2)",
+      background: "rgba(255,200,50,.04)",
+      color: "#fc3",
+      fontSize: 12,
+      fontWeight: 700,
+      cursor: "pointer"
+    }
+  }, "\u2328\uFE0F \u30B3\u30DE\u30F3\u30C9\u5165\u529B\uFF08\u5F97\u70B91.5\u500D\uFF01\uFF09") : /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: 12,
+      border: "2px solid #fc3",
+      background: "rgba(255,200,50,.06)",
+      animation: "su .2s ease"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: "#fc3",
+      fontWeight: 800,
+      marginBottom: 6
+    }
+  }, "\u2328\uFE0F \u5316\u5B66\u5F0F\u3092\u5165\u529B\u3057\u3066\u4F5C\u308B\u3068\u5F97\u70B91.5\u500D\uFF01"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 6,
+      alignItems: "center"
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    value: cmdText,
+    onChange: e => setCmdText(e.target.value),
+    onKeyDown: e => {
+      if (e.key === "Enter") doCmd();
+    },
+    placeholder: "\u4F8B: H2O, NaCl, CO2",
+    style: {
+      flex: 1,
+      padding: "8px 10px",
+      border: "2px solid #334",
+      background: "#111",
+      color: "#fff",
+      fontSize: 14,
+      outline: "none",
+      fontFamily: "'DotGothic16',monospace",
+      fontWeight: 700
+    },
+    autoFocus: true
+  }), /*#__PURE__*/React.createElement(PremBtn, {
+    onClick: doCmd,
+    bg: "#cc8800",
+    style: {
+      padding: "8px 14px",
+      fontSize: 13
+    }
+  }, "\u6C7A\u5B9A")), cmdErr && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: "#f44",
+      marginTop: 4,
+      fontWeight: 700
+    }
+  }, "\u274C ", cmdErr), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: "rgba(255,255,255,.3)",
+      marginTop: 4
+    }
+  }, "\u203B \u624B\u672D\u306B\u3042\u308B\u5143\u7D20\u3067\u4F5C\u308C\u308B\u5316\u5B66\u5F0F\u3092\u5165\u529B\uFF08\u4F8B: H2O, NaCl, CH4, Fe2O3\uFF09"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setCmdOpen(false);
+      setCmdErr("");
+    },
+    style: {
+      marginTop: 6,
+      padding: "4px 12px",
+      border: "1px solid #334",
+      background: "transparent",
+      color: "#666",
+      fontSize: 10,
+      cursor: "pointer"
+    }
+  }, "\u2715 \u3068\u3058\u308B"))), /*#__PURE__*/React.createElement(Inv, {
     state: state,
     myHand: hand
   }), (() => {
@@ -4905,14 +5065,20 @@ window.__App = function App() {
     }
     return dr;
   }, [gs, cp, lrs]);
-  const bond = useCallback((ids, comp) => {
+  const bond = useCallback((ids, comp, mult) => {
     const s = new Set(ids);
+    const bc = mult && mult !== 1 ? {
+      ...comp,
+      p: Math.round(comp.p * mult),
+      origP: comp.p,
+      mult
+    } : comp;
     setGS(prev => ({
       ...prev,
       pl: prev.pl.map((p, i) => i === cp ? {
         ...p,
         hand: p.hand.filter(c => !s.has(c.id)),
-        bonds: [...p.bonds, comp]
+        bonds: [...p.bonds, bc]
       } : p)
     }));
   }, [cp]);

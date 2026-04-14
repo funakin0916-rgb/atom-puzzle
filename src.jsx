@@ -890,15 +890,17 @@ const Card = ({card,sel,onTap,dl=0}) => {
 /* ── バッジ ─── */
 const Badge = ({comp}) => {
   const t = useT();
+  const isBoosted = comp.mult && comp.mult > 1;
   const ptCol = comp.sp?"#c9f":comp.p>=8?"#f93":comp.p>=5?"#fc3":"#5f8";
   return <div style={{
     display:"inline-flex",alignItems:"center",gap:3,
-    background:"#111",padding:"2px 6px",
-    border:comp.sp?"2px solid #c9f":"2px solid #334",
+    background:isBoosted?"rgba(255,200,50,.08)":"#111",padding:"2px 6px",
+    border:isBoosted?"2px solid #fc3":comp.sp?"2px solid #c9f":"2px solid #334",
     fontSize:10,imageRendering:"pixelated"
   }}>
     <span style={{fontSize:11}}>{comp.e}</span>
     <span style={{fontWeight:700,color:"#bbb"}}>{t(comp.k)}</span>
+    {isBoosted && <span style={{fontSize:8,color:"#fc3",fontWeight:900}}>x1.5</span>}
     <span style={{fontWeight:700,color:"#000",background:ptCol,padding:"0 4px",fontSize:9}}>{comp.p}{t("pt")}</span>
   </div>;
 };
@@ -970,6 +972,7 @@ const Celeb = ({comp,onDone}) => {
     </div>}
     {ph>=4&&<div style={{position:"relative",zIndex:10,textAlign:"center",animation:"sp .4s ease both"}}>
       <div style={{fontSize:44,fontWeight:900,color:mc,textShadow:`0 0 30px ${mc}88`,marginTop:4}}>+{comp.p}<span style={{fontSize:20}}>{t("pt")}</span></div>
+      {comp.mult&&comp.mult>1&&<div style={{fontSize:14,color:"#fc3",fontWeight:900,marginTop:2}}>⌨️ コマンドボーナス ×{comp.mult}</div>}
       {comp.sp&&<div style={{fontSize:16,color:"#c9f",fontWeight:800,marginTop:2}}>💎 {t("sp")}</div>}
     </div>}
   </div>;
@@ -1295,6 +1298,9 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
   const [drawnC,setDrC]=useState(null);
   const [bonded,setBon]=useState(false);
   const [cel,setCel]=useState(null);
+  const [cmdOpen,setCmdOpen]=useState(false);
+  const [cmdText,setCmdText]=useState("");
+  const [cmdErr,setCmdErr]=useState("");
   const selC=hand.filter(c=>sel.has(c.id));
   const selCnt=cntA(selC);
   const match=COMPS.find(c=>(premium||c.free)&&Object.entries(c.a).every(([s,n])=>(selCnt[s]||0)===n)&&Object.entries(selCnt).every(([s,n])=>(c.a[s]||0)===n));
@@ -1307,6 +1313,30 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
   const doDraw=()=>{if(cel)return;const d=onDraw();if(d){SE.cardDraw();setDrew(true);setDrC(d);}};
   const doBond=()=>{if(match&&!cel){setCel(match);onBond([...sel],match);setSel(new Set());setBon(true);}};
   const doPass=()=>{if(cel)return;SE.pass();onPass();};
+  /* ── コマンド入力で化合物を作る（得点1.5倍） ── */
+  const doCmd=()=>{
+    const input=cmdText.trim().toUpperCase().replace(/\s/g,"");
+    if(!input){setCmdErr("化学式を入力してね");return;}
+    // 化学式 → 化合物マッチ（f フィールドの下付き数字を正規化して比較）
+    const normalize=s=>s.replace(/[₂₃₄₅₆₇]/g,m=>"₂₃₄₅₆₇".indexOf(m)+2).replace(/[²³⁴⁵⁶⁷]/g,m=>"²³⁴⁵⁶⁷".indexOf(m)+2).toUpperCase().replace(/\s/g,"");
+    const found=COMPS.find(c=>{
+      if(!premium&&!c.free) return false;
+      // f: "H₂O" → normalize → "H2O"
+      const nf=normalize(c.f);
+      return input===nf;
+    });
+    if(!found){setCmdErr("その化学式は見つからないよ");return;}
+    // 手札にあるか確認
+    const canMake=Object.entries(found.a).every(([s,n])=>(hc[s]||0)>=n);
+    if(!canMake){setCmdErr("手札が足りないよ");return;}
+    // 手札からカードを自動選択
+    const need={...found.a};const ids=[];
+    for(const card of hand){if(need[card.s]>0){ids.push(card.id);need[card.s]--;}}
+    // 1.5倍ボーナスで作成！
+    const boosted={...found,p:Math.round(found.p*1.5),origP:found.p,mult:1.5};
+    setCel(boosted);onBond(ids,found,1.5);setSel(new Set());setBon(true);
+    setCmdOpen(false);setCmdText("");setCmdErr("");SE.tap();
+  };
   
   return <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",background:pco.bg,paddingTop:"env(safe-area-inset-top)"}}>
     {cel && <Celeb comp={cel} onDone={()=>setCel(null)} />}
@@ -1382,7 +1412,28 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
           {match.f}（+{match.p}{t("pt")}）
         </div>
         {match.sp && <div style={{fontSize:12,color:"#c9f",fontWeight:800,marginTop:2}}>💎 {t("sp")}</div>}
-        <PremBtn onClick={doBond} gradient="linear-gradient(135deg,#059669,#34d399)" shadow="rgba(5,150,105,.35)" style={{marginTop:12,padding:"12px 36px",fontSize:18}}>{t("bBtn")}</PremBtn>
+        <PremBtn onClick={doBond} bg="#228833" style={{marginTop:12,padding:"12px 36px",fontSize:18}}>{t("bBtn")}</PremBtn>
+      </div>}
+      
+      {/* ── コマンド入力（化学式で1.5倍ボーナス） ── */}
+      {!overLimit&&!cel && <div style={{marginTop:10}}>
+        {!cmdOpen ? <button onClick={()=>{setCmdOpen(true);SE.tap();}} style={{
+          width:"100%",padding:10,border:"2px solid rgba(255,200,50,.2)",
+          background:"rgba(255,200,50,.04)",color:"#fc3",fontSize:12,fontWeight:700,cursor:"pointer"
+        }}>⌨️ コマンド入力（得点1.5倍！）</button>
+        : <div style={{padding:12,border:"2px solid #fc3",background:"rgba(255,200,50,.06)",animation:"su .2s ease"}}>
+          <div style={{fontSize:11,color:"#fc3",fontWeight:800,marginBottom:6}}>⌨️ 化学式を入力して作ると得点1.5倍！</div>
+          <div style={{display:"flex",gap:6,alignItems:"center"}}>
+            <input value={cmdText} onChange={e=>setCmdText(e.target.value)}
+              onKeyDown={e=>{if(e.key==="Enter")doCmd();}}
+              placeholder="例: H2O, NaCl, CO2"
+              style={{flex:1,padding:"8px 10px",border:"2px solid #334",background:"#111",color:"#fff",fontSize:14,outline:"none",fontFamily:"'DotGothic16',monospace",fontWeight:700}} autoFocus />
+            <PremBtn onClick={doCmd} bg="#cc8800" style={{padding:"8px 14px",fontSize:13}}>決定</PremBtn>
+          </div>
+          {cmdErr && <div style={{fontSize:11,color:"#f44",marginTop:4,fontWeight:700}}>❌ {cmdErr}</div>}
+          <div style={{fontSize:9,color:"rgba(255,255,255,.3)",marginTop:4}}>※ 手札にある元素で作れる化学式を入力（例: H2O, NaCl, CH4, Fe2O3）</div>
+          <button onClick={()=>{setCmdOpen(false);setCmdErr("");}} style={{marginTop:6,padding:"4px 12px",border:"1px solid #334",background:"transparent",color:"#666",fontSize:10,cursor:"pointer"}}>✕ とじる</button>
+        </div>}
       </div>}
       
       <Inv state={state} myHand={hand} />
@@ -1635,7 +1686,7 @@ window.__App = function App() {
   
   const draw=useCallback(()=>{if(!gs||gs.deck.length===0)return null;const nd=[...gs.deck],dr=nd.pop();const np=gs.pl.map((p,i)=>i===cp?{...p,hand:[...p.hand,dr]}:p);setGS({...gs,deck:nd,pl:np});if(nd.length===0&&!lrs){setLRS(true);setLRSP(cp);}return dr;},[gs,cp,lrs]);
   
-  const bond=useCallback((ids,comp)=>{const s=new Set(ids);setGS(prev=>({...prev,pl:prev.pl.map((p,i)=>i===cp?{...p,hand:p.hand.filter(c=>!s.has(c.id)),bonds:[...p.bonds,comp]}:p)}));},[cp]);
+  const bond=useCallback((ids,comp,mult)=>{const s=new Set(ids);const bc=mult&&mult!==1?{...comp,p:Math.round(comp.p*mult),origP:comp.p,mult}:comp;setGS(prev=>({...prev,pl:prev.pl.map((p,i)=>i===cp?{...p,hand:p.hand.filter(c=>!s.has(c.id)),bonds:[...p.bonds,bc]}:p)}));},[cp]);
   
   const disc=useCallback(cid=>{setGS(prev=>{let d=null;const np=prev.pl.map((p,i)=>{if(i===cp){d=p.hand.find(c=>c.id===cid);return {...p,hand:p.hand.filter(c=>c.id!==cid)};}return p;});return {...prev,pl:np,dp:[...(prev.dp||[]),...(d?[d]:[])]};});},[cp]);
   
