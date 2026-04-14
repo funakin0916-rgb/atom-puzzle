@@ -1093,7 +1093,7 @@ const Pass = ({pn,onReady,info}) => {
 /* ═══════════════════════════════════════════════════════════
    📱 タイトル画面 - PREMIUM
    ═══════════════════════════════════════════════════════════ */
-function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setPremium,cleared,prologueDone,setPrologueDone}) {
+function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setPremium,cleared,prologueDone,setPrologueDone,pendingStage,setPendingStage}) {
   const t=useT();
   const [mode,setMode]=useState(null);
   const [pc,setPc]=useState(2);
@@ -1105,6 +1105,15 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
   const [storySt,setStorySt]=useState(null);
   const [bgmOn,setBgmOn]=useState(BGM.on());
   const [seOn,setSeOn]=useState(SE.isEnabled());
+  
+  // 結果画面から「次のステージへ」で来た場合、自動的にストーリーモード＋ステージ紹介を開く
+  useEffect(()=>{
+    if(pendingStage){
+      setMode("story");
+      setStorySt(pendingStage);
+      setPendingStage(null);
+    }
+  },[]);
   
   const Stg = () => <div style={{marginTop:18,padding:18,borderRadius:0,background:"#0c0c1a",border:"2px solid #223",maxWidth:300,width:"100%",}}>
     <div style={{fontSize:14,fontWeight:900,color:"#fc3",marginBottom:12}}>⚙️ {t("settings")}</div>
@@ -1597,7 +1606,7 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
 /* ═══════════════════════════════════════════════════════════
    🏆 結果画面 - PREMIUM
    ═══════════════════════════════════════════════════════════ */
-function Result({state,onRestart,isCpu,storyStage,onStoryWin,onStartStory,cleared}) {
+function Result({state,onRestart,isCpu,storyStage,onStoryWin,onStartStory,onGoToStageIntro,cleared}) {
   const t=useT();
   const [ph,setPh]=useState(0);
   const ranks=state.pl.map((p,i)=>({...p,idx:i,sc:p.bonds.reduce((s,b)=>s+b.p,0)})).sort((a,b)=>b.sc-a.sc);
@@ -1689,7 +1698,7 @@ function Result({state,onRestart,isCpu,storyStage,onStoryWin,onStartStory,cleare
           {/* 次のステージへ（勝った場合のみ） */}
           {playerWon && (()=>{
             const nextStage = STORY.find(s=>s.id===storyStage.id+1);
-            if(nextStage) return <PremBtn onClick={()=>onStartStory(nextStage)} bg="#cc2222" style={{padding:"14px 40px",fontSize:16,width:"100%",maxWidth:280}}>
+            if(nextStage) return <PremBtn onClick={()=>onGoToStageIntro(nextStage)} bg="#cc2222" style={{padding:"14px 40px",fontSize:16,width:"100%",maxWidth:280}}>
               ▶ つぎのステージへ（{nextStage.ex?`EX${nextStage.id-10}`:`${nextStage.id}`} {nextStage.name}）
             </PremBtn>;
             return <div style={{padding:"10px 16px",border:"2px solid rgba(255,200,50,.2)",background:"rgba(255,200,50,.04)",textAlign:"center"}}>
@@ -1727,6 +1736,7 @@ window.__App = function App() {
   const [cleared,setCleared]=useState(new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]));
   const [prologueDone,setPrologueDone]=useState(false);
   const [storyStage,setStoryStage]=useState(null);
+  const [pendingStage,setPendingStage]=useState(null);
 
   useEffect(()=>{const handler=e=>{if(scr==="game"){e.preventDefault();e.returnValue="";}};window.addEventListener("beforeunload",handler);return ()=>window.removeEventListener("beforeunload",handler);},[scr]);
   
@@ -1760,7 +1770,8 @@ window.__App = function App() {
     });
   },[cpuD,lrs,lrsp,goNext]);
   
-  const restart=()=>{setScr("title");setGS(null);setCP(0);setIC(false);setCpuP(new Set());setCpuOv(null);setStoryStage(null);if(BGM.on())BGM.start("title");};
+  const restart=()=>{setScr("title");setGS(null);setCP(0);setIC(false);setCpuP(new Set());setCpuOv(null);setStoryStage(null);setPendingStage(null);if(BGM.on())BGM.start("title");};
+  const goToStageIntro=(stage)=>{setScr("title");setGS(null);setCP(0);setIC(false);setCpuP(new Set());setCpuOv(null);setStoryStage(null);setPendingStage(stage);if(BGM.on())BGM.start("title");};
   const finishGame=()=>{setScr("result");};
   const startStory=stage=>{const stageHl=stage.hl||7;let deck=buildDeck();const storyDeckSize=stage.deckSize||45;deck=deck.slice(0,storyDeckSize);const pl=[{name:"あなた",hand:[],bonds:[]},{name:stage.emoji+" "+stage.name,hand:[],bonds:[]}];/* 最初に3枚ずつ配る */for(let r=0;r<3;r++){for(let i=0;i<pl.length;i++){if(deck.length>0){pl[i].hand.push(deck.pop());}}}setHL(stageHl);setGS({deck,pl,dp:[],hl:stageHl});setCP(0);setSP(false);setScr("game");setTC(0);setLRS(false);setLRSP(-1);setCpuP(new Set([1]));setIC(true);setCpuD(stage.diff);setCpuOv(null);setStoryStage(stage);BGM.startForStage(stage.id);};
   const storyWin=()=>{if(storyStage){setCleared(prev=>new Set([...prev,storyStage.id]));}};
@@ -1768,8 +1779,8 @@ window.__App = function App() {
   
   return <LangCtx.Provider value={lang}>
     <style>{CSS}</style>
-    {scr==="title" && <Title onStart={(n,l)=>init(n,null,null,l)} onStartCpu={(m,c,d,l)=>init([m,...c],new Set(c.map((_,i)=>i+1)),d,l)} onStartStory={startStory} onTest={l=>init(["あなた","コンピュータ🤖"],new Set([1]),"normal",l,6)} lang={lang} setLang={setLang} premium={premium} setPremium={setPremium} cleared={cleared} prologueDone={prologueDone} setPrologueDone={setPrologueDone} />}
-    {scr==="result"&&gs && <Result state={gs} onRestart={restart} isCpu={isCpu} storyStage={storyStage} onStoryWin={storyWin} onStartStory={startStory} cleared={cleared} />}
+    {scr==="title" && <Title onStart={(n,l)=>init(n,null,null,l)} onStartCpu={(m,c,d,l)=>init([m,...c],new Set(c.map((_,i)=>i+1)),d,l)} onStartStory={startStory} onTest={l=>init(["あなた","コンピュータ🤖"],new Set([1]),"normal",l,6)} lang={lang} setLang={setLang} premium={premium} setPremium={setPremium} cleared={cleared} prologueDone={prologueDone} setPrologueDone={setPrologueDone} pendingStage={pendingStage} setPendingStage={setPendingStage} />}
+    {scr==="result"&&gs && <Result state={gs} onRestart={restart} isCpu={isCpu} storyStage={storyStage} onStoryWin={storyWin} onStartStory={startStory} onGoToStageIntro={goToStageIntro} cleared={cleared} />}
     {scr==="game"&&cpuOv && <><BgmBtn /><CpuOv name={cpuOv.name} action={cpuOv.action} comp={cpuOv.comp} /></>}
     {scr==="game"&&!cpuOv&&sp&&!isCpu&&gs && <Pass pn={gs.pl[cp].name} onReady={()=>setSP(false)} info={gs.deck.length>0?`${tx.dkRem} ${gs.deck.length} ${tx.mai}`:tx.lastR} />}
     {scr==="game"&&!cpuOv&&!(sp&&!isCpu)&&gs && <Game key={`${cp}-${tc}`} state={gs} pi={cp} onDraw={draw} onBond={bond} onPass={advance} onDiscard={disc} hl={hl} onFinish={finishGame} premium={premium} onQuit={()=>{setScr("title");setGS(null);}} />}

@@ -2574,7 +2574,9 @@ function Title({
   setPremium,
   cleared,
   prologueDone,
-  setPrologueDone
+  setPrologueDone,
+  pendingStage,
+  setPendingStage
 }) {
   const t = useT();
   const [mode, setMode] = useState(null);
@@ -2587,6 +2589,15 @@ function Title({
   const [storySt, setStorySt] = useState(null);
   const [bgmOn, setBgmOn] = useState(BGM.on());
   const [seOn, setSeOn] = useState(SE.isEnabled());
+
+  // 結果画面から「次のステージへ」で来た場合、自動的にストーリーモード＋ステージ紹介を開く
+  useEffect(() => {
+    if (pendingStage) {
+      setMode("story");
+      setStorySt(pendingStage);
+      setPendingStage(null);
+    }
+  }, []);
   const Stg = () => /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 18,
@@ -4535,6 +4546,7 @@ function Result({
   storyStage,
   onStoryWin,
   onStartStory,
+  onGoToStageIntro,
   cleared
 }) {
   const t = useT();
@@ -4908,7 +4920,7 @@ function Result({
   }, "\uD83D\uDD04 \u3082\u3046\u3044\u3061\u3069\u305F\u305F\u304B\u3046"), playerWon && (() => {
     const nextStage = STORY.find(s => s.id === storyStage.id + 1);
     if (nextStage) return /*#__PURE__*/React.createElement(PremBtn, {
-      onClick: () => onStartStory(nextStage),
+      onClick: () => onGoToStageIntro(nextStage),
       bg: "#cc2222",
       style: {
         padding: "14px 40px",
@@ -4975,6 +4987,7 @@ window.__App = function App() {
   const [cleared, setCleared] = useState(new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]));
   const [prologueDone, setPrologueDone] = useState(false);
   const [storyStage, setStoryStage] = useState(null);
+  const [pendingStage, setPendingStage] = useState(null);
   useEffect(() => {
     const handler = e => {
       if (scr === "game") {
@@ -5197,6 +5210,18 @@ window.__App = function App() {
     setCpuP(new Set());
     setCpuOv(null);
     setStoryStage(null);
+    setPendingStage(null);
+    if (BGM.on()) BGM.start("title");
+  };
+  const goToStageIntro = stage => {
+    setScr("title");
+    setGS(null);
+    setCP(0);
+    setIC(false);
+    setCpuP(new Set());
+    setCpuOv(null);
+    setStoryStage(null);
+    setPendingStage(stage);
     if (BGM.on()) BGM.start("title");
   };
   const finishGame = () => {
@@ -5262,7 +5287,9 @@ window.__App = function App() {
     setPremium: setPremium,
     cleared: cleared,
     prologueDone: prologueDone,
-    setPrologueDone: setPrologueDone
+    setPrologueDone: setPrologueDone,
+    pendingStage: pendingStage,
+    setPendingStage: setPendingStage
   }), scr === "result" && gs && /*#__PURE__*/React.createElement(Result, {
     state: gs,
     onRestart: restart,
@@ -5270,6 +5297,7 @@ window.__App = function App() {
     storyStage: storyStage,
     onStoryWin: storyWin,
     onStartStory: startStory,
+    onGoToStageIntro: goToStageIntro,
     cleared: cleared
   }), scr === "game" && cpuOv && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(BgmBtn, null), /*#__PURE__*/React.createElement(CpuOv, {
     name: cpuOv.name,
