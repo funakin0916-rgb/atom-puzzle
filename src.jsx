@@ -288,309 +288,571 @@ const STORY = [
   {id:15,name:"???",emoji:"🌌",diff:"hard",color:"#FF1744",ex:true,hl:7,deckSize:40,intro:"🧑‍🔬博士「最後の敵は…な、なんじゃこれは！？正体不明のモンスターじゃ！手札7枚＋山札少なめの最凶ハンデ！」",win:"🌟博士「…あの姿は…若い頃のワシじゃったか！？キミは完全なる化学マスターじゃ！！！おめでとう！！！」",lose:"博士「この敵は…次元が違うようじゃ…でもキミなら…！」"}
 ];
 
-/* ── キャラクターSVGイラスト ─── */
+/* ── 博士SVGイラスト（ポケモン風・デフォルメ） ─── */
 const DrSVG = ({size=120}) => <svg width={size} height={size} viewBox="0 0 120 120" fill="none">
-  {/* 白衣 */}
-  <rect x="30" y="55" width="60" height="50" rx="8" fill="#e8e8f0" stroke="#bbb" strokeWidth="1.5"/>
-  <rect x="38" y="55" width="44" height="6" rx="3" fill="#d0d0e0"/>
+  <defs>
+    <radialGradient id="drskin" cx="50%" cy="40%"><stop offset="0%" stopColor="#ffe4c4"/><stop offset="100%" stopColor="#f0c8a0"/></radialGradient>
+    <linearGradient id="drcoat" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#f5f5ff"/><stop offset="100%" stopColor="#d8d8e8"/></linearGradient>
+    <linearGradient id="drtie" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#5c6bc0"/><stop offset="100%" stopColor="#3949ab"/></linearGradient>
+  </defs>
+  {/* 白衣（丸みのあるデフォルメ） */}
+  <path d="M30 58 Q28 62 26 100 Q26 108 60 110 Q94 108 94 100 Q92 62 90 58Z" fill="url(#drcoat)" stroke="#c0c0d0" strokeWidth="1"/>
+  {/* 襟 */}
+  <path d="M42 58 L50 68 L60 60 L70 68 L78 58" fill="none" stroke="#c0c0d0" strokeWidth="1.5"/>
   {/* ネクタイ */}
-  <polygon points="60,61 56,80 60,85 64,80" fill="#4a6cf7"/>
-  {/* 顔 */}
-  <circle cx="60" cy="38" r="22" fill="#ffdcb5"/>
-  <circle cx="60" cy="38" r="22" fill="none" stroke="#e8b88a" strokeWidth="1"/>
-  {/* メガネ */}
-  <circle cx="51" cy="36" r="7" fill="none" stroke="#555" strokeWidth="2"/>
-  <circle cx="69" cy="36" r="7" fill="none" stroke="#555" strokeWidth="2"/>
-  <line x1="58" y1="36" x2="62" y2="36" stroke="#555" strokeWidth="2"/>
-  <line x1="44" y1="36" x2="36" y2="33" stroke="#555" strokeWidth="1.5"/>
-  <line x1="76" y1="36" x2="84" y2="33" stroke="#555" strokeWidth="1.5"/>
-  {/* 目 */}
-  <circle cx="51" cy="36" r="2.5" fill="#333"/>
-  <circle cx="69" cy="36" r="2.5" fill="#333"/>
-  <circle cx="52" cy="35" r="1" fill="#fff"/>
-  <circle cx="70" cy="35" r="1" fill="#fff"/>
-  {/* 眉 */}
-  <path d="M46 30 Q51 27 56 30" stroke="#555" strokeWidth="1.5" fill="none"/>
-  <path d="M64 30 Q69 27 74 30" stroke="#555" strokeWidth="1.5" fill="none"/>
-  {/* 口 - ニッコリ */}
-  <path d="M54 46 Q60 52 66 46" stroke="#c77" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
-  {/* ひげ（白い口ひげ） */}
-  <path d="M50 43 Q55 46 60 43 Q65 46 70 43" stroke="#ccc" strokeWidth="2" fill="none" strokeLinecap="round"/>
-  {/* 髪（白髪・ボサボサ） */}
-  <path d="M38 30 Q35 18 45 15 Q52 10 60 12 Q68 10 75 15 Q85 18 82 30" fill="#ddd" stroke="#bbb" strokeWidth="1"/>
-  <path d="M36 28 Q33 22 38 20" stroke="#ccc" strokeWidth="2" fill="none"/>
-  <path d="M84 28 Q87 22 82 20" stroke="#ccc" strokeWidth="2" fill="none"/>
+  <path d="M57 62 L54 85 L60 90 L66 85 L63 62Z" fill="url(#drtie)"/>
+  <ellipse cx="60" cy="62" rx="4" ry="2" fill="#7986cb"/>
+  {/* 顔（大きめデフォルメ） */}
+  <ellipse cx="60" cy="40" rx="26" ry="24" fill="url(#drskin)"/>
+  {/* メガネ（大きく丸い） */}
+  <circle cx="48" cy="40" r="10" fill="rgba(200,220,255,.15)" stroke="#455a64" strokeWidth="2.5"/>
+  <circle cx="72" cy="40" r="10" fill="rgba(200,220,255,.15)" stroke="#455a64" strokeWidth="2.5"/>
+  <path d="M58 40 Q60 38 62 40" stroke="#455a64" strokeWidth="2.5" fill="none"/>
+  <line x1="38" y1="40" x2="30" y2="37" stroke="#455a64" strokeWidth="2"/>
+  <line x1="82" y1="40" x2="90" y2="37" stroke="#455a64" strokeWidth="2"/>
+  {/* 目（キラキラ） */}
+  <circle cx="48" cy="40" r="4" fill="#263238"/>
+  <circle cx="72" cy="40" r="4" fill="#263238"/>
+  <circle cx="50" cy="38" r="2" fill="#fff"/>
+  <circle cx="74" cy="38" r="2" fill="#fff"/>
+  <circle cx="47" cy="42" r="1" fill="rgba(255,255,255,.5)"/>
+  <circle cx="71" cy="42" r="1" fill="rgba(255,255,255,.5)"/>
+  {/* 眉（太く表情豊か） */}
+  <path d="M40 30 Q48 25 56 30" stroke="#546e7a" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+  <path d="M64 30 Q72 25 80 30" stroke="#546e7a" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+  {/* 口ひげ */}
+  <path d="M46 50 Q52 54 60 49 Q68 54 74 50" stroke="#b0bec5" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+  {/* 口（ニカッ） */}
+  <path d="M52 54 Q60 61 68 54" stroke="#a1887f" strokeWidth="2" fill="none" strokeLinecap="round"/>
+  {/* 髪（アインシュタイン風ボサボサ白髪） */}
+  <path d="M34 32 Q28 14 42 10 Q50 6 60 9 Q70 6 78 10 Q92 14 86 32" fill="#eceff1" stroke="#cfd8dc" strokeWidth="1.5"/>
+  <path d="M30 30 Q24 20 30 14" stroke="#e0e0e0" strokeWidth="3" fill="none" strokeLinecap="round"/>
+  <path d="M90 30 Q96 20 90 14" stroke="#e0e0e0" strokeWidth="3" fill="none" strokeLinecap="round"/>
+  <path d="M36 22 Q32 12 38 8" stroke="#e0e0e0" strokeWidth="2" fill="none" strokeLinecap="round"/>
+  <path d="M84 22 Q88 12 82 8" stroke="#e0e0e0" strokeWidth="2" fill="none" strokeLinecap="round"/>
+  {/* 頬の紅潮 */}
+  <ellipse cx="36" cy="48" rx="5" ry="3" fill="#ffab91" opacity=".3"/>
+  <ellipse cx="84" cy="48" rx="5" ry="3" fill="#ffab91" opacity=".3"/>
   {/* ポケットのペン */}
-  <line x1="42" y1="62" x2="42" y2="72" stroke="#e53935" strokeWidth="2" strokeLinecap="round"/>
-  <line x1="46" y1="62" x2="46" y2="70" stroke="#1e88e5" strokeWidth="2" strokeLinecap="round"/>
-  {/* 試験管（手に持っている） */}
-  <rect x="82" y="50" width="8" height="24" rx="4" fill="none" stroke="#4fc3f7" strokeWidth="1.5"/>
-  <rect x="83" y="62" width="6" height="10" rx="3" fill="#4fc3f7" opacity=".5"/>
-  <circle cx="86" cy="58" r="2" fill="#4fc3f7" opacity=".6"/>
+  <rect x="38" y="65" width="2" height="12" rx="1" fill="#e53935"/>
+  <rect x="42" y="67" width="2" height="10" rx="1" fill="#1e88e5"/>
+  {/* 試験管 */}
+  <rect x="85" y="55" width="10" height="28" rx="5" fill="rgba(79,195,247,.2)" stroke="#4fc3f7" strokeWidth="1.5"/>
+  <path d="M86 70 Q90 65 94 70 L94 78 Q90 82 86 78Z" fill="#4fc3f7" opacity=".5"/>
+  <circle cx="89" cy="66" r="2" fill="#4fc3f7" opacity=".6"/>
+  <circle cx="91" cy="72" r="1.5" fill="#81d4fa" opacity=".7"/>
 </svg>;
 
+/* ── モンスターSVGイラスト（ポケモン風） ─── */
 const MonsterSVG = ({id,size=100,color="#81D4FA"}) => {
   const c = color;
-  const d = color + "88";
-  // 各モンスターの個別SVG
+  // 色から暗い版と明るい版を生成
   const monsters = {
-    // バブリン - 泡のモンスター
+    // ══ 1: バブリン ══ ぷにぷにの泡スライム。丸い体、キュートな表情
     1: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      <circle cx="50" cy="52" r="30" fill={c} opacity=".3"/>
-      <circle cx="50" cy="52" r="25" fill={c} opacity=".5"/>
-      <circle cx="50" cy="50" r="20" fill={c} opacity=".7" stroke="#fff" strokeWidth="1" strokeOpacity=".4"/>
-      {/* 目 */}
-      <ellipse cx="42" cy="46" rx="5" ry="6" fill="#fff"/>
-      <ellipse cx="58" cy="46" rx="5" ry="6" fill="#fff"/>
-      <circle cx="43" cy="46" r="3" fill="#333"/>
-      <circle cx="59" cy="46" r="3" fill="#333"/>
-      <circle cx="44" cy="45" r="1.2" fill="#fff"/>
-      <circle cx="60" cy="45" r="1.2" fill="#fff"/>
-      {/* 口 */}
-      <ellipse cx="50" cy="58" rx="6" ry="4" fill="#fff" opacity=".8"/>
-      {/* 泡 */}
-      <circle cx="30" cy="35" r="6" fill={c} opacity=".4" stroke="#fff" strokeWidth=".5" strokeOpacity=".3"/>
-      <circle cx="72" cy="38" r="5" fill={c} opacity=".35"/>
-      <circle cx="25" cy="55" r="4" fill={c} opacity=".3"/>
-      <circle cx="78" cy="58" r="3" fill={c} opacity=".25"/>
-      <circle cx="38" cy="25" r="3.5" fill={c} opacity=".3"/>
-      {/* ハイライト */}
-      <ellipse cx="44" cy="38" rx="8" ry="4" fill="#fff" opacity=".2" transform="rotate(-20,44,38)"/>
+      <defs>
+        <radialGradient id="m1b" cx="40%" cy="35%"><stop offset="0%" stopColor="#e3f2fd"/><stop offset="50%" stopColor={c}/><stop offset="100%" stopColor="#0288d1" stopOpacity=".6"/></radialGradient>
+        <radialGradient id="m1h" cx="30%" cy="25%"><stop offset="0%" stopColor="#fff" stopOpacity=".6"/><stop offset="100%" stopColor="#fff" stopOpacity="0"/></radialGradient>
+      </defs>
+      {/* ぷにぷにボディ */}
+      <ellipse cx="50" cy="56" rx="28" ry="26" fill="url(#m1b)"/>
+      <ellipse cx="50" cy="56" rx="28" ry="26" fill="url(#m1h)"/>
+      {/* ハイライトストリーク */}
+      <ellipse cx="40" cy="42" rx="12" ry="5" fill="#fff" opacity=".25" transform="rotate(-15,40,42)"/>
+      {/* 目（大きくキュート＆キリッ） */}
+      <ellipse cx="40" cy="52" rx="7" ry="8" fill="#fff"/>
+      <ellipse cx="60" cy="52" rx="7" ry="8" fill="#fff"/>
+      <ellipse cx="42" cy="53" rx="4.5" ry="5" fill="#0d47a1"/>
+      <ellipse cx="62" cy="53" rx="4.5" ry="5" fill="#0d47a1"/>
+      <circle cx="43.5" cy="50.5" r="2.2" fill="#fff"/>
+      <circle cx="63.5" cy="50.5" r="2.2" fill="#fff"/>
+      <circle cx="40.5" cy="55" r="1" fill="rgba(255,255,255,.6)"/>
+      <circle cx="60.5" cy="55" r="1" fill="rgba(255,255,255,.6)"/>
+      {/* まつげ */}
+      <path d="M34 46 Q37 44 40 46" stroke="#0d47a1" strokeWidth="1" fill="none"/>
+      <path d="M60 46 Q63 44 66 46" stroke="#0d47a1" strokeWidth="1" fill="none"/>
+      {/* 口（にっこり） */}
+      <path d="M44 63 Q50 69 56 63" stroke="#1565c0" strokeWidth="1.8" fill="none" strokeLinecap="round"/>
+      {/* 頬の紅潮 */}
+      <ellipse cx="32" cy="60" rx="4" ry="2.5" fill="#f48fb1" opacity=".35"/>
+      <ellipse cx="68" cy="60" rx="4" ry="2.5" fill="#f48fb1" opacity=".35"/>
+      {/* 頭の泡触覚 */}
+      <circle cx="40" cy="32" r="7" fill={c} opacity=".5" stroke="#fff" strokeWidth=".8" strokeOpacity=".4"/>
+      <circle cx="40" cy="32" r="7" fill="url(#m1h)"/>
+      <circle cx="56" cy="28" r="5" fill={c} opacity=".45" stroke="#fff" strokeWidth=".6" strokeOpacity=".3"/>
+      <circle cx="64" cy="36" r="4" fill={c} opacity=".35"/>
+      {/* ちっちゃい浮遊泡 */}
+      <circle cx="22" cy="45" r="3" fill={c} opacity=".25" stroke="#fff" strokeWidth=".4" strokeOpacity=".3"/>
+      <circle cx="80" cy="50" r="2.5" fill={c} opacity=".2"/>
+      {/* 足（ちょこん） */}
+      <ellipse cx="40" cy="80" rx="8" ry="4" fill="#0288d1" opacity=".5"/>
+      <ellipse cx="60" cy="80" rx="8" ry="4" fill="#0288d1" opacity=".5"/>
     </svg>,
-    // アクアン - 水のモンスター
+
+    // ══ 2: アクアン ══ 水滴型のドラゴン風。尻尾と小さなヒレ
     2: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      <path d="M50 20 Q30 45 30 60 Q30 80 50 82 Q70 80 70 60 Q70 45 50 20Z" fill={c} opacity=".6"/>
-      <path d="M50 25 Q35 45 35 58 Q35 75 50 77 Q65 75 65 58 Q65 45 50 25Z" fill={c} opacity=".8"/>
+      <defs>
+        <radialGradient id="m2b" cx="45%" cy="40%"><stop offset="0%" stopColor="#e1f5fe"/><stop offset="60%" stopColor={c}/><stop offset="100%" stopColor="#01579b" stopOpacity=".7"/></radialGradient>
+      </defs>
+      {/* しっぽ */}
+      <path d="M68 68 Q82 62 85 50 Q88 42 82 38" stroke={c} strokeWidth="4" fill="none" strokeLinecap="round"/>
+      <path d="M82 38 L88 32 L80 36 L86 28" fill="#0288d1" stroke="#0288d1" strokeWidth="1" strokeLinejoin="round"/>
+      {/* ボディ */}
+      <path d="M50 22 Q28 35 26 55 Q24 72 40 80 Q50 84 60 80 Q76 72 74 55 Q72 35 50 22Z" fill="url(#m2b)"/>
+      {/* おなか */}
+      <ellipse cx="50" cy="62" rx="14" ry="12" fill="#e1f5fe" opacity=".4"/>
+      {/* ハイライト */}
+      <ellipse cx="42" cy="38" rx="8" ry="4" fill="#fff" opacity=".3" transform="rotate(-20,42,38)"/>
+      {/* ヒレ（耳みたい） */}
+      <path d="M30 40 Q22 30 28 22 Q34 28 32 38" fill="#039be5"/>
+      <path d="M70 40 Q78 30 72 22 Q66 28 68 38" fill="#039be5"/>
       {/* 目 */}
-      <ellipse cx="43" cy="55" rx="4" ry="5" fill="#fff"/>
-      <ellipse cx="57" cy="55" rx="4" ry="5" fill="#fff"/>
-      <circle cx="44" cy="55" r="2.5" fill="#1a237e"/>
-      <circle cx="58" cy="55" r="2.5" fill="#1a237e"/>
-      <circle cx="44.5" cy="54" r="1" fill="#fff"/>
-      <circle cx="58.5" cy="54" r="1" fill="#fff"/>
-      {/* 口 - 波型 */}
-      <path d="M44 65 Q47 68 50 65 Q53 68 56 65" stroke="#1565c0" strokeWidth="1.5" fill="none"/>
-      {/* 水滴 */}
-      <path d="M25 50 Q23 55 25 57 Q27 55 25 50Z" fill={c} opacity=".5"/>
-      <path d="M76 48 Q74 52 76 54 Q78 52 76 48Z" fill={c} opacity=".4"/>
-      <ellipse cx="45" cy="38" rx="6" ry="3" fill="#fff" opacity=".25" transform="rotate(-15,45,38)"/>
+      <ellipse cx="42" cy="50" rx="6" ry="7" fill="#fff"/>
+      <ellipse cx="58" cy="50" rx="6" ry="7" fill="#fff"/>
+      <ellipse cx="43.5" cy="51" rx="3.5" ry="4.5" fill="#01579b"/>
+      <ellipse cx="59.5" cy="51" rx="3.5" ry="4.5" fill="#01579b"/>
+      <circle cx="45" cy="49" r="1.8" fill="#fff"/>
+      <circle cx="61" cy="49" r="1.8" fill="#fff"/>
+      {/* 口 */}
+      <path d="M46 62 Q50 66 54 62" stroke="#01579b" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+      {/* 頬 */}
+      <ellipse cx="34" cy="56" rx="3.5" ry="2" fill="#80d8ff" opacity=".4"/>
+      <ellipse cx="66" cy="56" rx="3.5" ry="2" fill="#80d8ff" opacity=".4"/>
     </svg>,
-    // ソルティ - 塩の結晶モンスター
+
+    // ══ 3: ソルティ ══ 結晶の精霊。角ばったボディに宝石の目
     3: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      <rect x="30" y="30" width="40" height="40" rx="4" fill={c} opacity=".7" transform="rotate(15,50,50)"/>
-      <rect x="33" y="33" width="34" height="34" rx="3" fill={c} opacity=".9" transform="rotate(15,50,50)"/>
-      {/* 目 */}
-      <circle cx="43" cy="48" r="4" fill="#fff"/>
-      <circle cx="57" cy="48" r="4" fill="#fff"/>
-      <circle cx="44" cy="48" r="2.5" fill="#5d4037"/>
-      <circle cx="58" cy="48" r="2.5" fill="#5d4037"/>
+      <defs>
+        <linearGradient id="m3b" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#fff8e1"/><stop offset="50%" stopColor={c}/><stop offset="100%" stopColor="#f9a825"/></linearGradient>
+      </defs>
+      {/* 結晶ボディ */}
+      <path d="M50 18 L72 38 L72 68 L50 82 L28 68 L28 38Z" fill="url(#m3b)" stroke="#f9a825" strokeWidth="1.5"/>
+      {/* 面のハイライト */}
+      <path d="M50 18 L72 38 L50 50 L28 38Z" fill="#fff" opacity=".15"/>
+      <path d="M50 18 L28 38 L50 50Z" fill="#fff" opacity=".1"/>
+      {/* おなか */}
+      <ellipse cx="50" cy="58" rx="12" ry="10" fill="#fff8e1" opacity=".3"/>
+      {/* 目（宝石っぽいキラキラ） */}
+      <path d="M38 44 L42 38 L46 44 L42 48Z" fill="#fff" stroke="#e65100" strokeWidth="1"/>
+      <path d="M54 44 L58 38 L62 44 L58 48Z" fill="#fff" stroke="#e65100" strokeWidth="1"/>
+      <path d="M42 42 L42 44" stroke="#e65100" strokeWidth="2" strokeLinecap="round"/>
+      <path d="M58 42 L58 44" stroke="#e65100" strokeWidth="2" strokeLinecap="round"/>
       {/* 口 */}
-      <path d="M46 58 L50 62 L54 58" stroke="#8d6e63" strokeWidth="2" fill="none" strokeLinecap="round"/>
-      {/* 小結晶 */}
-      <rect x="20" y="45" width="8" height="8" rx="1" fill={c} opacity=".4" transform="rotate(30,24,49)"/>
-      <rect x="72" y="40" width="7" height="7" rx="1" fill={c} opacity=".35" transform="rotate(-20,75,43)"/>
-      <rect x="60" y="25" width="6" height="6" rx="1" fill={c} opacity=".3" transform="rotate(45,63,28)"/>
+      <path d="M46 56 L50 59 L54 56" stroke="#bf360c" strokeWidth="1.8" fill="none" strokeLinecap="round"/>
+      {/* 結晶の角（ツノ） */}
+      <path d="M38 25 L34 12 L40 20" fill="#ffd54f" stroke="#f9a825" strokeWidth="1"/>
+      <path d="M62 25 L66 12 L60 20" fill="#ffd54f" stroke="#f9a825" strokeWidth="1"/>
+      {/* 小結晶エフェクト */}
+      <rect x="18" y="50" width="6" height="6" rx="1" fill="#ffd54f" opacity=".5" transform="rotate(20,21,53)"/>
+      <rect x="76" y="45" width="5" height="5" rx="1" fill="#ffd54f" opacity=".4" transform="rotate(-15,78,47)"/>
       {/* キラキラ */}
-      <path d="M38 32 L40 28 L42 32 L38 32" fill="#fff" opacity=".5"/>
-      <path d="M62 68 L64 64 L66 68 L62 68" fill="#fff" opacity=".4"/>
+      <path d="M30 30 L31 26 L32 30 L36 31 L32 32 L31 36 L30 32 L26 31Z" fill="#fff" opacity=".6"/>
+      <path d="M72 60 L73 57 L74 60 L77 61 L74 62 L73 65 L72 62 L69 61Z" fill="#fff" opacity=".5"/>
+      {/* 足 */}
+      <rect x="38" y="78" width="10" height="6" rx="3" fill="#f9a825" opacity=".6"/>
+      <rect x="52" y="78" width="10" height="6" rx="3" fill="#f9a825" opacity=".6"/>
     </svg>,
-    // エアロン - 空気のモンスター
+
+    // ══ 4: エアロン ══ 風の精霊。半透明の渦巻きボディ、三日月目
     4: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      <ellipse cx="50" cy="50" rx="28" ry="22" fill={c} opacity=".3"/>
-      <ellipse cx="50" cy="50" rx="22" ry="18" fill={c} opacity=".5"/>
-      {/* 渦巻き模様 */}
-      <path d="M40 50 Q45 40 55 42 Q65 44 60 52 Q55 58 48 55 Q42 52 46 48" stroke="#fff" strokeWidth="1.5" fill="none" opacity=".3"/>
-      {/* 目（風っぽく細い） */}
-      <path d="M38 46 Q42 42 46 46" stroke="#2e7d32" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-      <path d="M54 46 Q58 42 62 46" stroke="#2e7d32" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+      <defs>
+        <radialGradient id="m4b" cx="50%" cy="45%"><stop offset="0%" stopColor="#e8f5e9" stopOpacity=".8"/><stop offset="60%" stopColor={c} stopOpacity=".5"/><stop offset="100%" stopColor="#2e7d32" stopOpacity=".2"/></radialGradient>
+      </defs>
+      {/* 風の渦ボディ */}
+      <ellipse cx="50" cy="52" rx="26" ry="24" fill="url(#m4b)"/>
+      <path d="M32 45 Q40 30 55 32 Q68 34 65 48 Q62 56 52 52 Q44 50 48 44" stroke="#fff" strokeWidth="1.5" fill="none" opacity=".25"/>
+      {/* 羽（風を纏う） */}
+      <path d="M24 44 Q14 35 18 24 Q22 32 28 38" fill={c} opacity=".5"/>
+      <path d="M76 44 Q86 35 82 24 Q78 32 72 38" fill={c} opacity=".5"/>
+      <path d="M20 56 Q10 52 12 42" stroke={c} strokeWidth="2" fill="none" opacity=".3" strokeLinecap="round"/>
+      <path d="M80 56 Q90 52 88 42" stroke={c} strokeWidth="2" fill="none" opacity=".3" strokeLinecap="round"/>
+      {/* 目（三日月型でクール） */}
+      <path d="M38 48 Q42 42 46 48" stroke="#1b5e20" strokeWidth="2.5" fill="#e8f5e9" strokeLinecap="round"/>
+      <path d="M54 48 Q58 42 62 48" stroke="#1b5e20" strokeWidth="2.5" fill="#e8f5e9" strokeLinecap="round"/>
+      <circle cx="42" cy="47" r="1.5" fill="#1b5e20"/>
+      <circle cx="58" cy="47" r="1.5" fill="#1b5e20"/>
       {/* 口 */}
-      <ellipse cx="50" cy="57" rx="5" ry="3" fill="#fff" opacity=".5"/>
-      {/* 風の線 */}
-      <path d="M15 45 Q25 42 35 45" stroke={c} strokeWidth="1.5" fill="none" opacity=".4"/>
-      <path d="M65 42 Q75 38 85 42" stroke={c} strokeWidth="1.5" fill="none" opacity=".4"/>
-      <path d="M20 58 Q28 55 36 58" stroke={c} strokeWidth="1" fill="none" opacity=".3"/>
-      <path d="M68 55 Q76 52 84 55" stroke={c} strokeWidth="1" fill="none" opacity=".3"/>
+      <path d="M46 58 Q50 62 54 58" stroke="#2e7d32" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+      {/* 頭のくるっ */}
+      <path d="M45 30 Q48 20 55 22 Q60 24 56 30" stroke={c} strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+      {/* 風エフェクト */}
+      <path d="M10 55 Q20 50 30 55" stroke={c} strokeWidth="1.5" fill="none" opacity=".3" strokeLinecap="round"/>
+      <path d="M70 50 Q80 46 90 50" stroke={c} strokeWidth="1.5" fill="none" opacity=".3" strokeLinecap="round"/>
+      <path d="M14 65 Q22 62 30 65" stroke={c} strokeWidth="1" fill="none" opacity=".2" strokeLinecap="round"/>
     </svg>,
-    // コッパー - 銅のヨロイ
+
+    // ══ 5: コッパー ══ 銅の甲羅を持つ亀型。どっしりカッコいい
     5: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      {/* 体 */}
-      <rect x="32" y="45" width="36" height="35" rx="6" fill={c} stroke="#bf360c" strokeWidth="1.5"/>
-      {/* 頭（兜） */}
-      <path d="M30 45 Q30 22 50 20 Q70 22 70 45Z" fill={c} stroke="#bf360c" strokeWidth="1.5"/>
-      <rect x="28" y="42" width="44" height="6" rx="3" fill="#e65100"/>
-      {/* 目（光るスリット） */}
-      <rect x="38" y="34" width="8" height="4" rx="2" fill="#fff200"/>
-      <rect x="54" y="34" width="8" height="4" rx="2" fill="#fff200"/>
-      {/* 腕 */}
-      <rect x="22" y="50" width="10" height="22" rx="5" fill={c} stroke="#bf360c" strokeWidth="1"/>
-      <rect x="68" y="50" width="10" height="22" rx="5" fill={c} stroke="#bf360c" strokeWidth="1"/>
-      {/* 装飾 */}
-      <circle cx="50" cy="58" r="6" fill="none" stroke="#fff200" strokeWidth="1.5" opacity=".6"/>
-      <circle cx="50" cy="58" r="3" fill="#fff200" opacity=".4"/>
-    </svg>,
-    // シルバーグ - 銀の騎士
-    6: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      {/* マント */}
-      <path d="M30 40 L25 85 Q50 90 75 85 L70 40Z" fill="#78909c" opacity=".5"/>
-      {/* 体 */}
-      <rect x="35" y="42" width="30" height="38" rx="5" fill={c} stroke="#78909c" strokeWidth="1.5"/>
-      {/* 頭（騎士の兜） */}
-      <path d="M33 42 Q33 18 50 15 Q67 18 67 42Z" fill={c} stroke="#78909c" strokeWidth="1.5"/>
-      {/* バイザー */}
-      <rect x="37" y="30" width="26" height="10" rx="3" fill="#455a64"/>
-      <rect x="40" y="32" width="8" height="5" rx="1" fill="#e0e0e0" opacity=".8"/>
-      <rect x="52" y="32" width="8" height="5" rx="1" fill="#e0e0e0" opacity=".8"/>
-      {/* 剣 */}
-      <line x1="75" y1="30" x2="75" y2="70" stroke="#cfd8dc" strokeWidth="3" strokeLinecap="round"/>
-      <line x1="70" y1="42" x2="80" y2="42" stroke="#90a4ae" strokeWidth="3" strokeLinecap="round"/>
-      {/* 羽飾り */}
-      <path d="M50 15 Q48 5 45 3 Q50 8 50 15" fill="#e0e0e0"/>
-      <path d="M50 15 Q52 5 55 3 Q50 8 50 15" fill="#cfd8dc"/>
-    </svg>,
-    // アイアンX - 鉄の巨人
-    7: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      {/* 巨大な体 */}
-      <rect x="28" y="38" width="44" height="45" rx="8" fill={c} stroke="#5d4037" strokeWidth="2"/>
+      <defs>
+        <linearGradient id="m5b" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#ffccbc"/><stop offset="50%" stopColor={c}/><stop offset="100%" stopColor="#bf360c"/></linearGradient>
+        <linearGradient id="m5s" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#e65100"/><stop offset="100%" stopColor="#bf360c"/></linearGradient>
+      </defs>
+      {/* 甲羅 */}
+      <ellipse cx="50" cy="52" rx="30" ry="24" fill="url(#m5b)" stroke="#bf360c" strokeWidth="1.5"/>
+      <path d="M30 42 L50 30 L70 42" fill="none" stroke="#e65100" strokeWidth="1.5" opacity=".5"/>
+      <path d="M35 55 L50 42 L65 55" fill="none" stroke="#e65100" strokeWidth="1" opacity=".4"/>
+      <path d="M38 68 L50 58 L62 68" fill="none" stroke="#e65100" strokeWidth="1" opacity=".3"/>
+      {/* おなか */}
+      <ellipse cx="50" cy="60" rx="14" ry="10" fill="#fff3e0" opacity=".4"/>
       {/* 頭 */}
-      <rect x="34" y="18" width="32" height="24" rx="6" fill={c} stroke="#5d4037" strokeWidth="2"/>
-      {/* 目（赤く光る） */}
-      <rect x="40" y="26" width="7" height="5" rx="2" fill="#ff1744"/>
-      <rect x="53" y="26" width="7" height="5" rx="2" fill="#ff1744"/>
+      <circle cx="50" cy="28" r="14" fill="url(#m5s)"/>
+      <ellipse cx="50" cy="30" rx="10" ry="8" fill="#ffccbc" opacity=".3"/>
+      {/* 目（力強い） */}
+      <ellipse cx="44" cy="26" rx="4.5" ry="5" fill="#fff"/>
+      <ellipse cx="56" cy="26" rx="4.5" ry="5" fill="#fff"/>
+      <ellipse cx="45" cy="27" rx="3" ry="3.5" fill="#bf360c"/>
+      <ellipse cx="57" cy="27" rx="3" ry="3.5" fill="#bf360c"/>
+      <circle cx="46" cy="25.5" r="1.5" fill="#fff"/>
+      <circle cx="58" cy="25.5" r="1.5" fill="#fff"/>
+      {/* 眉（キリッ） */}
+      <path d="M38 20 L46 22" stroke="#4e342e" strokeWidth="2" strokeLinecap="round"/>
+      <path d="M62 20 L54 22" stroke="#4e342e" strokeWidth="2" strokeLinecap="round"/>
       {/* 口 */}
-      <rect x="42" y="35" width="16" height="3" rx="1" fill="#3e2723"/>
-      {/* 腕（太い） */}
-      <rect x="18" y="42" width="12" height="28" rx="6" fill={c} stroke="#5d4037" strokeWidth="1.5"/>
-      <rect x="70" y="42" width="12" height="28" rx="6" fill={c} stroke="#5d4037" strokeWidth="1.5"/>
+      <path d="M46 33 Q50 36 54 33" stroke="#bf360c" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+      {/* 足 */}
+      <ellipse cx="28" cy="70" rx="7" ry="5" fill="#e65100"/>
+      <ellipse cx="72" cy="70" rx="7" ry="5" fill="#e65100"/>
+      <ellipse cx="34" cy="78" rx="6" ry="4" fill="#e65100"/>
+      <ellipse cx="66" cy="78" rx="6" ry="4" fill="#e65100"/>
+      {/* 銅の光沢 */}
+      <ellipse cx="42" cy="44" rx="8" ry="3" fill="#fff" opacity=".15" transform="rotate(-10,42,44)"/>
+    </svg>,
+
+    // ══ 6: シルバーグ ══ 銀のオオカミ型。マントをなびかせる騎士
+    6: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      <defs>
+        <linearGradient id="m6b" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#eceff1"/><stop offset="50%" stopColor={c}/><stop offset="100%" stopColor="#546e7a"/></linearGradient>
+      </defs>
+      {/* マント */}
+      <path d="M30 50 Q22 55 20 80 Q30 85 40 82" fill="#546e7a" opacity=".5"/>
+      <path d="M70 50 Q78 55 80 80 Q70 85 60 82" fill="#546e7a" opacity=".4"/>
+      {/* 体 */}
+      <ellipse cx="50" cy="60" rx="22" ry="20" fill="url(#m6b)"/>
+      <ellipse cx="50" cy="64" rx="12" ry="10" fill="#eceff1" opacity=".3"/>
+      {/* 頭 */}
+      <ellipse cx="50" cy="35" rx="18" ry="16" fill={c}/>
+      {/* 耳（とがった） */}
+      <path d="M34 30 L28 10 L38 24" fill={c} stroke="#78909c" strokeWidth="1"/>
+      <path d="M66 30 L72 10 L62 24" fill={c} stroke="#78909c" strokeWidth="1"/>
+      <path d="M32 26 L30 14 L36 23" fill="#eceff1" opacity=".4"/>
+      <path d="M68 26 L70 14 L64 23" fill="#eceff1" opacity=".4"/>
+      {/* 目（鋭いけどカッコいい） */}
+      <path d="M40 34 L44 30 L48 34 L44 36Z" fill="#fff"/>
+      <path d="M52 34 L56 30 L60 34 L56 36Z" fill="#fff"/>
+      <circle cx="44" cy="33.5" r="2" fill="#37474f"/>
+      <circle cx="56" cy="33.5" r="2" fill="#37474f"/>
+      <circle cx="45" cy="32.5" r="1" fill="#fff"/>
+      <circle cx="57" cy="32.5" r="1" fill="#fff"/>
+      {/* 口（キリッ） */}
+      <path d="M46 42 L50 44 L54 42" stroke="#455a64" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+      {/* 剣 */}
+      <line x1="78" y1="28" x2="78" y2="72" stroke="#cfd8dc" strokeWidth="3" strokeLinecap="round"/>
+      <line x1="73" y1="40" x2="83" y2="40" stroke="#90a4ae" strokeWidth="3" strokeLinecap="round"/>
+      <circle cx="78" cy="40" r="2" fill="#ffd54f"/>
+      {/* 足 */}
+      <ellipse cx="40" cy="78" rx="6" ry="4" fill="#78909c"/>
+      <ellipse cx="60" cy="78" rx="6" ry="4" fill="#78909c"/>
+    </svg>,
+
+    // ══ 7: アイアンX ══ 鉄のゴーレム。ロボ風でXのエンブレム
+    7: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      <defs>
+        <linearGradient id="m7b" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#a1887f"/><stop offset="50%" stopColor={c}/><stop offset="100%" stopColor="#4e342e"/></linearGradient>
+      </defs>
+      {/* 体（どっしり） */}
+      <rect x="30" y="40" width="40" height="38" rx="8" fill="url(#m7b)" stroke="#5d4037" strokeWidth="1.5"/>
+      {/* 腕 */}
+      <rect x="18" y="44" width="14" height="24" rx="7" fill={c} stroke="#5d4037" strokeWidth="1.5"/>
+      <rect x="68" y="44" width="14" height="24" rx="7" fill={c} stroke="#5d4037" strokeWidth="1.5"/>
+      <circle cx="25" cy="68" r="5" fill="#5d4037"/>
+      <circle cx="75" cy="68" r="5" fill="#5d4037"/>
+      {/* Xエンブレム */}
+      <circle cx="50" cy="58" r="10" fill="rgba(0,0,0,.2)" stroke="#ff1744" strokeWidth="1.5"/>
+      <path d="M44 52 L56 64 M56 52 L44 64" stroke="#ff1744" strokeWidth="2.5" strokeLinecap="round"/>
+      {/* 頭 */}
+      <rect x="34" y="18" width="32" height="26" rx="8" fill={c} stroke="#5d4037" strokeWidth="1.5"/>
+      {/* 角 */}
+      <rect x="36" y="12" width="4" height="10" rx="2" fill="#5d4037"/>
+      <rect x="60" y="12" width="4" height="10" rx="2" fill="#5d4037"/>
+      {/* 目（赤い光） */}
+      <rect x="40" y="26" width="8" height="5" rx="2.5" fill="#ff1744"/>
+      <rect x="52" y="26" width="8" height="5" rx="2.5" fill="#ff1744"/>
+      <rect x="42" y="27" width="3" height="2" rx="1" fill="#fff" opacity=".5"/>
+      <rect x="54" y="27" width="3" height="2" rx="1" fill="#fff" opacity=".5"/>
+      {/* 口グリル */}
+      <rect x="42" y="36" width="16" height="4" rx="2" fill="#3e2723"/>
+      <line x1="46" y1="36" x2="46" y2="40" stroke="#5d4037" strokeWidth="1"/>
+      <line x1="50" y1="36" x2="50" y2="40" stroke="#5d4037" strokeWidth="1"/>
+      <line x1="54" y1="36" x2="54" y2="40" stroke="#5d4037" strokeWidth="1"/>
       {/* ボルト */}
-      <circle cx="36" cy="44" r="3" fill="#5d4037"/>
-      <circle cx="64" cy="44" r="3" fill="#5d4037"/>
-      {/* X マーク */}
-      <path d="M44 52 L56 66 M56 52 L44 66" stroke="#ff1744" strokeWidth="2.5" strokeLinecap="round"/>
+      <circle cx="36" cy="46" r="3" fill="#3e2723" stroke="#5d4037" strokeWidth="1"/>
+      <circle cx="64" cy="46" r="3" fill="#3e2723" stroke="#5d4037" strokeWidth="1"/>
+      {/* 足 */}
+      <rect x="34" y="76" width="12" height="8" rx="4" fill="#5d4037"/>
+      <rect x="54" y="76" width="12" height="8" rx="4" fill="#5d4037"/>
     </svg>,
-    // サルファー - 硫黄の毒モンスター
+
+    // ══ 8: サルファー ══ 毒ガスの蛇型。黄色い体にドクロ模様
     8: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      <ellipse cx="50" cy="55" rx="25" ry="22" fill={c} opacity=".7"/>
-      {/* 毒々しいガス */}
-      <circle cx="35" cy="30" r="8" fill={c} opacity=".3"/>
-      <circle cx="65" cy="28" r="6" fill={c} opacity=".25"/>
-      <circle cx="28" cy="42" r="5" fill={c} opacity=".2"/>
-      <circle cx="72" cy="45" r="4" fill={c} opacity=".2"/>
-      {/* 目（邪悪） */}
-      <path d="M38 48 L42 44 L46 48" stroke="#f57f17" strokeWidth="2.5" fill={c}/>
-      <path d="M54 48 L58 44 L62 48" stroke="#f57f17" strokeWidth="2.5" fill={c}/>
-      <circle cx="42" cy="47" r="1.5" fill="#fff"/>
-      <circle cx="58" cy="47" r="1.5" fill="#fff"/>
-      {/* 口 */}
-      <path d="M42 60 Q46 65 50 60 Q54 65 58 60" stroke="#f57f17" strokeWidth="2" fill="none"/>
-      {/* 毒マーク */}
-      <circle cx="50" cy="38" r="4" fill="none" stroke="#f57f17" strokeWidth="1.5"/>
-      <path d="M48 36 L52 40 M52 36 L48 40" stroke="#f57f17" strokeWidth="1.5"/>
+      <defs>
+        <radialGradient id="m8b" cx="50%" cy="40%"><stop offset="0%" stopColor="#fff9c4"/><stop offset="50%" stopColor={c}/><stop offset="100%" stopColor="#f57f17" stopOpacity=".8"/></radialGradient>
+      </defs>
+      {/* 蛇の体（とぐろ） */}
+      <path d="M65 75 Q80 70 78 55 Q76 40 65 42 Q55 44 55 55 Q55 65 45 65 Q35 65 35 55" stroke={c} strokeWidth="8" fill="none" strokeLinecap="round" opacity=".4"/>
+      {/* 頭（ポケモン風のまるっこさ） */}
+      <ellipse cx="50" cy="42" rx="24" ry="22" fill="url(#m8b)"/>
+      {/* おなか */}
+      <ellipse cx="50" cy="48" rx="12" ry="10" fill="#fff9c4" opacity=".3"/>
+      {/* 毒模様 */}
+      <circle cx="50" cy="32" r="5" fill="none" stroke="#e65100" strokeWidth="1.5" opacity=".5"/>
+      <path d="M48 30 L52 34 M52 30 L48 34" stroke="#e65100" strokeWidth="1.5" opacity=".5"/>
+      {/* 目（邪悪＆キュート） */}
+      <ellipse cx="40" cy="42" rx="6" ry="7" fill="#fff"/>
+      <ellipse cx="60" cy="42" rx="6" ry="7" fill="#fff"/>
+      <ellipse cx="42" cy="43" rx="3.5" ry="4.5" fill="#e65100"/>
+      <ellipse cx="62" cy="43" rx="3.5" ry="4.5" fill="#e65100"/>
+      <path d="M42 43 L42 41" stroke="#1a1a1a" strokeWidth="3" strokeLinecap="round"/>
+      <path d="M62 43 L62 41" stroke="#1a1a1a" strokeWidth="3" strokeLinecap="round"/>
+      <circle cx="43.5" cy="41" r="1.5" fill="#fff"/>
+      <circle cx="63.5" cy="41" r="1.5" fill="#fff"/>
+      {/* 眉（イジワル） */}
+      <path d="M34 35 L42 37" stroke="#e65100" strokeWidth="2" strokeLinecap="round"/>
+      <path d="M66 35 L58 37" stroke="#e65100" strokeWidth="2" strokeLinecap="round"/>
+      {/* 口（にやり） */}
+      <path d="M42 54 Q46 58 50 54 Q54 58 58 54" stroke="#e65100" strokeWidth="1.8" fill="none" strokeLinecap="round"/>
+      {/* 牙 */}
+      <path d="M44 52 L42 56" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"/>
+      <path d="M56 52 L58 56" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"/>
+      {/* 毒ガスエフェクト */}
+      <circle cx="22" cy="35" r="5" fill={c} opacity=".2"/>
+      <circle cx="78" cy="38" r="4" fill={c} opacity=".15"/>
+      <circle cx="18" cy="50" r="3" fill={c} opacity=".1"/>
     </svg>,
-    // ドクターカオス - 暴走科学者
+
+    // ══ 9: ドクターカオス ══ 暴走科学者。稲妻髪・狂気の瞳
     9: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      {/* 白衣（ボロボロ） */}
-      <path d="M30 55 L28 95 L72 95 L70 55Z" fill="#e0e0e0" stroke="#aaa" strokeWidth="1" strokeDasharray="3,2"/>
-      {/* 顔 */}
-      <circle cx="50" cy="38" r="18" fill="#e8d5b7"/>
-      {/* 狂気の目 */}
-      <circle cx="43" cy="35" r="5" fill="#fff"/>
-      <circle cx="57" cy="35" r="5" fill="#fff"/>
-      <circle cx="44" cy="35" r="3" fill="#e91e63"/>
-      <circle cx="58" cy="35" r="2" fill="#e91e63"/>
-      <circle cx="44.5" cy="34" r="1" fill="#fff"/>
+      <defs>
+        <radialGradient id="m9sk" cx="50%" cy="40%"><stop offset="0%" stopColor="#ffe4c4"/><stop offset="100%" stopColor="#dbb896"/></radialGradient>
+      </defs>
+      {/* 白衣（ボロボロ風） */}
+      <path d="M30 60 Q28 65 26 92 Q40 96 50 96 Q60 96 74 92 Q72 65 70 60Z" fill="#e0e0e0" stroke="#bdbdbd" strokeWidth="1"/>
+      <path d="M34 60 L32 92" stroke="#bdbdbd" strokeWidth=".5" strokeDasharray="3,3"/>
+      <path d="M66 60 L68 92" stroke="#bdbdbd" strokeWidth=".5" strokeDasharray="3,3"/>
+      {/* 顔（デフォルメ大きめ） */}
+      <ellipse cx="50" cy="42" rx="22" ry="20" fill="url(#m9sk)"/>
+      {/* 髪（逆立ち・稲妻型） */}
+      <path d="M28 36 Q22 18 34 8 L32 24 Q36 14 42 6 L38 22 Q44 10 50 5 L46 20 Q52 8 58 5 L54 22 Q60 14 64 6 L62 24 Q68 18 72 36" fill="#616161" stroke="#424242" strokeWidth="1"/>
+      {/* 目（左右大きさ違い＝狂気） */}
+      <circle cx="42" cy="40" r="7" fill="#fff"/>
+      <circle cx="58" cy="40" r="5.5" fill="#fff"/>
+      <circle cx="43" cy="40" r="4.5" fill="#e91e63"/>
+      <circle cx="59" cy="40" r="3" fill="#e91e63"/>
+      <circle cx="44.5" cy="38.5" r="2" fill="#fff"/>
+      <circle cx="60" cy="38.5" r="1.2" fill="#fff"/>
+      {/* 瞳孔（小さい＝イッちゃってる感） */}
+      <circle cx="43" cy="40" r="1.5" fill="#1a1a1a"/>
+      <circle cx="59" cy="40" r="1" fill="#1a1a1a"/>
       {/* 眉（つり上がり） */}
-      <path d="M37 28 L48 30" stroke="#555" strokeWidth="2" strokeLinecap="round"/>
-      <path d="M63 28 L52 30" stroke="#555" strokeWidth="2" strokeLinecap="round"/>
+      <path d="M34 30 L44 33" stroke="#424242" strokeWidth="2.5" strokeLinecap="round"/>
+      <path d="M66 32 L56 34" stroke="#424242" strokeWidth="2.5" strokeLinecap="round"/>
       {/* 口（狂笑） */}
-      <path d="M40 46 Q45 54 50 46 Q55 54 60 46" stroke="#c62828" strokeWidth="2" fill="none"/>
-      {/* 髪（逆立ち） */}
-      <path d="M32 30 Q30 15 40 10 L38 25" fill="#555"/>
-      <path d="M42 28 Q42 8 50 5 L48 22" fill="#444"/>
-      <path d="M52 22 Q55 5 58 8 L56 28" fill="#555"/>
-      <path d="M60 25 Q65 10 68 15 L65 30" fill="#444"/>
+      <path d="M38 52 Q44 60 50 52 Q56 60 62 52" stroke="#c62828" strokeWidth="2" fill="none" strokeLinecap="round"/>
+      {/* 頬 */}
+      <ellipse cx="32" cy="48" rx="4" ry="2.5" fill="#e91e63" opacity=".2"/>
+      <ellipse cx="68" cy="48" rx="4" ry="2.5" fill="#e91e63" opacity=".2"/>
       {/* 稲妻エフェクト */}
-      <path d="M22 30 L26 38 L23 38 L28 48" stroke={c} strokeWidth="2" fill="none"/>
-      <path d="M78 28 L74 36 L77 36 L72 46" stroke={c} strokeWidth="2" fill="none"/>
+      <path d="M18 32 L22 40 L19 40 L24 50" stroke={c} strokeWidth="2" fill="none" strokeLinejoin="round"/>
+      <path d="M82 30 L78 38 L81 38 L76 48" stroke={c} strokeWidth="2" fill="none" strokeLinejoin="round"/>
     </svg>,
-    // ダイヤキング - 最強の結晶モンスター
+
+    // ══ 10: ダイヤキング ══ ダイヤモンドの王。王冠＋宝石ボディ
     10: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      {/* ダイヤモンド型ボディ */}
-      <polygon points="50,15 75,45 60,85 40,85 25,45" fill={c} opacity=".6"/>
-      <polygon points="50,20 70,45 58,80 42,80 30,45" fill={c} opacity=".8"/>
-      {/* キラキラ面 */}
-      <polygon points="50,20 70,45 50,55 30,45" fill="#fff" opacity=".15"/>
-      {/* 王冠 */}
-      <path d="M35 18 L40 8 L45 15 L50 5 L55 15 L60 8 L65 18Z" fill="#ffd700" stroke="#ff8f00" strokeWidth="1"/>
-      <circle cx="50" cy="10" r="2.5" fill="#ff1744"/>
-      <circle cx="42" cy="13" r="1.5" fill="#2196f3"/>
-      <circle cx="58" cy="13" r="1.5" fill="#4caf50"/>
-      {/* 目（威圧） */}
-      <path d="M40 42 L44 38 L48 42" stroke="#fff" strokeWidth="2.5" fill="none"/>
-      <path d="M52 42 L56 38 L60 42" stroke="#fff" strokeWidth="2.5" fill="none"/>
-      <circle cx="44" cy="41" r="1.5" fill="#ffd700"/>
-      <circle cx="56" cy="41" r="1.5" fill="#ffd700"/>
-      {/* 口 */}
-      <path d="M44 52 L50 56 L56 52" stroke="#fff" strokeWidth="1.5" fill="none"/>
+      <defs>
+        <linearGradient id="m10b" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#f3e5f5"/><stop offset="30%" stopColor={c}/><stop offset="60%" stopColor="#aa00ff"/><stop offset="100%" stopColor="#6a1b9a"/></linearGradient>
+        <linearGradient id="m10c" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#ffd54f"/><stop offset="100%" stopColor="#ff8f00"/></linearGradient>
+      </defs>
       {/* 放射光 */}
-      {[0,45,90,135,180,225,270,315].map((a,i)=><line key={i} x1="50" y1="50" x2={50+Math.cos(a*Math.PI/180)*45} y2={50+Math.sin(a*Math.PI/180)*45} stroke={c} strokeWidth="0.5" opacity=".3"/>)}
+      {[0,30,60,90,120,150,180,210,240,270,300,330].map((a,i)=><line key={i} x1="50" y1="50" x2={50+Math.cos(a*Math.PI/180)*48} y2={50+Math.sin(a*Math.PI/180)*48} stroke={c} strokeWidth=".6" opacity=".2"/>)}
+      {/* ダイヤ型ボディ */}
+      <polygon points="50,18 76,46 62,82 38,82 24,46" fill="url(#m10b)" stroke="#aa00ff" strokeWidth="1.5"/>
+      {/* 面のハイライト */}
+      <polygon points="50,18 76,46 50,56 24,46" fill="#fff" opacity=".12"/>
+      <polygon points="50,18 24,46 50,56" fill="#fff" opacity=".08"/>
+      {/* 宝石面の線 */}
+      <line x1="50" y1="18" x2="50" y2="56" stroke="#ce93d8" strokeWidth=".8" opacity=".3"/>
+      <line x1="24" y1="46" x2="76" y2="46" stroke="#ce93d8" strokeWidth=".8" opacity=".3"/>
+      {/* 王冠 */}
+      <path d="M32 22 L36 8 L42 18 L50 4 L58 18 L64 8 L68 22Z" fill="url(#m10c)" stroke="#ff8f00" strokeWidth="1"/>
+      <circle cx="50" cy="10" r="3" fill="#f44336"/>
+      <circle cx="40" cy="14" r="2" fill="#2196f3"/>
+      <circle cx="60" cy="14" r="2" fill="#4caf50"/>
+      {/* 目（威圧的だけどキャラクター感） */}
+      <ellipse cx="42" cy="44" rx="5.5" ry="6" fill="#fff"/>
+      <ellipse cx="58" cy="44" rx="5.5" ry="6" fill="#fff"/>
+      <ellipse cx="43" cy="45" rx="3.5" ry="4" fill="#6a1b9a"/>
+      <ellipse cx="59" cy="45" rx="3.5" ry="4" fill="#6a1b9a"/>
+      <circle cx="44.5" cy="43" r="1.8" fill="#fff"/>
+      <circle cx="60.5" cy="43" r="1.8" fill="#fff"/>
+      {/* 眉（威厳） */}
+      <path d="M36 38 L44 40" stroke="#4a148c" strokeWidth="2.5" strokeLinecap="round"/>
+      <path d="M64 38 L56 40" stroke="#4a148c" strokeWidth="2.5" strokeLinecap="round"/>
+      {/* 口 */}
+      <path d="M44 56 Q50 60 56 56" stroke="#6a1b9a" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+      {/* 輝き */}
+      <path d="M20 30 L21 26 L22 30 L26 31 L22 32 L21 36 L20 32 L16 31Z" fill="#fff" opacity=".5"/>
+      <path d="M80 55 L81 51 L82 55 L86 56 L82 57 L81 61 L80 57 L76 56Z" fill="#fff" opacity=".4"/>
+      <path d="M50 70 L51 67 L52 70 L55 71 L52 72 L51 75 L50 72 L47 71Z" fill="#ce93d8" opacity=".5"/>
     </svg>,
-    // EXステージ以降は共通テンプレートで色変え + 特徴追加
+
+    // ══ EX1 (11): ネオバブリン ══ 進化形バブリン。角＋赤い模様
     11: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      <circle cx="50" cy="50" r="28" fill={c} opacity=".4"/>
-      <circle cx="50" cy="50" r="22" fill={c} opacity=".6" stroke="#fff" strokeWidth="1" strokeOpacity=".3"/>
-      <circle cx="50" cy="50" r="16" fill={c} opacity=".8"/>
-      <ellipse cx="42" cy="46" rx="4" ry="5" fill="#fff"/>
-      <ellipse cx="58" cy="46" rx="4" ry="5" fill="#fff"/>
-      <circle cx="43" cy="46" r="2.5" fill="#e91e63"/>
-      <circle cx="59" cy="46" r="2.5" fill="#e91e63"/>
-      <path d="M44 58 Q50 64 56 58" stroke="#e91e63" strokeWidth="2" fill="none"/>
-      <path d="M30 30 Q35 22 42 28" stroke={c} strokeWidth="2" fill="none" opacity=".5"/>
-      <path d="M70 30 Q65 22 58 28" stroke={c} strokeWidth="2" fill="none" opacity=".5"/>
-      <text x="50" y="38" textAnchor="middle" fill="#fff" fontSize="8" fontWeight="900" opacity=".6">NEO</text>
+      <defs>
+        <radialGradient id="m11b" cx="40%" cy="35%"><stop offset="0%" stopColor="#e0f7fa"/><stop offset="50%" stopColor={c}/><stop offset="100%" stopColor="#006064" stopOpacity=".7"/></radialGradient>
+      </defs>
+      <ellipse cx="50" cy="56" rx="28" ry="26" fill="url(#m11b)"/>
+      <ellipse cx="42" cy="40" rx="10" ry="4" fill="#fff" opacity=".2" transform="rotate(-12,42,40)"/>
+      {/* 角（進化の証） */}
+      <path d="M38 32 L30 14 L40 28" fill="#e91e63" stroke="#c62828" strokeWidth="1"/>
+      <path d="M62 32 L70 14 L60 28" fill="#e91e63" stroke="#c62828" strokeWidth="1"/>
+      {/* 戦闘傷跡 */}
+      <path d="M28 50 L34 46 L30 52" stroke="#e91e63" strokeWidth="1.5" fill="none"/>
+      {/* 目（強くなった） */}
+      <ellipse cx="40" cy="52" rx="7" ry="8" fill="#fff"/>
+      <ellipse cx="60" cy="52" rx="7" ry="8" fill="#fff"/>
+      <ellipse cx="42" cy="53" rx="4.5" ry="5" fill="#e91e63"/>
+      <ellipse cx="62" cy="53" rx="4.5" ry="5" fill="#e91e63"/>
+      <circle cx="43.5" cy="50.5" r="2" fill="#fff"/>
+      <circle cx="63.5" cy="50.5" r="2" fill="#fff"/>
+      {/* 眉（キリッ） */}
+      <path d="M32 46 L40 48" stroke="#006064" strokeWidth="2" strokeLinecap="round"/>
+      <path d="M68 46 L60 48" stroke="#006064" strokeWidth="2" strokeLinecap="round"/>
+      <path d="M44 63 Q50 68 56 63" stroke="#006064" strokeWidth="2" fill="none" strokeLinecap="round"/>
+      <ellipse cx="32" cy="60" rx="4" ry="2.5" fill="#e91e63" opacity=".3"/>
+      <ellipse cx="68" cy="60" rx="4" ry="2.5" fill="#e91e63" opacity=".3"/>
+      <text x="50" y="36" textAnchor="middle" fill="#e91e63" fontSize="7" fontWeight="900" fontFamily="monospace">NEO</text>
+      <ellipse cx="40" cy="80" rx="8" ry="4" fill="#00838f" opacity=".6"/>
+      <ellipse cx="60" cy="80" rx="8" ry="4" fill="#00838f" opacity=".6"/>
     </svg>,
+
+    // ══ EX2 (12): ツインメタル ══ 銅と鉄の合体。左右非対称
     12: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      <rect x="25" y="35" width="22" height="40" rx="6" fill="#FF8A65" stroke="#bf360c" strokeWidth="1.5"/>
-      <rect x="53" y="35" width="22" height="40" rx="6" fill="#8D6E63" stroke="#5d4037" strokeWidth="1.5"/>
-      <path d="M47 35 L50 25 L53 35" fill={c}/>
-      <rect x="40" y="45" width="20" height="8" rx="4" fill={c} opacity=".6"/>
-      <circle cx="36" cy="48" r="3" fill="#fff200"/><circle cx="64" cy="48" r="3" fill="#ff1744"/>
-      <rect x="30" y="56" width="12" height="3" rx="1" fill="#bf360c"/><rect x="58" y="56" width="12" height="3" rx="1" fill="#5d4037"/>
-      <path d="M45 80 L50 90 L55 80" stroke={c} strokeWidth="2" fill="none"/>
+      {/* 左半身（銅） */}
+      <path d="M50 20 L50 85 Q30 85 25 60 Q20 35 50 20Z" fill="#FF8A65" stroke="#bf360c" strokeWidth="1"/>
+      {/* 右半身（鉄） */}
+      <path d="M50 20 L50 85 Q70 85 75 60 Q80 35 50 20Z" fill="#8D6E63" stroke="#5d4037" strokeWidth="1"/>
+      {/* 合体線 */}
+      <line x1="50" y1="20" x2="50" y2="85" stroke="#ffd54f" strokeWidth="2" strokeDasharray="4,3"/>
+      {/* 目（左＝銅色、右＝赤） */}
+      <ellipse cx="40" cy="44" rx="5" ry="6" fill="#fff"/>
+      <ellipse cx="60" cy="44" rx="5" ry="6" fill="#fff"/>
+      <circle cx="41" cy="44" r="3.5" fill="#e65100"/>
+      <circle cx="61" cy="44" r="3.5" fill="#d32f2f"/>
+      <circle cx="42.5" cy="42.5" r="1.5" fill="#fff"/>
+      <circle cx="62.5" cy="42.5" r="1.5" fill="#fff"/>
+      {/* 角（左右違う形） */}
+      <path d="M36 24 L28 8 L38 18" fill="#FF8A65" stroke="#bf360c" strokeWidth="1"/>
+      <rect x="60" y="8" width="6" height="16" rx="3" fill="#5d4037" stroke="#3e2723" strokeWidth="1"/>
+      {/* 口 */}
+      <path d="M42 58 L50 62 L58 58" stroke="#4e342e" strokeWidth="2" fill="none" strokeLinecap="round"/>
+      {/* 足 */}
+      <ellipse cx="38" cy="82" rx="8" ry="4" fill="#bf360c"/>
+      <ellipse cx="62" cy="82" rx="8" ry="4" fill="#5d4037"/>
+      {/* 合体エネルギー */}
+      <circle cx="50" cy="35" r="4" fill="#ffd54f" opacity=".4"/>
+      <circle cx="50" cy="35" r="2" fill="#fff" opacity=".6"/>
     </svg>,
+
+    // ══ EX3 (13): ポイズンクイーン ══ 毒の女王蛇。ティアラ付き
     13: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      <path d="M50 20 Q25 35 30 60 Q35 82 50 85 Q65 82 70 60 Q75 35 50 20Z" fill={c} opacity=".6"/>
-      <circle cx="50" cy="28" r="8" fill={c} opacity=".3"/>
-      <path d="M42 15 Q45 8 50 12 Q55 8 58 15" fill={c} opacity=".4"/>
-      <ellipse cx="43" cy="46" rx="5" ry="6" fill="#fff"/>
-      <ellipse cx="57" cy="46" rx="5" ry="6" fill="#fff"/>
-      <circle cx="44" cy="46" r="3" fill="#4a148c"/><circle cx="58" cy="46" r="3" fill="#4a148c"/>
-      <path d="M46 44 L42 40" stroke="#4a148c" strokeWidth="1.5"/><path d="M54 44 L58 40" stroke="#4a148c" strokeWidth="1.5"/>
-      <path d="M44 60 Q50 66 56 60" stroke="#4a148c" strokeWidth="1.5" fill="none"/>
-      <path d="M28 65 Q25 75 30 80" stroke={c} strokeWidth="2" fill="none" opacity=".4"/>
-      <path d="M72 65 Q75 75 70 80" stroke={c} strokeWidth="2" fill="none" opacity=".4"/>
+      <defs>
+        <radialGradient id="m13b" cx="50%" cy="40%"><stop offset="0%" stopColor="#f3e5f5"/><stop offset="50%" stopColor={c}/><stop offset="100%" stopColor="#4a148c" stopOpacity=".7"/></radialGradient>
+      </defs>
+      {/* 体の巻き */}
+      <path d="M60 80 Q78 75 75 60 Q72 48 60 50 Q50 52 50 62 Q50 72 40 70 Q32 68 35 58" stroke={c} strokeWidth="7" fill="none" strokeLinecap="round" opacity=".35"/>
+      {/* 頭 */}
+      <ellipse cx="50" cy="42" rx="24" ry="22" fill="url(#m13b)"/>
+      <ellipse cx="50" cy="48" rx="12" ry="10" fill="#f3e5f5" opacity=".3"/>
+      {/* ティアラ */}
+      <path d="M34 24 L38 14 L44 22 L50 12 L56 22 L62 14 L66 24" stroke="#ffd54f" strokeWidth="2" fill="none"/>
+      <circle cx="50" cy="16" r="2.5" fill="#e91e63"/>
+      <circle cx="40" cy="19" r="1.5" fill="#ce93d8"/>
+      <circle cx="60" cy="19" r="1.5" fill="#ce93d8"/>
+      {/* 目（色っぽい半目） */}
+      <ellipse cx="42" cy="40" rx="6" ry="5" fill="#fff"/>
+      <ellipse cx="58" cy="40" rx="6" ry="5" fill="#fff"/>
+      <ellipse cx="43" cy="41" rx="3.5" ry="3.5" fill="#7b1fa2"/>
+      <ellipse cx="59" cy="41" rx="3.5" ry="3.5" fill="#7b1fa2"/>
+      <circle cx="44.5" cy="39.5" r="1.5" fill="#fff"/>
+      <circle cx="60.5" cy="39.5" r="1.5" fill="#fff"/>
+      {/* まつげ（長い） */}
+      <path d="M36 36 Q38 33 42 36" stroke="#4a148c" strokeWidth="1.5" fill="none"/>
+      <path d="M58 36 Q62 33 64 36" stroke="#4a148c" strokeWidth="1.5" fill="none"/>
+      {/* 口（小悪魔スマイル） */}
+      <path d="M44 50 Q50 55 56 50" stroke="#7b1fa2" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+      {/* 頬 */}
+      <ellipse cx="34" cy="46" rx="3.5" ry="2" fill="#e91e63" opacity=".3"/>
+      <ellipse cx="66" cy="46" rx="3.5" ry="2" fill="#e91e63" opacity=".3"/>
     </svg>,
+
+    // ══ EX4 (14): プロフェッサーX ══ 博士の師匠。知的で威厳ある老人
     14: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      <rect x="30" y="50" width="40" height="38" rx="6" fill="#3949ab" stroke="#1a237e" strokeWidth="1.5"/>
-      <circle cx="50" cy="35" r="18" fill="#e8d5b7"/>
-      <rect x="36" y="28" width="28" height="10" rx="2" fill="none" stroke="#1a237e" strokeWidth="2"/>
-      <rect x="38" y="30" width="10" height="6" rx="1" fill="rgba(255,255,255,.8)"/>
-      <rect x="52" y="30" width="10" height="6" rx="1" fill="rgba(255,255,255,.8)"/>
-      <circle cx="43" cy="33" r="2" fill="#1a237e"/><circle cx="57" cy="33" r="2" fill="#1a237e"/>
-      <path d="M45 44 Q50 48 55 44" stroke="#8d6e63" strokeWidth="1.5" fill="none"/>
-      <path d="M32 22 Q38 10 50 8 Q62 10 68 22" fill="#ccc" stroke="#aaa" strokeWidth="1"/>
-      <path d="M65 60 Q70 55 75 60 L75 72 Q70 68 65 72Z" fill="#1a237e" opacity=".6"/>
-      <text x="50" y="68" textAnchor="middle" fill="#7986cb" fontSize="7" fontWeight="900">DNA</text>
+      <defs>
+        <radialGradient id="m14sk" cx="50%" cy="40%"><stop offset="0%" stopColor="#ffe4c4"/><stop offset="100%" stopColor="#dbb896"/></radialGradient>
+      </defs>
+      {/* ローブ */}
+      <path d="M28 55 Q25 60 22 95 Q50 100 78 95 Q75 60 72 55Z" fill="#3949ab" stroke="#1a237e" strokeWidth="1"/>
+      <path d="M40 55 L38 95" stroke="#5c6bc0" strokeWidth=".5" opacity=".3"/>
+      <path d="M60 55 L62 95" stroke="#5c6bc0" strokeWidth=".5" opacity=".3"/>
+      {/* DNAエンブレム */}
+      <path d="M45 68 Q50 62 55 68 Q50 74 45 68" stroke="#7986cb" strokeWidth="1.5" fill="none"/>
+      <path d="M45 74 Q50 68 55 74 Q50 80 45 74" stroke="#7986cb" strokeWidth="1.5" fill="none"/>
+      {/* 顔 */}
+      <ellipse cx="50" cy="38" rx="20" ry="18" fill="url(#m14sk)"/>
+      {/* 髪（白く長い） */}
+      <path d="M30 34 Q26 15 40 8 Q50 4 60 8 Q74 15 70 34" fill="#e0e0e0" stroke="#bdbdbd" strokeWidth="1"/>
+      <path d="M30 34 Q28 42 26 52" stroke="#e0e0e0" strokeWidth="4" fill="none" strokeLinecap="round"/>
+      <path d="M70 34 Q72 42 74 52" stroke="#e0e0e0" strokeWidth="4" fill="none" strokeLinecap="round"/>
+      {/* メガネ（角型・知的） */}
+      <rect x="37" y="33" width="12" height="9" rx="2" fill="rgba(200,220,255,.15)" stroke="#1a237e" strokeWidth="2"/>
+      <rect x="53" y="33" width="12" height="9" rx="2" fill="rgba(200,220,255,.15)" stroke="#1a237e" strokeWidth="2"/>
+      <line x1="49" y1="37" x2="53" y2="37" stroke="#1a237e" strokeWidth="2"/>
+      {/* 目（鋭く知的） */}
+      <circle cx="43" cy="37" r="2.5" fill="#1a237e"/>
+      <circle cx="59" cy="37" r="2.5" fill="#1a237e"/>
+      <circle cx="44" cy="36" r="1.2" fill="#fff"/>
+      <circle cx="60" cy="36" r="1.2" fill="#fff"/>
+      {/* ヒゲ（長い白ヒゲ） */}
+      <path d="M42 48 Q44 52 42 58 Q40 64 38 68" stroke="#ccc" strokeWidth="2" fill="none" strokeLinecap="round"/>
+      <path d="M50 50 Q50 58 50 66 Q50 70 50 74" stroke="#ccc" strokeWidth="2" fill="none" strokeLinecap="round"/>
+      <path d="M58 48 Q56 52 58 58 Q60 64 62 68" stroke="#ccc" strokeWidth="2" fill="none" strokeLinecap="round"/>
     </svg>,
+
+    // ══ EX5 (15): ??? ══ 正体不明。宇宙的オーラ、目だけ見える
     15: <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-      <circle cx="50" cy="50" r="30" fill={c} opacity=".2"/>
-      <circle cx="50" cy="50" r="22" fill={c} opacity=".4"/>
-      <circle cx="50" cy="50" r="14" fill={c} opacity=".7"/>
-      <circle cx="43" cy="46" r="4" fill="#fff" opacity=".9"/>
-      <circle cx="57" cy="46" r="4" fill="#fff" opacity=".9"/>
-      <circle cx="44" cy="46" r="2.5" fill={c}/><circle cx="58" cy="46" r="2.5" fill={c}/>
-      <path d="M44 58 Q50 62 56 58" stroke="#fff" strokeWidth="1.5" fill="none" opacity=".8"/>
-      {[0,60,120,180,240,300].map((a,i)=><line key={i} x1="50" y1="50" x2={50+Math.cos(a*Math.PI/180)*38} y2={50+Math.sin(a*Math.PI/180)*38} stroke={c} strokeWidth="1" opacity=".3"/>)}
-      <text x="50" y="38" textAnchor="middle" fill="#fff" fontSize="8" fontWeight="900" opacity=".5">???</text>
+      <defs>
+        <radialGradient id="m15b" cx="50%" cy="50%"><stop offset="0%" stopColor={c} stopOpacity=".8"/><stop offset="40%" stopColor={c} stopOpacity=".4"/><stop offset="70%" stopColor={c} stopOpacity=".15"/><stop offset="100%" stopColor={c} stopOpacity="0"/></radialGradient>
+        <radialGradient id="m15c" cx="50%" cy="50%"><stop offset="0%" stopColor="#fff" stopOpacity=".2"/><stop offset="100%" stopColor="#fff" stopOpacity="0"/></radialGradient>
+      </defs>
+      {/* 宇宙的オーラ */}
+      <circle cx="50" cy="50" r="42" fill="url(#m15b)"/>
+      <circle cx="50" cy="50" r="30" fill="url(#m15c)"/>
+      {/* 影のボディ（おぼろげ） */}
+      <ellipse cx="50" cy="52" rx="22" ry="24" fill={c} opacity=".5"/>
+      <ellipse cx="50" cy="52" rx="16" ry="18" fill={c} opacity=".7"/>
+      {/* 目（光る） */}
+      <ellipse cx="42" cy="48" rx="5" ry="6" fill="#fff" opacity=".95"/>
+      <ellipse cx="58" cy="48" rx="5" ry="6" fill="#fff" opacity=".95"/>
+      <ellipse cx="43" cy="49" rx="3" ry="4" fill={c}/>
+      <ellipse cx="59" cy="49" rx="3" ry="4" fill={c}/>
+      <circle cx="44" cy="47" r="1.5" fill="#fff"/>
+      <circle cx="60" cy="47" r="1.5" fill="#fff"/>
+      {/* ?マーク */}
+      <text x="50" y="38" textAnchor="middle" fill="#fff" fontSize="10" fontWeight="900" opacity=".4" fontFamily="monospace">???</text>
+      {/* 宇宙の粒子 */}
+      {[20,55,85,120,160,200,240,280,320,350].map((a,i)=>{const r=34+Math.random()*10;return <circle key={i} cx={50+Math.cos(a*Math.PI/180)*r} cy={50+Math.sin(a*Math.PI/180)*r} r={1+Math.random()*1.5} fill="#fff" opacity={.15+Math.random()*.25}/>;
+      })}
+      {/* 口（不気味な微笑） */}
+      <path d="M44 58 Q50 62 56 58" stroke="#fff" strokeWidth="1" fill="none" opacity=".5" strokeLinecap="round"/>
     </svg>
   };
   return monsters[id] || monsters[1];
