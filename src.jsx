@@ -972,7 +972,19 @@ const Celeb = ({comp,onDone}) => {
     </div>}
     {ph>=4&&<div style={{position:"relative",zIndex:10,textAlign:"center",animation:"sp .4s ease both"}}>
       <div style={{fontSize:44,fontWeight:900,color:mc,textShadow:`0 0 30px ${mc}88`,marginTop:4}}>+{comp.p}<span style={{fontSize:20}}>{t("pt")}</span></div>
-      {comp.mult&&comp.mult>1&&<div style={{fontSize:14,color:"#fc3",fontWeight:900,marginTop:2}}>⌨️ コマンドボーナス ×{comp.mult}</div>}
+      {comp.mult&&comp.mult>1&&<div style={{marginTop:6,animation:"su .3s .2s ease both",opacity:0}}>
+        <div style={{fontSize:14,color:"#fc3",fontWeight:900}}>🧠 ノーピークボーナス ×{comp.mult}</div>
+        <div style={{display:"flex",gap:8,alignItems:"center",justifyContent:"center",marginTop:8}}>
+          <DrSVG size={40} />
+          <div style={{padding:"6px 10px",background:"rgba(255,200,50,.08)",border:"2px solid rgba(255,200,50,.2)",maxWidth:200,textAlign:"left"}}>
+            <span style={{fontSize:11,color:"#fc3",fontWeight:700,lineHeight:1.6}}>{
+              comp.p>=30?"博士「な、なんじゃと！？得点表なしでこれを！？天才じゃ！！」":
+              comp.p>=10?"博士「おおっ！見ないで作るとは…やるのう！」":
+              "博士「ほう！暗記しておるな！えらいぞ！」"
+            }</span>
+          </div>
+        </div>
+      </div>}
       {comp.sp&&<div style={{fontSize:16,color:"#c9f",fontWeight:800,marginTop:2}}>💎 {t("sp")}</div>}
     </div>}
   </div>;
@@ -1298,9 +1310,7 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
   const [drawnC,setDrC]=useState(null);
   const [bonded,setBon]=useState(false);
   const [cel,setCel]=useState(null);
-  const [cmdOpen,setCmdOpen]=useState(false);
-  const [cmdText,setCmdText]=useState("");
-  const [cmdErr,setCmdErr]=useState("");
+  const [peeked,setPeeked]=useState(false);
   const selC=hand.filter(c=>sel.has(c.id));
   const selCnt=cntA(selC);
   const match=COMPS.find(c=>(premium||c.free)&&Object.entries(c.a).every(([s,n])=>(selCnt[s]||0)===n)&&Object.entries(selCnt).every(([s,n])=>(c.a[s]||0)===n));
@@ -1311,32 +1321,8 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
   const toggle=card=>{if(cel)return;setSel(p=>{const n=new Set(p);if(n.has(card.id)){n.delete(card.id);SE.cardDesel();}else{n.add(card.id);SE.cardSel();}return n;});};
   const doDiscard=cardId=>{if(cel)return;SE.discard();onDiscard(cardId);};
   const doDraw=()=>{if(cel)return;const d=onDraw();if(d){SE.cardDraw();setDrew(true);setDrC(d);}};
-  const doBond=()=>{if(match&&!cel){setCel(match);onBond([...sel],match);setSel(new Set());setBon(true);}};
+  const doBond=()=>{if(match&&!cel){const mult=peeked?1:1.5;const boosted=mult>1?{...match,p:Math.round(match.p*mult),origP:match.p,mult}:match;setCel(boosted);onBond([...sel],match,mult);setSel(new Set());setBon(true);}};
   const doPass=()=>{if(cel)return;SE.pass();onPass();};
-  /* ── コマンド入力で化合物を作る（得点1.5倍） ── */
-  const doCmd=()=>{
-    const input=cmdText.trim().toUpperCase().replace(/\s/g,"");
-    if(!input){setCmdErr("化学式を入力してね");return;}
-    // 化学式 → 化合物マッチ（f フィールドの下付き数字を正規化して比較）
-    const normalize=s=>s.replace(/[₂₃₄₅₆₇]/g,m=>"₂₃₄₅₆₇".indexOf(m)+2).replace(/[²³⁴⁵⁶⁷]/g,m=>"²³⁴⁵⁶⁷".indexOf(m)+2).toUpperCase().replace(/\s/g,"");
-    const found=COMPS.find(c=>{
-      if(!premium&&!c.free) return false;
-      // f: "H₂O" → normalize → "H2O"
-      const nf=normalize(c.f);
-      return input===nf;
-    });
-    if(!found){setCmdErr("その化学式は見つからないよ");return;}
-    // 手札にあるか確認
-    const canMake=Object.entries(found.a).every(([s,n])=>(hc[s]||0)>=n);
-    if(!canMake){setCmdErr("手札が足りないよ");return;}
-    // 手札からカードを自動選択
-    const need={...found.a};const ids=[];
-    for(const card of hand){if(need[card.s]>0){ids.push(card.id);need[card.s]--;}}
-    // 1.5倍ボーナスで作成！
-    const boosted={...found,p:Math.round(found.p*1.5),origP:found.p,mult:1.5};
-    setCel(boosted);onBond(ids,found,1.5);setSel(new Set());setBon(true);
-    setCmdOpen(false);setCmdText("");setCmdErr("");SE.tap();
-  };
   
   return <div style={{minHeight:"100dvh",display:"flex",flexDirection:"column",background:pco.bg,paddingTop:"env(safe-area-inset-top)"}}>
     {cel && <Celeb comp={cel} onDone={()=>setCel(null)} />}
@@ -1404,39 +1390,23 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
       })()}
       
       {/* ── 合成プレビュー ── */}
-      {match&&!cel && <div style={{marginTop:18,padding:18,borderRadius:0,background:"rgba(80,255,128,.04)",border:"1.5px solid rgba(80,255,128,.15)",textAlign:"center",animation:"fadeScale .3s ease",}}>
-        <div style={{fontSize:13,color:"#5f8",fontWeight:700,marginBottom:4}}>{t("canB")}</div>
+      {match&&!cel && <div style={{marginTop:18,padding:18,borderRadius:0,background:peeked?"rgba(80,255,128,.04)":"rgba(255,200,50,.06)",border:peeked?"1.5px solid rgba(80,255,128,.15)":"2px solid rgba(255,200,50,.3)",textAlign:"center",animation:"fadeScale .3s ease",}}>
+        <div style={{fontSize:13,color:peeked?"#5f8":"#fc3",fontWeight:700,marginBottom:4}}>{t("canB")}{!peeked&&" 🧠×1.5"}</div>
         <div style={{fontSize:36}}>{match.e}</div>
         <div style={{fontSize:20,fontWeight:900,color:"#fff"}}>{t(match.k)}</div>
         <div style={{fontSize:14,color:"rgba(255,255,255,.4)"}}>
-          {match.f}（+{match.p}{t("pt")}）
+          {match.f}（+{peeked?match.p:Math.round(match.p*1.5)}{t("pt")}{!peeked&&<span style={{color:"#fc3",fontSize:11}}> ←{match.p}×1.5</span>}）
         </div>
         {match.sp && <div style={{fontSize:12,color:"#c9f",fontWeight:800,marginTop:2}}>💎 {t("sp")}</div>}
-        <PremBtn onClick={doBond} bg="#228833" style={{marginTop:12,padding:"12px 36px",fontSize:18}}>{t("bBtn")}</PremBtn>
-      </div>}
-      
-      {/* ── コマンド入力（化学式で1.5倍ボーナス） ── */}
-      {!overLimit&&!cel && <div style={{marginTop:10}}>
-        {!cmdOpen ? <button onClick={()=>{setCmdOpen(true);SE.tap();}} style={{
-          width:"100%",padding:10,border:"2px solid rgba(255,200,50,.2)",
-          background:"rgba(255,200,50,.04)",color:"#fc3",fontSize:12,fontWeight:700,cursor:"pointer"
-        }}>⌨️ コマンド入力（得点1.5倍！）</button>
-        : <div style={{padding:12,border:"2px solid #fc3",background:"rgba(255,200,50,.06)",animation:"su .2s ease"}}>
-          <div style={{fontSize:11,color:"#fc3",fontWeight:800,marginBottom:6}}>⌨️ 化学式を入力して作ると得点1.5倍！</div>
-          <div style={{display:"flex",gap:6,alignItems:"center"}}>
-            <input value={cmdText} onChange={e=>setCmdText(e.target.value)}
-              onKeyDown={e=>{if(e.key==="Enter")doCmd();}}
-              placeholder="例: H2O, NaCl, CO2"
-              style={{flex:1,padding:"8px 10px",border:"2px solid #334",background:"#111",color:"#fff",fontSize:14,outline:"none",fontFamily:"'DotGothic16',monospace",fontWeight:700}} autoFocus />
-            <PremBtn onClick={doCmd} bg="#cc8800" style={{padding:"8px 14px",fontSize:13}}>決定</PremBtn>
-          </div>
-          {cmdErr && <div style={{fontSize:11,color:"#f44",marginTop:4,fontWeight:700}}>❌ {cmdErr}</div>}
-          <div style={{fontSize:9,color:"rgba(255,255,255,.3)",marginTop:4}}>※ 手札にある元素で作れる化学式を入力（例: H2O, NaCl, CH4, Fe2O3）</div>
-          <button onClick={()=>{setCmdOpen(false);setCmdErr("");}} style={{marginTop:6,padding:"4px 12px",border:"1px solid #334",background:"transparent",color:"#666",fontSize:10,cursor:"pointer"}}>✕ とじる</button>
-        </div>}
+        <PremBtn onClick={doBond} bg={peeked?"#228833":"#cc8800"} style={{marginTop:12,padding:"12px 36px",fontSize:18}}>{t("bBtn")}</PremBtn>
       </div>}
       
       <Inv state={state} myHand={hand} />
+      
+      {/* ── ノーピークボーナス表示 ── */}
+      {!peeked && <div style={{marginTop:6,padding:"6px 10px",border:"2px solid rgba(255,200,50,.2)",background:"rgba(255,200,50,.04)",textAlign:"center"}}>
+        <span style={{fontSize:11,color:"#fc3",fontWeight:800}}>🧠 得点表を見ずに作ると1.5倍！</span>
+      </div>}
       
       {/* ── 化合物リスト（リーチ機能付き） ── */}
       {(()=>{
@@ -1454,7 +1424,7 @@ function Game({state,pi,onDraw,onBond,onPass,onDiscard,hl,onFinish,premium,onQui
         const reachComps = nearComps.filter(c=>c.needTotal>0 && c.needTotal<=2).sort((a,b)=>a.needTotal-b.needTotal||b.p-a.p);
         
         return <div style={{marginTop:8}}>
-        <button onClick={()=>{setSC(!showC);SE.tap();}} style={{
+        <button onClick={()=>{const next=!showC;setSC(next);if(next)setPeeked(true);SE.tap();}} style={{
           width:"100%",padding:12,border:"2px solid #223",
           background:"#0e0e1e",color:"rgba(255,255,255,.4)",fontSize:13,fontWeight:700,cursor:"pointer"
         }}>📋 {showC?t("cpC"):t("cpO")}</button>
