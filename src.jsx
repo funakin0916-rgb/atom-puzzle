@@ -336,6 +336,40 @@ const DrSVG = ({size=120}) => {
   return <PixelArt rows={R} palette={P} size={size} />;
 };
 
+/* ── みんなであそぶ ドット絵（2人のキャラ） ─── */
+const MultiSVG = ({size=120}) => {
+  const P = {
+    'a':'#ffdcb5','A':'#f0c8a0',
+    'r':'#e53935','R':'#c62828',
+    'b':'#42a5f5','B':'#1976d2',
+    'h':'#5d4037','H':'#3e2723',
+    'e':'#263238','w':'#fff',
+    'p':'#ffab91','m':'#a1887f',
+    'y':'#fdd835','Y':'#f9a825',
+    'g':'#66bb6a','G':'#388e3c',
+    'k':'#1a1a1a','n':'#ff80ab'
+  };
+  const R = [
+    '  hhh     HHH    ',
+    ' hhhhh   HHHHH   ',
+    ' haahah  HaaHaH  ',
+    ' haehah  HaeHaH  ',
+    '  aapaa   aapaa  ',
+    '  aamaa   aamaa  ',
+    '  rrrrr   bbbbb  ',
+    ' rrRrrrr bbbBbbb ',
+    ' rrrRrrr bbbBbbb ',
+    '  rrrrr   bbbbb  ',
+    '  rrarr   bbabb  ',
+    '  rr rr   bb bb  ',
+    '  mm mm   mm mm  ',
+    '                  ',
+    '     yyyyyy      ',
+    '     yYYYYy      ',
+  ];
+  return <PixelArt rows={R} palette={P} size={size} />;
+};
+
 /* ── モンスタードット絵 ─── */
 const MonsterSVG = ({id, size=100, color="#81D4FA"}) => {
   const monsters = {
@@ -1062,7 +1096,7 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
       </PremBtn>
       
       <PremBtn onClick={()=>{setMode("multi");SE.tap();}} bg="#4a148c" style={{display:"flex",alignItems:"center",gap:10,padding:"14px 16px"}}>
-        <span style={{fontSize:28}}>👫</span>
+        <MultiSVG size={36} />
         <span style={{textAlign:"left",flex:1}}>{t("multi")}<br/><span style={{fontSize:10,opacity:.7}}>{t("multiSub")}</span></span>
       </PremBtn>
     </div>
@@ -1225,7 +1259,7 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
 
   // ─ マルチプレイヤーセットアップ ─
   if(mode==="multi") return wrap(<>
-    <div style={{fontSize:52,marginBottom:8}}>👫</div>
+    <div style={{marginBottom:8,animation:"fl 3s ease-in-out infinite"}}><MultiSVG size={80} /></div>
     <h2 style={{fontSize:22,fontWeight:900,color:"#fff",margin:"0 0 24px"}}>{t("multi")}</h2>
     <div style={{fontSize:14,color:"rgba(255,255,255,.4)",fontWeight:700,marginBottom:8}}>{t("howMany")}</div>
     <div style={{display:"flex",gap:8,marginBottom:16}}>{[2,3,4].map(n=><SBtn key={n} l={`${n}${t("unitP")}`} a={pc===n} co="#c9f" onClick={()=>setPc(n)} />)}</div>
