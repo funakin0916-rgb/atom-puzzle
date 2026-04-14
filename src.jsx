@@ -1631,7 +1631,7 @@ window.__App = function App() {
 
   useEffect(()=>{const handler=e=>{if(scr==="game"){e.preventDefault();e.returnValue="";}};window.addEventListener("beforeunload",handler);return ()=>window.removeEventListener("beforeunload",handler);},[scr]);
   
-  const init=(pn,cs,d,lim,testCards)=>{let deck=buildDeck();if(testCards)deck=deck.slice(0,testCards);const pl=pn.map(name=>({name,hand:[],bonds:[]}));const h=lim||7;setHL(h);setGS({deck,pl,dp:[],hl:h});setCP(0);setSP(!cs||!cs.has(0));setScr("game");setTC(0);setLRS(false);setLRSP(-1);setCpuP(cs||new Set());setIC(!!cs);setCpuD(d||"normal");setCpuOv(null);};
+  const init=(pn,cs,d,lim,testCards)=>{let deck=buildDeck();if(testCards)deck=deck.slice(0,testCards);const pl=pn.map(name=>({name,hand:[],bonds:[]}));const h=lim||7;/* 最初に3枚ずつ配る */for(let r=0;r<3;r++){for(let i=0;i<pl.length;i++){if(deck.length>0){pl[i].hand.push(deck.pop());}}}setHL(h);setGS({deck,pl,dp:[],hl:h});setCP(0);setSP(!cs||!cs.has(0));setScr("game");setTC(0);setLRS(false);setLRSP(-1);setCpuP(cs||new Set());setIC(!!cs);setCpuD(d||"normal");setCpuOv(null);};
   
   const draw=useCallback(()=>{if(!gs||gs.deck.length===0)return null;const nd=[...gs.deck],dr=nd.pop();const np=gs.pl.map((p,i)=>i===cp?{...p,hand:[...p.hand,dr]}:p);setGS({...gs,deck:nd,pl:np});if(nd.length===0&&!lrs){setLRS(true);setLRSP(cp);}return dr;},[gs,cp,lrs]);
   
@@ -1663,7 +1663,7 @@ window.__App = function App() {
   
   const restart=()=>{setScr("title");setGS(null);setCP(0);setIC(false);setCpuP(new Set());setCpuOv(null);setStoryStage(null);if(BGM.on())BGM.start("title");};
   const finishGame=()=>{setScr("result");};
-  const startStory=stage=>{const stageHl=stage.hl||7;let deck=buildDeck();const storyDeckSize=stage.deckSize||45;deck=deck.slice(0,storyDeckSize);const pl=[{name:"あなた",hand:[],bonds:[]},{name:stage.emoji+" "+stage.name,hand:[],bonds:[]}];setHL(stageHl);setGS({deck,pl,dp:[],hl:stageHl});setCP(0);setSP(false);setScr("game");setTC(0);setLRS(false);setLRSP(-1);setCpuP(new Set([1]));setIC(true);setCpuD(stage.diff);setCpuOv(null);setStoryStage(stage);BGM.startForStage(stage.id);};
+  const startStory=stage=>{const stageHl=stage.hl||7;let deck=buildDeck();const storyDeckSize=stage.deckSize||45;deck=deck.slice(0,storyDeckSize);const pl=[{name:"あなた",hand:[],bonds:[]},{name:stage.emoji+" "+stage.name,hand:[],bonds:[]}];/* 最初に3枚ずつ配る */for(let r=0;r<3;r++){for(let i=0;i<pl.length;i++){if(deck.length>0){pl[i].hand.push(deck.pop());}}}setHL(stageHl);setGS({deck,pl,dp:[],hl:stageHl});setCP(0);setSP(false);setScr("game");setTC(0);setLRS(false);setLRSP(-1);setCpuP(new Set([1]));setIC(true);setCpuD(stage.diff);setCpuOv(null);setStoryStage(stage);BGM.startForStage(stage.id);};
   const storyWin=()=>{if(storyStage){setCleared(prev=>new Set([...prev,storyStage.id]));}};
   const tx=TX[lang];
   

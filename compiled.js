@@ -4858,7 +4858,14 @@ window.__App = function App() {
       hand: [],
       bonds: []
     }));
-    const h = lim || 7;
+    const h = lim || 7; /* 最初に3枚ずつ配る */
+    for (let r = 0; r < 3; r++) {
+      for (let i = 0; i < pl.length; i++) {
+        if (deck.length > 0) {
+          pl[i].hand.push(deck.pop());
+        }
+      }
+    }
     setHL(h);
     setGS({
       deck,
@@ -5067,7 +5074,14 @@ window.__App = function App() {
       name: stage.emoji + " " + stage.name,
       hand: [],
       bonds: []
-    }];
+    }]; /* 最初に3枚ずつ配る */
+    for (let r = 0; r < 3; r++) {
+      for (let i = 0; i < pl.length; i++) {
+        if (deck.length > 0) {
+          pl[i].hand.push(deck.pop());
+        }
+      }
+    }
     setHL(stageHl);
     setGS({
       deck,
