@@ -2619,6 +2619,7 @@ function Title({
       setMode("story");
       setStorySt(pendingStage);
       setPendingStage(null);
+      if (!prologueDone) setPrologueDone(true);
     }
   }, []);
   const Stg = () => /*#__PURE__*/React.createElement("div", {
@@ -3423,98 +3424,50 @@ function Title({
         fontWeight: 700,
         marginBottom: 16
       }
-    }, storySt.ex ? `EX ${t("storyStage")} ${storySt.id - 10}` : `${t("storyStage")} ${storySt.id}`), (() => {
-      const prevStage = STORY.find(s => s.id === storySt.id - 1);
-      const prevWin = prevStage && cleared.has(prevStage.id) ? prevStage.winStory : null;
-      return /*#__PURE__*/React.createElement("div", {
-        style: {
-          display: "flex",
-          flexDirection: "column",
-          gap: 10,
-          maxWidth: 320,
-          width: "100%",
-          marginBottom: 20,
-          animation: "slideUp .5s .2s ease both",
-          opacity: 0
-        }
-      }, prevWin && /*#__PURE__*/React.createElement("div", {
-        style: {
-          display: "flex",
-          gap: 10,
-          alignItems: "flex-start"
-        }
-      }, /*#__PURE__*/React.createElement("div", {
-        style: {
-          flexShrink: 0
-        }
-      }, /*#__PURE__*/React.createElement(DrSVG, {
-        size: 48
-      })), /*#__PURE__*/React.createElement("div", {
-        style: {
-          flex: 1,
-          padding: 12,
-          background: "rgba(255,200,50,.04)",
-          border: "2px solid rgba(255,200,50,.2)",
-          position: "relative"
-        }
-      }, /*#__PURE__*/React.createElement("div", {
-        style: {
-          position: "absolute",
-          left: -5,
-          top: 10,
-          width: 0,
-          height: 0,
-          borderTop: "5px solid transparent",
-          borderBottom: "5px solid transparent",
-          borderRight: "5px solid rgba(255,200,50,.2)"
-        }
-      }), /*#__PURE__*/React.createElement("p", {
-        style: {
-          fontSize: 13,
-          color: "#fc3",
-          lineHeight: 1.8,
-          margin: 0
-        }
-      }, prevWin))), /*#__PURE__*/React.createElement("div", {
-        style: {
-          display: "flex",
-          gap: 10,
-          alignItems: "flex-start"
-        }
-      }, /*#__PURE__*/React.createElement("div", {
-        style: {
-          flexShrink: 0
-        }
-      }, /*#__PURE__*/React.createElement(DrSVG, {
-        size: 48
-      })), /*#__PURE__*/React.createElement("div", {
-        style: {
-          flex: 1,
-          padding: 12,
-          background: "#0e0e1e",
-          border: "2px solid #334",
-          position: "relative"
-        }
-      }, /*#__PURE__*/React.createElement("div", {
-        style: {
-          position: "absolute",
-          left: -5,
-          top: 10,
-          width: 0,
-          height: 0,
-          borderTop: "5px solid transparent",
-          borderBottom: "5px solid transparent",
-          borderRight: "5px solid #334"
-        }
-      }), /*#__PURE__*/React.createElement("p", {
-        style: {
-          fontSize: 13,
-          color: "rgba(255,255,255,.7)",
-          lineHeight: 1.8,
-          margin: 0
-        }
-      }, storySt.intro))));
-    })(), /*#__PURE__*/React.createElement("div", {
+    }, storySt.ex ? `EX ${t("storyStage")} ${storySt.id - 10}` : `${t("storyStage")} ${storySt.id}`), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        gap: 10,
+        alignItems: "flex-start",
+        maxWidth: 320,
+        width: "100%",
+        marginBottom: 20,
+        animation: "slideUp .5s .2s ease both",
+        opacity: 0
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        flexShrink: 0
+      }
+    }, /*#__PURE__*/React.createElement(DrSVG, {
+      size: 48
+    })), /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1,
+        padding: 12,
+        background: "#0e0e1e",
+        border: "2px solid #334",
+        position: "relative"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        position: "absolute",
+        left: -5,
+        top: 10,
+        width: 0,
+        height: 0,
+        borderTop: "5px solid transparent",
+        borderBottom: "5px solid transparent",
+        borderRight: "5px solid #334"
+      }
+    }), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: 13,
+        color: "rgba(255,255,255,.7)",
+        lineHeight: 1.8,
+        margin: 0
+      }
+    }, storySt.intro))), /*#__PURE__*/React.createElement("div", {
       style: {
         display: "flex",
         gap: 12,

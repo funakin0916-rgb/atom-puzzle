@@ -1112,6 +1112,7 @@ function Title({onStart,onStartCpu,onStartStory,onTest,onTestStoryWin,lang,setLa
       setMode("story");
       setStorySt(pendingStage);
       setPendingStage(null);
+      if(!prologueDone) setPrologueDone(true);
     }
   },[]);
   
@@ -1312,28 +1313,13 @@ function Title({onStart,onStartCpu,onStartStory,onTest,onTestStoryWin,lang,setLa
       <div style={{fontSize:14,color:storySt.color,fontWeight:700,marginBottom:16}}>{storySt.ex?`EX ${t("storyStage")} ${storySt.id-10}`:`${t("storyStage")} ${storySt.id}`}</div>
       
       {/* 博士の会話ボックス */}
-      {(()=>{
-        const prevStage = STORY.find(s=>s.id===storySt.id-1);
-        const prevWin = prevStage && cleared.has(prevStage.id) ? prevStage.winStory : null;
-        return <div style={{display:"flex",flexDirection:"column",gap:10,maxWidth:320,width:"100%",marginBottom:20,animation:"slideUp .5s .2s ease both",opacity:0}}>
-          {/* 前ステージクリア時の物語 */}
-          {prevWin && <div style={{display:"flex",gap:10,alignItems:"flex-start"}}>
-            <div style={{flexShrink:0}}><DrSVG size={48} /></div>
-            <div style={{flex:1,padding:12,background:"rgba(255,200,50,.04)",border:"2px solid rgba(255,200,50,.2)",position:"relative"}}>
-              <div style={{position:"absolute",left:-5,top:10,width:0,height:0,borderTop:"5px solid transparent",borderBottom:"5px solid transparent",borderRight:"5px solid rgba(255,200,50,.2)"}} />
-              <p style={{fontSize:13,color:"#fc3",lineHeight:1.8,margin:0}}>{prevWin}</p>
-            </div>
-          </div>}
-          {/* このステージのイントロ */}
-          <div style={{display:"flex",gap:10,alignItems:"flex-start"}}>
-            <div style={{flexShrink:0}}><DrSVG size={48} /></div>
-            <div style={{flex:1,padding:12,background:"#0e0e1e",border:"2px solid #334",position:"relative"}}>
-              <div style={{position:"absolute",left:-5,top:10,width:0,height:0,borderTop:"5px solid transparent",borderBottom:"5px solid transparent",borderRight:"5px solid #334"}} />
-              <p style={{fontSize:13,color:"rgba(255,255,255,.7)",lineHeight:1.8,margin:0}}>{storySt.intro}</p>
-            </div>
-          </div>
-        </div>;
-      })()}
+      <div style={{display:"flex",gap:10,alignItems:"flex-start",maxWidth:320,width:"100%",marginBottom:20,animation:"slideUp .5s .2s ease both",opacity:0}}>
+        <div style={{flexShrink:0}}><DrSVG size={48} /></div>
+        <div style={{flex:1,padding:12,background:"#0e0e1e",border:"2px solid #334",position:"relative"}}>
+          <div style={{position:"absolute",left:-5,top:10,width:0,height:0,borderTop:"5px solid transparent",borderBottom:"5px solid transparent",borderRight:"5px solid #334"}} />
+          <p style={{fontSize:13,color:"rgba(255,255,255,.7)",lineHeight:1.8,margin:0}}>{storySt.intro}</p>
+        </div>
+      </div>
       
       {/* 難易度・ルール情報 */}
       <div style={{display:"flex",gap:12,marginBottom:20,animation:"slideUp .5s .35s ease both",opacity:0}}>
