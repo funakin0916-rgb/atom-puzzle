@@ -2602,22 +2602,20 @@ function Title({
   setPendingStage
 }) {
   const t = useT();
-  const [mode, setMode] = useState(null);
+  const [mode, setMode] = useState(pendingStage ? "story" : null);
   const [pc, setPc] = useState(2);
   const [names, setNames] = useState(["", "", "", ""]);
   const [cn, setCn] = useState("");
   const [cc, setCc] = useState(1);
   const [cd, setCd] = useState("normal");
   const [hl, setHL] = useState(7);
-  const [storySt, setStorySt] = useState(null);
+  const [storySt, setStorySt] = useState(pendingStage || null);
   const [bgmOn, setBgmOn] = useState(BGM.on());
   const [seOn, setSeOn] = useState(SE.isEnabled());
 
-  // 結果画面から「次のステージへ」で来た場合、自動的にストーリーモード＋ステージ紹介を開く
+  // pendingStageをクリア＋プロローグスキップ
   useEffect(() => {
     if (pendingStage) {
-      setMode("story");
-      setStorySt(pendingStage);
       setPendingStage(null);
       if (!prologueDone) setPrologueDone(true);
     }
@@ -4951,7 +4949,7 @@ function Result({
       gap: 10,
       alignItems: "center"
     }
-  }, storyStage && playerLost && /*#__PURE__*/React.createElement("div", {
+  }, storyStage && /*#__PURE__*/React.createElement("div", {
     style: {
       padding: 18,
       borderRadius: 0,
@@ -4968,8 +4966,7 @@ function Result({
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      flexShrink: 0,
-      filter: "drop-shadow(0 4px 10px rgba(80,180,255,.2))"
+      flexShrink: 0
     }
   }, /*#__PURE__*/React.createElement(DrSVG, {
     size: 52
@@ -4977,7 +4974,6 @@ function Result({
     style: {
       flex: 1,
       padding: 12,
-      borderRadius: "4px 14px 14px 14px",
       background: "#111",
       border: "2px solid #223",
       position: "relative"
@@ -4996,11 +4992,11 @@ function Result({
   }), /*#__PURE__*/React.createElement("p", {
     style: {
       fontSize: 14,
-      color: "rgba(255,255,255,.65)",
+      color: playerWon ? "#fc3" : "rgba(255,255,255,.65)",
       lineHeight: 1.8,
       margin: 0
     }
-  }, storyStage.lose))), /*#__PURE__*/React.createElement("div", {
+  }, playerWon ? storyStage.winStory || storyStage.win : storyStage.lose))), playerLost && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 13,
       color: "rgba(255,255,255,.35)",

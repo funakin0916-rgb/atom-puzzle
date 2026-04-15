@@ -1095,22 +1095,20 @@ const Pass = ({pn,onReady,info}) => {
    ═══════════════════════════════════════════════════════════ */
 function Title({onStart,onStartCpu,onStartStory,onTest,onTestStoryWin,lang,setLang,premium,setPremium,cleared,prologueDone,setPrologueDone,pendingStage,setPendingStage}) {
   const t=useT();
-  const [mode,setMode]=useState(null);
+  const [mode,setMode]=useState(pendingStage?"story":null);
   const [pc,setPc]=useState(2);
   const [names,setNames]=useState(["","","",""]);
   const [cn,setCn]=useState("");
   const [cc,setCc]=useState(1);
   const [cd,setCd]=useState("normal");
   const [hl,setHL]=useState(7);
-  const [storySt,setStorySt]=useState(null);
+  const [storySt,setStorySt]=useState(pendingStage||null);
   const [bgmOn,setBgmOn]=useState(BGM.on());
   const [seOn,setSeOn]=useState(SE.isEnabled());
   
-  // 結果画面から「次のステージへ」で来た場合、自動的にストーリーモード＋ステージ紹介を開く
+  // pendingStageをクリア＋プロローグスキップ
   useEffect(()=>{
     if(pendingStage){
-      setMode("story");
-      setStorySt(pendingStage);
       setPendingStage(null);
       if(!prologueDone) setPrologueDone(true);
     }
@@ -1696,18 +1694,18 @@ function Result({state,onRestart,isCpu,storyStage,onStoryWin,onStartStory,onGoTo
       </div>}
       
       {ph>=4 && <div style={{marginTop:24,animation:"su .4s ease both",width:"100%",display:"flex",flexDirection:"column",gap:10,alignItems:"center"}}>
-        {/* 負けた場合のみ博士の励まし */}
-        {storyStage && playerLost && <div style={{padding:18,borderRadius:0,background:"#0e0e1e",border:"2px solid #223",width:"100%",marginBottom:4}}>
+        {/* 博士のコメント（勝ち：次への物語 / 負け：励まし） */}
+        {storyStage && <div style={{padding:18,borderRadius:0,background:"#0e0e1e",border:"2px solid #223",width:"100%",marginBottom:4}}>
           <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
-            <div style={{flexShrink:0,filter:"drop-shadow(0 4px 10px rgba(80,180,255,.2))"}}>
+            <div style={{flexShrink:0}}>
               <DrSVG size={52} />
             </div>
-            <div style={{flex:1,padding:12,borderRadius:"4px 14px 14px 14px",background:"#111",border:"2px solid #223",position:"relative"}}>
+            <div style={{flex:1,padding:12,background:"#111",border:"2px solid #223",position:"relative"}}>
               <div style={{position:"absolute",left:-6,top:10,width:0,height:0,borderTop:"6px solid transparent",borderBottom:"6px solid transparent",borderRight:"6px solid rgba(255,255,255,.06)"}} />
-              <p style={{fontSize:14,color:"rgba(255,255,255,.65)",lineHeight:1.8,margin:0}}>{storyStage.lose}</p>
+              <p style={{fontSize:14,color:playerWon?"#fc3":"rgba(255,255,255,.65)",lineHeight:1.8,margin:0}}>{playerWon?(storyStage.winStory||storyStage.win):storyStage.lose}</p>
             </div>
           </div>
-          <div style={{fontSize:13,color:"rgba(255,255,255,.35)",marginTop:8,textAlign:"center"}}>{t("retry")}</div>
+          {playerLost&&<div style={{fontSize:13,color:"rgba(255,255,255,.35)",marginTop:8,textAlign:"center"}}>{t("retry")}</div>}
         </div>}
         {/* ── ストーリーモード用ボタン群 ── */}
         {storyStage ? <>
