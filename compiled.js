@@ -3401,51 +3401,98 @@ function Title({
         fontWeight: 700,
         marginBottom: 16
       }
-    }, storySt.ex ? `EX ${t("storyStage")} ${storySt.id - 10}` : `${t("storyStage")} ${storySt.id}`), /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: "flex",
-        gap: 12,
-        alignItems: "flex-start",
-        maxWidth: 320,
-        width: "100%",
-        marginBottom: 20,
-        animation: "slideUp .5s .2s ease both",
-        opacity: 0
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        flexShrink: 0,
-        filter: "drop-shadow(0 4px 10px rgba(80,180,255,.2))"
-      }
-    }, /*#__PURE__*/React.createElement(DrSVG, {
-      size: 56
-    })), /*#__PURE__*/React.createElement("div", {
-      style: {
-        flex: 1,
-        padding: 14,
-        background: "#0e0e1e",
-        border: "2px solid #334",
-        position: "relative"
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        position: "absolute",
-        left: -6,
-        top: 12,
-        width: 0,
-        height: 0,
-        borderTop: "6px solid transparent",
-        borderBottom: "6px solid transparent",
-        borderRight: "6px solid rgba(255,255,255,.08)"
-      }
-    }), /*#__PURE__*/React.createElement("p", {
-      style: {
-        fontSize: 14,
-        color: "rgba(255,255,255,.7)",
-        lineHeight: 1.8,
-        margin: 0
-      }
-    }, storySt.intro))), /*#__PURE__*/React.createElement("div", {
+    }, storySt.ex ? `EX ${t("storyStage")} ${storySt.id - 10}` : `${t("storyStage")} ${storySt.id}`), (() => {
+      const prevStage = STORY.find(s => s.id === storySt.id - 1);
+      const prevWin = prevStage && cleared.has(prevStage.id) ? prevStage.winStory : null;
+      return /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+          maxWidth: 320,
+          width: "100%",
+          marginBottom: 20,
+          animation: "slideUp .5s .2s ease both",
+          opacity: 0
+        }
+      }, prevWin && /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: "flex",
+          gap: 10,
+          alignItems: "flex-start"
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          flexShrink: 0
+        }
+      }, /*#__PURE__*/React.createElement(DrSVG, {
+        size: 48
+      })), /*#__PURE__*/React.createElement("div", {
+        style: {
+          flex: 1,
+          padding: 12,
+          background: "rgba(255,200,50,.04)",
+          border: "2px solid rgba(255,200,50,.2)",
+          position: "relative"
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          position: "absolute",
+          left: -5,
+          top: 10,
+          width: 0,
+          height: 0,
+          borderTop: "5px solid transparent",
+          borderBottom: "5px solid transparent",
+          borderRight: "5px solid rgba(255,200,50,.2)"
+        }
+      }), /*#__PURE__*/React.createElement("p", {
+        style: {
+          fontSize: 13,
+          color: "#fc3",
+          lineHeight: 1.8,
+          margin: 0
+        }
+      }, prevWin))), /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: "flex",
+          gap: 10,
+          alignItems: "flex-start"
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          flexShrink: 0
+        }
+      }, /*#__PURE__*/React.createElement(DrSVG, {
+        size: 48
+      })), /*#__PURE__*/React.createElement("div", {
+        style: {
+          flex: 1,
+          padding: 12,
+          background: "#0e0e1e",
+          border: "2px solid #334",
+          position: "relative"
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          position: "absolute",
+          left: -5,
+          top: 10,
+          width: 0,
+          height: 0,
+          borderTop: "5px solid transparent",
+          borderBottom: "5px solid transparent",
+          borderRight: "5px solid #334"
+        }
+      }), /*#__PURE__*/React.createElement("p", {
+        style: {
+          fontSize: 13,
+          color: "rgba(255,255,255,.7)",
+          lineHeight: 1.8,
+          margin: 0
+        }
+      }, storySt.intro))));
+    })(), /*#__PURE__*/React.createElement("div", {
       style: {
         display: "flex",
         gap: 12,
@@ -4929,7 +4976,7 @@ function Result({
       gap: 10,
       alignItems: "center"
     }
-  }, storyStage && /*#__PURE__*/React.createElement("div", {
+  }, storyStage && playerLost && /*#__PURE__*/React.createElement("div", {
     style: {
       padding: 18,
       borderRadius: 0,
@@ -4978,23 +5025,14 @@ function Result({
       lineHeight: 1.8,
       margin: 0
     }
-  }, playerWon ? storyStage.winStory || storyStage.win : storyStage.lose))), playerLost && /*#__PURE__*/React.createElement("div", {
+  }, storyStage.lose))), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 13,
       color: "rgba(255,255,255,.35)",
       marginTop: 8,
       textAlign: "center"
     }
-  }, t("retry"))), storyStage ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PremBtn, {
-    onClick: () => onStartStory(storyStage),
-    bg: "#cc6600",
-    style: {
-      padding: "14px 40px",
-      fontSize: 16,
-      width: "100%",
-      maxWidth: 280
-    }
-  }, "\uD83D\uDD04 \u3082\u3046\u3044\u3061\u3069\u305F\u305F\u304B\u3046"), playerWon && (() => {
+  }, t("retry"))), storyStage ? /*#__PURE__*/React.createElement(React.Fragment, null, playerWon && (() => {
     const nextStage = STORY.find(s => s.id === storyStage.id + 1);
     if (nextStage) return /*#__PURE__*/React.createElement(PremBtn, {
       onClick: () => onGoToStageIntro(nextStage),
@@ -5020,7 +5058,16 @@ function Result({
         fontWeight: 800
       }
     }, "\uD83C\uDFC6 \u3059\u3079\u3066\u306E\u30B9\u30C6\u30FC\u30B8\u3092\u30AF\u30EA\u30A2\uFF01"));
-  })(), /*#__PURE__*/React.createElement("button", {
+  })(), /*#__PURE__*/React.createElement(PremBtn, {
+    onClick: () => onStartStory(storyStage),
+    bg: "#cc6600",
+    style: {
+      padding: "14px 40px",
+      fontSize: 16,
+      width: "100%",
+      maxWidth: 280
+    }
+  }, "\uD83D\uDD04 \u3082\u3046\u3044\u3061\u3069\u305F\u305F\u304B\u3046"), /*#__PURE__*/React.createElement("button", {
     onClick: onRestart,
     style: {
       padding: "10px 24px",

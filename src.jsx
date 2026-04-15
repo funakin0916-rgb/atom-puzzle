@@ -1312,16 +1312,28 @@ function Title({onStart,onStartCpu,onStartStory,onTest,onTestStoryWin,lang,setLa
       <div style={{fontSize:14,color:storySt.color,fontWeight:700,marginBottom:16}}>{storySt.ex?`EX ${t("storyStage")} ${storySt.id-10}`:`${t("storyStage")} ${storySt.id}`}</div>
       
       {/* 博士の会話ボックス */}
-      <div style={{display:"flex",gap:12,alignItems:"flex-start",maxWidth:320,width:"100%",marginBottom:20,animation:"slideUp .5s .2s ease both",opacity:0}}>
-        <div style={{flexShrink:0,filter:"drop-shadow(0 4px 10px rgba(80,180,255,.2))"}}>
-          <DrSVG size={56} />
-        </div>
-        <div style={{flex:1,padding:14,background:"#0e0e1e",border:"2px solid #334",position:"relative"}}>
-          {/* 吹き出し三角 */}
-          <div style={{position:"absolute",left:-6,top:12,width:0,height:0,borderTop:"6px solid transparent",borderBottom:"6px solid transparent",borderRight:"6px solid rgba(255,255,255,.08)"}} />
-          <p style={{fontSize:14,color:"rgba(255,255,255,.7)",lineHeight:1.8,margin:0}}>{storySt.intro}</p>
-        </div>
-      </div>
+      {(()=>{
+        const prevStage = STORY.find(s=>s.id===storySt.id-1);
+        const prevWin = prevStage && cleared.has(prevStage.id) ? prevStage.winStory : null;
+        return <div style={{display:"flex",flexDirection:"column",gap:10,maxWidth:320,width:"100%",marginBottom:20,animation:"slideUp .5s .2s ease both",opacity:0}}>
+          {/* 前ステージクリア時の物語 */}
+          {prevWin && <div style={{display:"flex",gap:10,alignItems:"flex-start"}}>
+            <div style={{flexShrink:0}}><DrSVG size={48} /></div>
+            <div style={{flex:1,padding:12,background:"rgba(255,200,50,.04)",border:"2px solid rgba(255,200,50,.2)",position:"relative"}}>
+              <div style={{position:"absolute",left:-5,top:10,width:0,height:0,borderTop:"5px solid transparent",borderBottom:"5px solid transparent",borderRight:"5px solid rgba(255,200,50,.2)"}} />
+              <p style={{fontSize:13,color:"#fc3",lineHeight:1.8,margin:0}}>{prevWin}</p>
+            </div>
+          </div>}
+          {/* このステージのイントロ */}
+          <div style={{display:"flex",gap:10,alignItems:"flex-start"}}>
+            <div style={{flexShrink:0}}><DrSVG size={48} /></div>
+            <div style={{flex:1,padding:12,background:"#0e0e1e",border:"2px solid #334",position:"relative"}}>
+              <div style={{position:"absolute",left:-5,top:10,width:0,height:0,borderTop:"5px solid transparent",borderBottom:"5px solid transparent",borderRight:"5px solid #334"}} />
+              <p style={{fontSize:13,color:"rgba(255,255,255,.7)",lineHeight:1.8,margin:0}}>{storySt.intro}</p>
+            </div>
+          </div>
+        </div>;
+      })()}
       
       {/* 難易度・ルール情報 */}
       <div style={{display:"flex",gap:12,marginBottom:20,animation:"slideUp .5s .35s ease both",opacity:0}}>
@@ -1698,24 +1710,22 @@ function Result({state,onRestart,isCpu,storyStage,onStoryWin,onStartStory,onGoTo
       </div>}
       
       {ph>=4 && <div style={{marginTop:24,animation:"su .4s ease both",width:"100%",display:"flex",flexDirection:"column",gap:10,alignItems:"center"}}>
-        {storyStage && <div style={{padding:18,borderRadius:0,background:"#0e0e1e",border:"2px solid #223",width:"100%",marginBottom:4}}>
-          {/* 博士の感想 + イラスト */}
+        {/* 負けた場合のみ博士の励まし */}
+        {storyStage && playerLost && <div style={{padding:18,borderRadius:0,background:"#0e0e1e",border:"2px solid #223",width:"100%",marginBottom:4}}>
           <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
             <div style={{flexShrink:0,filter:"drop-shadow(0 4px 10px rgba(80,180,255,.2))"}}>
               <DrSVG size={52} />
             </div>
             <div style={{flex:1,padding:12,borderRadius:"4px 14px 14px 14px",background:"#111",border:"2px solid #223",position:"relative"}}>
               <div style={{position:"absolute",left:-6,top:10,width:0,height:0,borderTop:"6px solid transparent",borderBottom:"6px solid transparent",borderRight:"6px solid rgba(255,255,255,.06)"}} />
-              <p style={{fontSize:14,color:"rgba(255,255,255,.65)",lineHeight:1.8,margin:0}}>{playerWon?(storyStage.winStory||storyStage.win):storyStage.lose}</p>
+              <p style={{fontSize:14,color:"rgba(255,255,255,.65)",lineHeight:1.8,margin:0}}>{storyStage.lose}</p>
             </div>
           </div>
-          {playerLost&&<div style={{fontSize:13,color:"rgba(255,255,255,.35)",marginTop:8,textAlign:"center"}}>{t("retry")}</div>}
+          <div style={{fontSize:13,color:"rgba(255,255,255,.35)",marginTop:8,textAlign:"center"}}>{t("retry")}</div>
         </div>}
         {/* ── ストーリーモード用ボタン群 ── */}
         {storyStage ? <>
-          {/* もう一度たたかう */}
-          <PremBtn onClick={()=>onStartStory(storyStage)} bg="#cc6600" style={{padding:"14px 40px",fontSize:16,width:"100%",maxWidth:280}}>🔄 もういちどたたかう</PremBtn>
-          {/* 次のステージへ（勝った場合のみ） */}
+          {/* 勝ったら次のステージへ直行 */}
           {playerWon && (()=>{
             const nextStage = STORY.find(s=>s.id===storyStage.id+1);
             if(nextStage) return <PremBtn onClick={()=>onGoToStageIntro(nextStage)} bg="#cc2222" style={{padding:"14px 40px",fontSize:16,width:"100%",maxWidth:280}}>
@@ -1725,6 +1735,8 @@ function Result({state,onRestart,isCpu,storyStage,onStoryWin,onStartStory,onGoTo
               <span style={{fontSize:13,color:"#fc3",fontWeight:800}}>🏆 すべてのステージをクリア！</span>
             </div>;
           })()}
+          {/* もう一度たたかう */}
+          <PremBtn onClick={()=>onStartStory(storyStage)} bg="#cc6600" style={{padding:"14px 40px",fontSize:16,width:"100%",maxWidth:280}}>🔄 もういちどたたかう</PremBtn>
           {/* トップにもどる */}
           <button onClick={onRestart} style={{padding:"10px 24px",border:"2px solid #334",background:"transparent",color:"rgba(255,255,255,.4)",fontSize:13,fontWeight:700,cursor:"pointer"}}>🏠 トップにもどる</button>
         </> : <>
