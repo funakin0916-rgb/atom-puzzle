@@ -1093,7 +1093,7 @@ const Pass = ({pn,onReady,info}) => {
 /* ═══════════════════════════════════════════════════════════
    📱 タイトル画面 - PREMIUM
    ═══════════════════════════════════════════════════════════ */
-function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setPremium,cleared,prologueDone,setPrologueDone,pendingStage,setPendingStage}) {
+function Title({onStart,onStartCpu,onStartStory,onTest,onTestStoryWin,lang,setLang,premium,setPremium,cleared,prologueDone,setPrologueDone,pendingStage,setPendingStage}) {
   const t=useT();
   const [mode,setMode]=useState(null);
   const [pc,setPc]=useState(2);
@@ -1187,6 +1187,10 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
     {/* ピクセルアートのモンスター行進 */}
     <div style={{marginTop:24,display:"flex",gap:4,opacity:.4}}>
       {[1,3,5,7,10].map(id=><div key={id} style={{animation:`fl ${2+id*.3}s ease-in-out infinite`}}><MonsterSVG id={id} size={28} color={STORY.find(s=>s.id===id)?.color||"#888"} /></div>)}
+    </div>
+    {/* テスト用：ストーリー即クリア */}
+    <div style={{marginTop:16,opacity:.3}}>
+      <button onClick={()=>{setMode("storyTest");SE.tap();}} style={{padding:"4px 10px",border:"1px solid #333",background:"transparent",color:"#555",fontSize:9,cursor:"pointer"}}>🔧 DEVテスト</button>
     </div>
   </>);
 
@@ -1339,6 +1343,22 @@ function Title({onStart,onStartCpu,onStartStory,onTest,lang,setLang,premium,setP
       <button onClick={()=>setStorySt(null)} style={{marginTop:14,padding:"10px 24px",borderRadius:0,border:"2px solid #334",background:"transparent",color:"rgba(255,255,255,.35)",fontSize:14,fontWeight:700,cursor:"pointer"}}>{t("storyBack")}</button>
     </>);
   }
+
+  // ─ DEVテスト：ストーリー即クリア ─
+  if(mode==="storyTest") return wrap(<>
+    <h2 style={{fontSize:16,fontWeight:900,color:"#fc3",margin:"0 0 16px"}}>🔧 ステージ即クリアテスト</h2>
+    <div style={{fontSize:11,color:"rgba(255,255,255,.4)",marginBottom:12}}>タップでそのステージの勝利結果画面へ</div>
+    <div style={{width:"100%",display:"flex",flexDirection:"column",gap:6}}>
+      {STORY.map(s=><button key={s.id} onClick={()=>onTestStoryWin(s)} style={{
+        padding:"10px 12px",border:`2px solid ${s.color}44`,background:"#111",
+        color:"#fff",cursor:"pointer",textAlign:"left",display:"flex",alignItems:"center",gap:8
+      }}>
+        <MonsterSVG id={s.id} size={32} color={s.color} />
+        <span style={{fontSize:13,fontWeight:700}}>{s.ex?`EX${s.id-10}`:s.id} {s.name}</span>
+      </button>)}
+    </div>
+    <button onClick={()=>setMode(null)} style={{marginTop:14,padding:"8px 20px",border:"2px solid #334",background:"transparent",color:"rgba(255,255,255,.35)",fontSize:12,fontWeight:700,cursor:"pointer"}}>{t("back")}</button>
+  </>);
 
   // ─ マルチプレイヤーセットアップ ─
   if(mode==="multi") return wrap(<>
@@ -1775,11 +1795,21 @@ window.__App = function App() {
   const finishGame=()=>{setScr("result");};
   const startStory=stage=>{const stageHl=stage.hl||7;let deck=buildDeck();const storyDeckSize=stage.deckSize||45;deck=deck.slice(0,storyDeckSize);const pl=[{name:"あなた",hand:[],bonds:[]},{name:stage.emoji+" "+stage.name,hand:[],bonds:[]}];/* 最初に3枚ずつ配る */for(let r=0;r<3;r++){for(let i=0;i<pl.length;i++){if(deck.length>0){pl[i].hand.push(deck.pop());}}}setHL(stageHl);setGS({deck,pl,dp:[],hl:stageHl});setCP(0);setSP(false);setScr("game");setTC(0);setLRS(false);setLRSP(-1);setCpuP(new Set([1]));setIC(true);setCpuD(stage.diff);setCpuOv(null);setStoryStage(stage);BGM.startForStage(stage.id);};
   const storyWin=()=>{if(storyStage){setCleared(prev=>new Set([...prev,storyStage.id]));}};
+  const testStoryWin=(stage)=>{
+    const fakePl=[
+      {name:"あなた",hand:[],bonds:[{k:"cH2O",f:"H₂O",a:{H:2,O:1},e:"💧",p:5,free:true},{k:"cNaCl",f:"NaCl",a:{Na:1,Cl:1},e:"🧂",p:4,free:true}]},
+      {name:stage.emoji+" "+stage.name,hand:[],bonds:[{k:"cH2",f:"H₂",a:{H:2},e:"💧",p:2,free:true}]}
+    ];
+    setGS({deck:[],pl:fakePl,dp:[],hl:stage.hl||7});
+    setStoryStage(stage);setIC(true);setCpuP(new Set([1]));
+    setCleared(prev=>new Set([...prev,stage.id]));
+    setScr("result");
+  };
   const tx=TX[lang];
   
   return <LangCtx.Provider value={lang}>
     <style>{CSS}</style>
-    {scr==="title" && <Title onStart={(n,l)=>init(n,null,null,l)} onStartCpu={(m,c,d,l)=>init([m,...c],new Set(c.map((_,i)=>i+1)),d,l)} onStartStory={startStory} onTest={l=>init(["あなた","コンピュータ🤖"],new Set([1]),"normal",l,6)} lang={lang} setLang={setLang} premium={premium} setPremium={setPremium} cleared={cleared} prologueDone={prologueDone} setPrologueDone={setPrologueDone} pendingStage={pendingStage} setPendingStage={setPendingStage} />}
+    {scr==="title" && <Title onStart={(n,l)=>init(n,null,null,l)} onStartCpu={(m,c,d,l)=>init([m,...c],new Set(c.map((_,i)=>i+1)),d,l)} onStartStory={startStory} onTest={l=>init(["あなた","コンピュータ🤖"],new Set([1]),"normal",l,6)} onTestStoryWin={testStoryWin} lang={lang} setLang={setLang} premium={premium} setPremium={setPremium} cleared={cleared} prologueDone={prologueDone} setPrologueDone={setPrologueDone} pendingStage={pendingStage} setPendingStage={setPendingStage} />}
     {scr==="result"&&gs && <Result state={gs} onRestart={restart} isCpu={isCpu} storyStage={storyStage} onStoryWin={storyWin} onStartStory={startStory} onGoToStageIntro={goToStageIntro} cleared={cleared} />}
     {scr==="game"&&cpuOv && <><BgmBtn /><CpuOv name={cpuOv.name} action={cpuOv.action} comp={cpuOv.comp} /></>}
     {scr==="game"&&!cpuOv&&sp&&!isCpu&&gs && <Pass pn={gs.pl[cp].name} onReady={()=>setSP(false)} info={gs.deck.length>0?`${tx.dkRem} ${gs.deck.length} ${tx.mai}`:tx.lastR} />}

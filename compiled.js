@@ -2568,6 +2568,7 @@ function Title({
   onStartCpu,
   onStartStory,
   onTest,
+  onTestStoryWin,
   lang,
   setLang,
   premium,
@@ -2936,7 +2937,25 @@ function Title({
       size: 28,
       color: ((_STORY$find = STORY.find(s => s.id === id)) === null || _STORY$find === void 0 ? void 0 : _STORY$find.color) || "#888"
     }));
-  }))));
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 16,
+      opacity: .3
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setMode("storyTest");
+      SE.tap();
+    },
+    style: {
+      padding: "4px 10px",
+      border: "1px solid #333",
+      background: "transparent",
+      color: "#555",
+      fontSize: 9,
+      cursor: "pointer"
+    }
+  }, "\uD83D\uDD27 DEV\u30C6\u30B9\u30C8"))));
 
   // ─ CPU対戦セットアップ ─
   if (mode === "cpu") return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
@@ -3531,6 +3550,64 @@ function Title({
       }
     }, t("storyBack"))));
   }
+
+  // ─ DEVテスト：ストーリー即クリア ─
+  if (mode === "storyTest") return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h2", {
+    style: {
+      fontSize: 16,
+      fontWeight: 900,
+      color: "#fc3",
+      margin: "0 0 16px"
+    }
+  }, "\uD83D\uDD27 \u30B9\u30C6\u30FC\u30B8\u5373\u30AF\u30EA\u30A2\u30C6\u30B9\u30C8"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: "rgba(255,255,255,.4)",
+      marginBottom: 12
+    }
+  }, "\u30BF\u30C3\u30D7\u3067\u305D\u306E\u30B9\u30C6\u30FC\u30B8\u306E\u52DD\u5229\u7D50\u679C\u753B\u9762\u3078"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      gap: 6
+    }
+  }, STORY.map(s => /*#__PURE__*/React.createElement("button", {
+    key: s.id,
+    onClick: () => onTestStoryWin(s),
+    style: {
+      padding: "10px 12px",
+      border: `2px solid ${s.color}44`,
+      background: "#111",
+      color: "#fff",
+      cursor: "pointer",
+      textAlign: "left",
+      display: "flex",
+      alignItems: "center",
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement(MonsterSVG, {
+    id: s.id,
+    size: 32,
+    color: s.color
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 13,
+      fontWeight: 700
+    }
+  }, s.ex ? `EX${s.id - 10}` : s.id, " ", s.name)))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setMode(null),
+    style: {
+      marginTop: 14,
+      padding: "8px 20px",
+      border: "2px solid #334",
+      background: "transparent",
+      color: "rgba(255,255,255,.35)",
+      fontSize: 12,
+      fontWeight: 700,
+      cursor: "pointer"
+    }
+  }, t("back"))));
 
   // ─ マルチプレイヤーセットアップ ─
   if (mode === "multi") return wrap(/*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
@@ -5273,6 +5350,57 @@ window.__App = function App() {
       setCleared(prev => new Set([...prev, storyStage.id]));
     }
   };
+  const testStoryWin = stage => {
+    const fakePl = [{
+      name: "あなた",
+      hand: [],
+      bonds: [{
+        k: "cH2O",
+        f: "H₂O",
+        a: {
+          H: 2,
+          O: 1
+        },
+        e: "💧",
+        p: 5,
+        free: true
+      }, {
+        k: "cNaCl",
+        f: "NaCl",
+        a: {
+          Na: 1,
+          Cl: 1
+        },
+        e: "🧂",
+        p: 4,
+        free: true
+      }]
+    }, {
+      name: stage.emoji + " " + stage.name,
+      hand: [],
+      bonds: [{
+        k: "cH2",
+        f: "H₂",
+        a: {
+          H: 2
+        },
+        e: "💧",
+        p: 2,
+        free: true
+      }]
+    }];
+    setGS({
+      deck: [],
+      pl: fakePl,
+      dp: [],
+      hl: stage.hl || 7
+    });
+    setStoryStage(stage);
+    setIC(true);
+    setCpuP(new Set([1]));
+    setCleared(prev => new Set([...prev, stage.id]));
+    setScr("result");
+  };
   const tx = TX[lang];
   return /*#__PURE__*/React.createElement(LangCtx.Provider, {
     value: lang
@@ -5281,6 +5409,7 @@ window.__App = function App() {
     onStartCpu: (m, c, d, l) => init([m, ...c], new Set(c.map((_, i) => i + 1)), d, l),
     onStartStory: startStory,
     onTest: l => init(["あなた", "コンピュータ🤖"], new Set([1]), "normal", l, 6),
+    onTestStoryWin: testStoryWin,
     lang: lang,
     setLang: setLang,
     premium: premium,
